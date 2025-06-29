@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x98765CC61AA834BA",
+      "boundary_crc": "0x98765CC6563F7EFD",
       "device": "xczu3eg-ubva530-2-i",
       "name": "BlochDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -19,13 +19,13 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "49"
+            "value": "40"
           },
           "ARUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "AWUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -69,7 +69,7 @@
             "value": "1"
           },
           "ID_WIDTH": {
-            "value": "6"
+            "value": "0"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -119,8 +119,8 @@
         "address_space_ref": "Subordinate_0",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x0001FFFFFFFFFFFF",
-          "width": "49"
+          "maximum": "0x00FFFFFFFFFF",
+          "width": "40"
         },
         "bd_attributes": {
           "TYPE": {
@@ -339,13 +339,13 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "49"
+            "value": "40"
           },
           "ARUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "AWUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -389,7 +389,7 @@
             "value": "1"
           },
           "ID_WIDTH": {
-            "value": "6"
+            "value": "0"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -439,8 +439,8 @@
         "address_space_ref": "Subordinate_1",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x0001FFFFFFFFFFFF",
-          "width": "49"
+          "maximum": "0x00FFFFFFFFFF",
+          "width": "40"
         },
         "bd_attributes": {
           "TYPE": {
@@ -659,13 +659,13 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "49"
+            "value": "40"
           },
           "ARUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "AWUSER_WIDTH": {
-            "value": "1"
+            "value": "0"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -709,7 +709,7 @@
             "value": "1"
           },
           "ID_WIDTH": {
-            "value": "6"
+            "value": "0"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -759,8 +759,8 @@
         "address_space_ref": "Subordinate_2",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x0001FFFFFFFFFFFF",
-          "width": "49"
+          "maximum": "0x00FFFFFFFFFF",
+          "width": "40"
         },
         "bd_attributes": {
           "TYPE": {
@@ -1982,7 +1982,7 @@
         "direction": "O",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "BlochDesign_zynq_ultra_ps_e_0_0_pl_clk0",
+            "value": "BlochDesign_PS_0_pl_clk0",
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
@@ -2096,8 +2096,8 @@
       "PS": {
         "vlnv": "xilinx.com:ip:zynq_ultra_ps_e:3.5",
         "ip_revision": "7",
-        "xci_name": "BlochDesign_zynq_ultra_ps_e_0_0",
-        "xci_path": "ip\\BlochDesign_zynq_ultra_ps_e_0_0\\BlochDesign_zynq_ultra_ps_e_0_0.xci",
+        "xci_name": "BlochDesign_PS_0",
+        "xci_path": "ip\\BlochDesign_PS_0\\BlochDesign_PS_0.xci",
         "inst_hier_path": "PS",
         "has_run_ip_tcl": "true",
         "parameters": {
@@ -2443,49 +2443,49 @@
       "/": {
         "address_spaces": {
           "Subordinate_0": {
-            "range": "512T",
-            "width": "49",
+            "range": "1T",
+            "width": "40",
             "segments": {
               "SEG_PS_HP0_DDR_LOW": {
                 "address_block": "/PS/SAXIGP2/HP0_DDR_LOW",
-                "offset": "0x0000000000000",
+                "offset": "0x0000000000",
                 "range": "2G"
               },
               "SEG_PS_HP0_LPS_OCM": {
                 "address_block": "/PS/SAXIGP2/HP0_LPS_OCM",
-                "offset": "0x00000FF000000",
+                "offset": "0x00FF000000",
                 "range": "16M"
               }
             }
           },
           "Subordinate_1": {
-            "range": "512T",
-            "width": "49",
+            "range": "1T",
+            "width": "40",
             "segments": {
               "SEG_PS_HP1_DDR_LOW": {
                 "address_block": "/PS/SAXIGP3/HP1_DDR_LOW",
-                "offset": "0x0000000000000",
+                "offset": "0x0000000000",
                 "range": "2G"
               },
               "SEG_PS_HP1_LPS_OCM": {
                 "address_block": "/PS/SAXIGP3/HP1_LPS_OCM",
-                "offset": "0x00000FF000000",
+                "offset": "0x00FF000000",
                 "range": "16M"
               }
             }
           },
           "Subordinate_2": {
-            "range": "512T",
-            "width": "49",
+            "range": "1T",
+            "width": "40",
             "segments": {
               "SEG_PS_HP3_DDR_LOW": {
                 "address_block": "/PS/SAXIGP5/HP3_DDR_LOW",
-                "offset": "0x0000000000000",
+                "offset": "0x0000000000",
                 "range": "2G"
               },
               "SEG_PS_HP3_LPS_OCM": {
                 "address_block": "/PS/SAXIGP5/HP3_LPS_OCM",
-                "offset": "0x00000FF000000",
+                "offset": "0x00FF000000",
                 "range": "16M"
               }
             }

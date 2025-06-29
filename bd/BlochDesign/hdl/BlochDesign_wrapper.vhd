@@ -2,8 +2,8 @@
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
---Date        : Sat Jun 28 17:05:28 2025
---Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
+--Date        : Sun Jun 29 22:43:42 2025
+--Host        : Paebbels running 64-bit major release  (build 9200)
 --Command     : generate_target BlochDesign_wrapper.bd
 --Design      : BlochDesign_wrapper
 --Purpose     : IP block netlist
@@ -259,10 +259,6 @@ end BlochDesign_wrapper;
 architecture STRUCTURE of BlochDesign_wrapper is
   component BlochDesign is
   port (
-    Clock_0 : out STD_LOGIC;
-    PL_Reset_0 : out STD_LOGIC;
-    LPD_Clock : in STD_LOGIC;
-    PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
     Subordinate_0_aruser : in STD_LOGIC;
     Subordinate_0_awuser : in STD_LOGIC;
     Subordinate_0_awid : in STD_LOGIC_VECTOR ( 5 downto 0 );
@@ -380,7 +376,6 @@ architecture STRUCTURE of BlochDesign_wrapper is
     Subordinate_2_rready : in STD_LOGIC;
     Subordinate_2_awqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
     Subordinate_2_arqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    FPD_Clock : in STD_LOGIC;
     Manager_0_awid : out STD_LOGIC_VECTOR ( 15 downto 0 );
     Manager_0_awaddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
     Manager_0_awlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
@@ -497,7 +492,12 @@ architecture STRUCTURE of BlochDesign_wrapper is
     Config_0_rvalid : in STD_LOGIC;
     Config_0_rready : out STD_LOGIC;
     Config_0_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    Config_0_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 )
+    Config_0_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    Clock_0 : out STD_LOGIC;
+    PL_Reset_0 : out STD_LOGIC;
+    LPD_Clock : in STD_LOGIC;
+    PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    FPD_Clock : in STD_LOGIC
   );
   end component BlochDesign;
 begin
