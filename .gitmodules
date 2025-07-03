@@ -1,0 +1,6 @@
+[submodule "lib/PoC"]
+	path = lib/PoC
+	url = ../../VHDL/PoC.git
+[submodule "lib/Interfaces"]
+	path = lib/Interfaces
+	url = ../../VHDL/Interfaces.git

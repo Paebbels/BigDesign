@@ -1,0 +1,7 @@
+/bd/*/**/*.*
+!/bd/*/**/*.bd
+
+/project/**/*.*
+!/project/*.xpr
+
+/src/PoC/my_project.vhdl
