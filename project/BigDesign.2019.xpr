@@ -128,13 +128,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Lite.generic.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="Interfaces"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../lib/PoC/src/common/utils.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -191,6 +184,27 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../src/PoC/AXI4.pkg.2019.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Lite.generic.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="Interfaces"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -241,14 +255,6 @@
       <File Path="$PPRDIR/../src/BigDesign/Toplevel_A0.2019.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="lib_BigDesign"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
