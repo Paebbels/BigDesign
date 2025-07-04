@@ -5,9 +5,9 @@ library Interfaces;
 use     Interfaces.Axi4.all;
 
 library PoC;
-use     PoC.vectors.all;
-use     PoC.AXI4Lite.all;
-
+use     PoC.Vectors.all;
+use     PoC.Axi4Lite.all;
+use     PoC.Axi4Views.all;
 
 entity Design is
 	port (
@@ -60,35 +60,46 @@ begin
 		);
 	
 	blkGPIO : block
-		constant CONFIG : T_AXI4_Register_Vector := (
+		package AXI4Lite_A40_D32 is new PoC.AXI4Lite_Sized
+			generic map (
+				ADDRESS_BITS => 40,
+				DATA_BITS    => 32
+			);
+	
+		constant REG_CONFIG : T_AXI4_Register_Vector := (
 			to_AXI4_Register(Name => "Buttons", Address => 32x"00", RegisterMode => ReadOnly_NotRegistered),
 			to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite_NotRegistered)
 		);
 	
-		signal ReadPort  : T_SLVV(0 to 1)(31 downto 0);
-		signal WritePort : T_SLVV(0 to 1)(31 downto 0);
+		signal Config_m2s : AXI4Lite_A40_D32.Sized_M2S;
+		signal Config_s2m : AXI4Lite_A40_D32.Sized_S2M;
+		
+		signal ReadPort   : T_SLVV(0 to 1)(31 downto 0);
+		signal WritePort  : T_SLVV(0 to 1)(31 downto 0);
 	begin
---		GPIO: entity PoC.AXI4Lite_Register
---			generic map (
---				CONFIG => CONFIG
---			)
---			port map (
---				Clock                         => PS_Clock,
---				Reset                         => PL_Reset,
+		Axi4LiteSubordinateView(Config, Config_m2s, Config_s2m);
+	
+		GPIO: entity PoC.AXI4Lite_Register
+			generic map (
+				CONFIG => REG_CONFIG
+			)
+			port map (
+				Clock                         => PS_Clock,
+				Reset                         => PL_Reset,
 		
---				AXI4Lite_m2s                  => Config_m2s,
---				AXI4Lite_s2m                  => Config_s2m,
---				AXI4Lite_IRQ                  => open,
+				AXI4Lite_m2s                  => Config_m2s,
+				AXI4Lite_s2m                  => Config_s2m,
+				AXI4Lite_IRQ                  => open,
 		
---				RegisterFile_ReadPort         => ReadPort,
---				RegisterFile_ReadPort_hit     => open,
---				RegisterFile_WritePort        => WritePort,
---				RegisterFile_WritePort_hit    => open,
---				RegisterFile_WritePort_strobe => open
---			);
+				RegisterFile_ReadPort         => ReadPort,
+				RegisterFile_ReadPort_hit     => open,
+				RegisterFile_WritePort        => WritePort,
+				RegisterFile_WritePort_hit    => open,
+				RegisterFile_WritePort_strobe => open
+			);
 		
-		WritePort(get_Index("Buttons", CONFIG)) <= 30x"0" & Button;
+		WritePort(get_Index("Buttons", REG_CONFIG)) <= 30x"0" & Button;
 		
-		LED <= ReadPort(get_Index("LEDs", CONFIG))(1 downto 0);
+		LED <= ReadPort(get_Index("LEDs", REG_CONFIG))(1 downto 0);
 	end block;
 end architecture;
