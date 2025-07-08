@@ -38,7 +38,7 @@ architecture wrapper of BlockDesign_top is
 	signal IRQs     : std_logic_vector(7 downto 0);
 
 begin
-	BD: entity work.BlochDesign_wrapper
+	BD: entity work.BlockDesign_wrapper
 		port map (
 			Clock_0    => Clock,
 			
