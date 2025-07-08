@@ -3,7 +3,7 @@
     "design_info": {
       "boundary_crc": "0x98765CC6563F7EFD",
       "device": "xczu3eg-ubva530-2-i",
-      "name": "BlochDesign",
+      "name": "BlockDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
       "tool_version": "2025.1",
@@ -31,7 +31,7 @@
             "value": "0"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -351,7 +351,7 @@
             "value": "0"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -671,7 +671,7 @@
             "value": "0"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -994,7 +994,7 @@
             "value_src": "const_prop"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -1328,7 +1328,7 @@
             "value_src": "const_prop"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -1662,7 +1662,7 @@
             "value_src": "const_prop"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_maxihpm0_lpd_aclk_0",
+            "value": "BlockDesign_maxihpm0_lpd_aclk_0",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -1982,7 +1982,7 @@
         "direction": "O",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "BlochDesign_PS_0_pl_clk0",
+            "value": "BlockDesign_PS_0_pl_clk0",
             "value_src": "default_prop"
           },
           "FREQ_HZ": {
@@ -2026,7 +2026,7 @@
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_maxihpm0_lpd_aclk_0",
+            "value": "BlockDesign_maxihpm0_lpd_aclk_0",
             "value_src": "default"
           },
           "FREQ_HZ": {
@@ -2070,7 +2070,7 @@
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "BlochDesign_LPD_Clock1",
+            "value": "BlockDesign_LPD_Clock1",
             "value_src": "default"
           },
           "FREQ_HZ": {
@@ -2096,8 +2096,8 @@
       "PS": {
         "vlnv": "xilinx.com:ip:zynq_ultra_ps_e:3.5",
         "ip_revision": "7",
-        "xci_name": "BlochDesign_PS_0",
-        "xci_path": "ip\\BlochDesign_PS_0\\BlochDesign_PS_0.xci",
+        "xci_name": "BlockDesign_PS_0",
+        "xci_path": "ip\\BlockDesign_PS_0\\BlockDesign_PS_0.xci",
         "inst_hier_path": "PS",
         "has_run_ip_tcl": "true",
         "parameters": {

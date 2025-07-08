@@ -1,5 +1,6 @@
 /bd/*/**/*.*
-!/bd/*/**/*.bd
+!/bd/*/*.bd
+!/bd/*/hdl/*_wrapper.vhd*
 
 /project/**/*.*
 !/project/*.xpr

@@ -2,17 +2,17 @@
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
---Date        : Mon Jun 30 07:50:41 2025
+--Date        : Tue Jul  8 10:36:39 2025
 --Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
---Command     : generate_target BlochDesign_wrapper.bd
---Design      : BlochDesign_wrapper
+--Command     : generate_target BlockDesign_wrapper.bd
+--Design      : BlockDesign_wrapper
 --Purpose     : IP block netlist
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity BlochDesign_wrapper is
+entity BlockDesign_wrapper is
   port (
     Clock_0 : out STD_LOGIC;
     Config_0_araddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
@@ -254,10 +254,10 @@ entity BlochDesign_wrapper is
     Subordinate_2_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_2_wvalid : in STD_LOGIC
   );
-end BlochDesign_wrapper;
+end BlockDesign_wrapper;
 
-architecture STRUCTURE of BlochDesign_wrapper is
-  component BlochDesign is
+architecture STRUCTURE of BlockDesign_wrapper is
+  component BlockDesign is
   port (
     Subordinate_0_aruser : in STD_LOGIC;
     Subordinate_0_awuser : in STD_LOGIC;
@@ -499,9 +499,9 @@ architecture STRUCTURE of BlochDesign_wrapper is
     PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
     FPD_Clock : in STD_LOGIC
   );
-  end component BlochDesign;
+  end component BlockDesign;
 begin
-BlochDesign_i: component BlochDesign
+BlockDesign_i: component BlockDesign
      port map (
       Clock_0 => Clock_0,
       Config_0_araddr(39 downto 0) => Config_0_araddr(39 downto 0),
