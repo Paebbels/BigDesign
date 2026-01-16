@@ -8,7 +8,7 @@ context PoC.common;
 architecture Simple of BigDesign_TestController is
 	signal TestDone : integer_barrier := 1;
 
-	constant TCID      : AlertLogIDType :=  NewID("TestCtrl");
+	constant TCID : AlertLogIDType :=  NewID("TestCtrl");
 
 begin
 	ControlProc: process
@@ -30,13 +30,30 @@ begin
 		ClearAlerts;
 		wait for 100 us;
 
-		-- WaitForBarrier(TestDone, TIMEOUT);
+		WaitForBarrier(TestDone, TIMEOUT);
 		EndOfTestReports(ReportAll => TRUE, Timeout => now >= TIMEOUT);
 		std.env.finish;
 		wait;
 	end process;
 	
-	end architecture;
+	HPM0_LPD_Proc : process
+		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
+		variable Data   : std_logic_vector(AXI_DATA_WIDTH - 1 downto 0) ;
+	begin
+		-- wait until nReset = '1' ;  
+		WaitForClock(HPM0_LPD_Rec, 2) ; 
+		-- log("Write and Read with ByteAddr = 0, 4 Bytes") ;
+		Write(HPM0_LPD_Rec, X"8000_0000", X"0000_0001" ) ;
+		-- Read(HPM0_LPD_Rec,  X"1111_1110", Data) ;
+		-- AffirmIfEqual(Data, X"2222_2222", "Manager Read Data: ") ;
+		
+		-- Wait for outputs to propagate and signal TestDone
+		WaitForClock(HPM0_LPD_Rec, 2) ;
+		WaitForBarrier(TestDone) ;
+		wait ;
+	end process;
+	
+end architecture;
 
 configuration BigDesign_Simple of BigDesign_TestHarness is
 	for TestHarness

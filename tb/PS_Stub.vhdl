@@ -2,6 +2,10 @@ library IEEE;
 use     IEEE.std_logic_1164.all;
 use     IEEE.numeric_std.all;
 
+library OSVVM_AXI4;
+context OSVVM_AXI4.Axi4Context;
+
+
 entity BlockDesign_PS_0 is
   port (
     maxihpm0_fpd_aclk : in STD_LOGIC;
@@ -251,8 +255,94 @@ entity BlockDesign_PS_0 is
 end entity;
 
 architecture Stub of BlockDesign_PS_0 is
+
 	signal pl_clock0 : std_logic := '1';
+	
+	signal AxiBus : Axi4RecType(
+		WriteAddress(
+			Addr(maxigp0_awaddr'range),
+			ID(maxigp0_awid'range),
+			User(maxigp0_awuser'range)
+		),
+		WriteData   (
+			Data(maxigp0_wdata'range),
+			Strb(maxigp0_wstrb'range),
+			User(-1 downto 0),
+			ID(maxigp0_awid'range)
+		),
+		WriteResponse(
+			ID(maxigp0_bid'range),
+			User(-1 downto 0)
+		),
+		ReadAddress (
+			Addr(maxigp0_araddr'range),
+			ID(maxigp0_arid'range),
+			User(maxigp0_aruser'range)
+		),
+		ReadData    (
+			Data(maxigp0_rdata'range),
+			ID(maxigp0_rid'range),
+			User(-1 downto 0)
+		)
+	) ;
+	
 begin
 	pl_clock0 <= not pl_clock0 after 10 ns;
 	pl_clk0   <= pl_clock0;
+	
+	-- Slave -> Axi memory
+	HPM0_LPD : Axi4ManagerVti
+	port map (
+		-- Globals
+		Clk         => maxihpm0_lpd_aclk,
+		nReset      => '1',
+	
+		-- AXI Manager Functional Interface
+		AxiBus      => AxiBus
+	) ;
+	
+	maxigp0_awid               <= AxiBus.WriteAddress.ID;
+    maxigp0_awaddr             <= AxiBus.WriteAddress.Addr;
+    maxigp0_awlen              <= AxiBus.WriteAddress.Len;
+    maxigp0_awsize             <= AxiBus.WriteAddress.Size;
+    maxigp0_awburst            <= AxiBus.WriteAddress.Burst;
+    maxigp0_awlock             <= AxiBus.WriteAddress.Lock;
+    maxigp0_awcache            <= AxiBus.WriteAddress.Cache;
+    maxigp0_awprot             <= AxiBus.WriteAddress.Prot;
+    maxigp0_awvalid            <= AxiBus.WriteAddress.Valid;
+    maxigp0_awuser             <= AxiBus.WriteAddress.User;
+    maxigp0_awqos              <= AxiBus.WriteAddress.QOS;
+    AxiBus.WriteAddress.Ready  <= maxigp0_awready;
+
+    maxigp0_wdata              <= AxiBus.WriteData.Data;
+    maxigp0_wstrb              <= AxiBus.WriteData.Strb;
+    maxigp0_wlast              <= AxiBus.WriteData.Last;
+    maxigp0_wvalid             <= AxiBus.WriteData.Valid;
+    AxiBus.WriteData.Ready     <= maxigp0_wready;
+
+    AxiBus.WriteResponse.ID    <= maxigp0_bid;
+    AxiBus.WriteResponse.Resp  <= maxigp0_bresp;
+    AxiBus.WriteResponse.Valid <= maxigp0_bvalid;
+    maxigp0_bready             <= AxiBus.WriteResponse.Ready;
+
+    maxigp0_arid               <= AxiBus.ReadAddress.ID;
+    maxigp0_araddr             <= AxiBus.ReadAddress.Addr;
+    maxigp0_arlen              <= AxiBus.ReadAddress.Len;
+    maxigp0_arsize             <= AxiBus.ReadAddress.Size;
+    maxigp0_arburst            <= AxiBus.ReadAddress.Burst;
+    maxigp0_arlock             <= AxiBus.ReadAddress.Lock;
+    maxigp0_arcache            <= AxiBus.ReadAddress.Cache;
+    maxigp0_arprot             <= AxiBus.ReadAddress.Prot;
+    maxigp0_arvalid            <= AxiBus.ReadAddress.Valid;
+    maxigp0_aruser             <= AxiBus.ReadAddress.User;
+    maxigp0_arqos              <= AxiBus.ReadAddress.QOS;
+    AxiBus.ReadAddress.Ready   <= maxigp0_arready;
+
+    AxiBus.ReadData.ID         <= maxigp0_rid;
+    AxiBus.ReadData.Data       <= maxigp0_rdata;
+    AxiBus.ReadData.Resp       <= maxigp0_rresp;
+    AxiBus.ReadData.Last       <= maxigp0_rlast;
+    AxiBus.ReadData.Valid      <= maxigp0_rvalid;
+    maxigp0_rready             <= AxiBus.ReadData.Ready;
+	
 end architecture;
