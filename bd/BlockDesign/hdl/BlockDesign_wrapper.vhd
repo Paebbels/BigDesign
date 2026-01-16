@@ -1,9 +1,9 @@
 --Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
---Date        : Tue Jul  8 10:36:39 2025
---Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+--Date        : Thu Jan 15 17:08:35 2026
+--Host        : DESKTOP-ADRIAN running 64-bit major release  (build 9200)
 --Command     : generate_target BlockDesign_wrapper.bd
 --Design      : BlockDesign_wrapper
 --Purpose     : IP block netlist

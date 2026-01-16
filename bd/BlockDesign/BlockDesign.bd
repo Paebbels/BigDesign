@@ -6,7 +6,7 @@
       "name": "BlockDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1",
+      "tool_version": "2025.2",
       "validated": "true"
     },
     "design_tree": {
@@ -2095,7 +2095,7 @@
     "components": {
       "PS": {
         "vlnv": "xilinx.com:ip:zynq_ultra_ps_e:3.5",
-        "ip_revision": "7",
+        "ip_revision": "8",
         "xci_name": "BlockDesign_PS_0",
         "xci_path": "ip\\BlockDesign_PS_0\\BlockDesign_PS_0.xci",
         "inst_hier_path": "PS",
