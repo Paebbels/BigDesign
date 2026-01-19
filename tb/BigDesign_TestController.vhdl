@@ -22,6 +22,8 @@ entity BigDesign_TestController is
 	alias HPM0_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>> ;
 	alias HPM1_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>> ;
 	alias HPM0_LPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>> ;
+	-- todo: alias for memory instances
+
 	-- alias SubordinateRec is <<signal ^.Subordinate_1.TransRec : AddressBusRecType>> ;
 
 	-- Derive AXI interface properties from the HPM0_LPD_Rec
