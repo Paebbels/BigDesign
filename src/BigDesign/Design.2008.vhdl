@@ -68,7 +68,7 @@ begin
 	blkGPIO : block
 		constant CONFIG : T_AXI4_Register_Vector := (
 			to_AXI4_Register(Name => "Buttons", Address => 32x"00", RegisterMode => ReadOnly_NotRegistered),
-			to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite_NotRegistered)
+			to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite)
 		);
 	
 		signal ReadPort  : T_SLVV(0 to 1)(31 downto 0);

@@ -17,18 +17,34 @@ entity BigDesign_TestController is
 		Clock : in  std_logic;
 		Reset : in  std_logic
 	);
-	
+
 	-- Connect transaction interfaces using external names
-	alias HPM0_LPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.HPM0_LPD.TransRec : AddressBusRecType>> ;
+	alias HPM0_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>> ;
+	alias HPM1_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>> ;
+	alias HPM0_LPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>> ;
 	-- alias SubordinateRec is <<signal ^.Subordinate_1.TransRec : AddressBusRecType>> ;
 
 	-- Derive AXI interface properties from the HPM0_LPD_Rec
-	constant AXI_ADDR_WIDTH      : integer := HPM0_LPD_Rec.Address'length ; 
-	constant AXI_DATA_WIDTH      : integer := HPM0_LPD_Rec.DataToModel'length ;  
-	constant AXI_DATA_BYTE_WIDTH : integer := AXI_DATA_WIDTH / 8 ;
-	constant AXI_BYTE_ADDR_WIDTH : integer := log2ceil(AXI_DATA_BYTE_WIDTH);
+	constant HPM0_FPD_AXI_ADDR_WIDTH      : integer := HPM0_FPD_Rec.Address'length ; 
+	constant HPM0_FPD_AXI_DATA_WIDTH      : integer := HPM0_FPD_Rec.DataToModel'length ;  
+	constant HPM0_FPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HPM0_FPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_FPD_AXI_DATA_BYTE_WIDTH);
+
+	constant HPM1_FPD_AXI_ADDR_WIDTH      : integer := HPM1_FPD_Rec.Address'length ; 
+	constant HPM1_FPD_AXI_DATA_WIDTH      : integer := HPM1_FPD_Rec.DataToModel'length ;  
+	constant HPM1_FPD_AXI_DATA_BYTE_WIDTH : integer := HPM1_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HPM1_FPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM1_FPD_AXI_DATA_BYTE_WIDTH);
+
+	constant HPM0_LPD_AXI_ADDR_WIDTH      : integer := HPM0_LPD_Rec.Address'length ; 
+	constant HPM0_LPD_AXI_DATA_WIDTH      : integer := HPM0_LPD_Rec.DataToModel'length ;  
+	constant HPM0_LPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_LPD_AXI_DATA_WIDTH / 8 ;
+	constant HPM0_LPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_LPD_AXI_DATA_BYTE_WIDTH);
 
 	-- Simplifying access to Burst FIFOs using aliases
-	alias WriteBurstFifo : ScoreboardIdType is HPM0_LPD_Rec.WriteBurstFifo ;
-	alias ReadBurstFifo  : ScoreboardIdType is HPM0_LPD_Rec.ReadBurstFifo ;
+	alias HPM0_FPD_WriteBurstFifo : ScoreboardIdType is HPM0_FPD_Rec.WriteBurstFifo ;
+	alias HPM0_FPD_ReadBurstFifo  : ScoreboardIdType is HPM0_FPD_Rec.ReadBurstFifo ;
+	alias HPM1_FPD_WriteBurstFifo : ScoreboardIdType is HPM1_FPD_Rec.WriteBurstFifo ;
+	alias HPM1_FPD_ReadBurstFifo  : ScoreboardIdType is HPM1_FPD_Rec.ReadBurstFifo ;
+	alias HPM0_LPD_WriteBurstFifo : ScoreboardIdType is HPM0_LPD_Rec.WriteBurstFifo ;
+	alias HPM0_LPD_ReadBurstFifo  : ScoreboardIdType is HPM0_LPD_Rec.ReadBurstFifo ;
 end entity;
