@@ -19,10 +19,13 @@ entity BigDesign_TestController is
 	);
 
 	-- Connect transaction interfaces using external names
-	alias HPM0_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>> ;
-	alias HPM1_FPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>> ;
-	alias HPM0_LPD_Rec     is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>> ;
-	-- todo: alias for memory instances
+	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>>;
+	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>>;
+	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>>;
+
+	alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecType>>;
+	alias HP1_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP1_FPD.Memory.TransRec : AddressBusRecType>>;
+	alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecType>>;
 
 	-- alias SubordinateRec is <<signal ^.Subordinate_1.TransRec : AddressBusRecType>> ;
 
@@ -42,6 +45,21 @@ entity BigDesign_TestController is
 	constant HPM0_LPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_LPD_AXI_DATA_WIDTH / 8 ;
 	constant HPM0_LPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_LPD_AXI_DATA_BYTE_WIDTH);
 
+	constant HP0_FPD_AXI_ADDR_WIDTH       : integer := HP0_FPD_Rec.Address'length ; 
+	constant HP0_FPD_AXI_DATA_WIDTH       : integer := HP0_FPD_Rec.DataToModel'length ;  
+	constant HP0_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP0_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HP0_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP0_FPD_AXI_DATA_BYTE_WIDTH);
+
+	constant HP1_FPD_AXI_ADDR_WIDTH       : integer := HP1_FPD_Rec.Address'length ; 
+	constant HP1_FPD_AXI_DATA_WIDTH       : integer := HP1_FPD_Rec.DataToModel'length ;  
+	constant HP1_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP1_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HP1_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP1_FPD_AXI_DATA_BYTE_WIDTH);
+
+	constant HP3_FPD_AXI_ADDR_WIDTH       : integer := HP3_FPD_Rec.Address'length ; 
+	constant HP3_FPD_AXI_DATA_WIDTH       : integer := HP3_FPD_Rec.DataToModel'length ;  
+	constant HP3_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP3_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HP3_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP3_FPD_AXI_DATA_BYTE_WIDTH);
+
 	-- Simplifying access to Burst FIFOs using aliases
 	alias HPM0_FPD_WriteBurstFifo : ScoreboardIdType is HPM0_FPD_Rec.WriteBurstFifo ;
 	alias HPM0_FPD_ReadBurstFifo  : ScoreboardIdType is HPM0_FPD_Rec.ReadBurstFifo ;
@@ -49,4 +67,17 @@ entity BigDesign_TestController is
 	alias HPM1_FPD_ReadBurstFifo  : ScoreboardIdType is HPM1_FPD_Rec.ReadBurstFifo ;
 	alias HPM0_LPD_WriteBurstFifo : ScoreboardIdType is HPM0_LPD_Rec.WriteBurstFifo ;
 	alias HPM0_LPD_ReadBurstFifo  : ScoreboardIdType is HPM0_LPD_Rec.ReadBurstFifo ;
+
+	alias HP0_FPD_WriteBurstFifo  : ScoreboardIdType is HP0_FPD_Rec.WriteBurstFifo ;
+	alias HP0_FPD_ReadBurstFifo   : ScoreboardIdType is HP0_FPD_Rec.ReadBurstFifo ;
+	alias HP1_FPD_WriteBurstFifo  : ScoreboardIdType is HP1_FPD_Rec.WriteBurstFifo ;
+	alias HP1_FPD_ReadBurstFifo   : ScoreboardIdType is HP1_FPD_Rec.ReadBurstFifo ;
+	alias HP3_FPD_WriteBurstFifo  : ScoreboardIdType is HP3_FPD_Rec.WriteBurstFifo ;
+	alias HP3_FPD_ReadBurstFifo   : ScoreboardIdType is HP3_FPD_Rec.ReadBurstFifo ;
 end entity;
+
+/*
+	- aliase anlegen
+	- Write von einem Prozess -> Toggle (WriteDone) -> Adresse auslesen von anderem Prozess
+	- DDR mit Interconnect (wie in ADL) simulieren.
+*/
