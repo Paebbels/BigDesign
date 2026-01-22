@@ -44,7 +44,6 @@ begin
 		variable Data   : std_logic_vector(HPM0_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_FPD_Rec, 2); 
-		-- Write(HPM0_FPD_Rec, X"8000_0004", X"0000_0001" );
 
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(HPM0_FPD_Rec, 2);
@@ -70,7 +69,9 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 2);
-		Write(HPM0_LPD_Rec, X"8000_0004", X"0000_0001" );
+		Write(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");
+		WaitForClock(HPM0_LPD_Rec);
+		ReadCheck(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");
 
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(HPM0_LPD_Rec, 2);

@@ -10,13 +10,13 @@ entity BlockDesign_top is
 	port (
 		signal Clock           : out std_logic;
 		signal PL_Reset        : out std_logic;
-		
+
 		signal Config_m2s      : out T_AXI4Lite_Bus_M2S;
 		signal Config_s2m      : in  T_AXI4Lite_Bus_S2M;
-		
+
 		signal Manager_m2s     : out T_AXI4_Bus_M2S_Vector;
 		signal Manager_s2m     : in  T_AXI4_Bus_S2M_Vector;
-		
+
 		signal Subordinate_m2s : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m : out T_AXI4_Bus_S2M_Vector
 	);
@@ -32,23 +32,23 @@ architecture wrapper of BlockDesign_top is
 			ID_BITS      => 16
 		);
 		
-	signal ConfigMM_m2s      : AXI4_A40_D32.Sized_M2S;
-	signal ConfigMM_s2m      : AXI4_A40_D32.Sized_S2M;
+	signal ConfigMM_m2s : AXI4_A40_D32.Sized_M2S;
+	signal ConfigMM_s2m : AXI4_A40_D32.Sized_S2M;
 
-	signal IRQs     : std_logic_vector(7 downto 0);
+	signal IRQs         : std_logic_vector(7 downto 0);
 
 begin
 	-- BD: entity work.BlockDesign_wrapper
 	BD: configuration work.BlockDesign_wrapper_conf
 		port map (
 			Clock_0    => Clock,
-			
+
 			FPD_Clock  => Clock,
 			LPD_Clock  => Clock,
-			
+
 			PL_IRQs    => IRQs,
 			PL_Reset_0 => PL_Reset,
-			
+
 			Config_0_araddr  => ConfigMM_m2s.ARAddr,
 			Config_0_arburst => ConfigMM_m2s.ARBurst,
 			Config_0_arcache => ConfigMM_m2s.ARCache,
@@ -88,7 +88,7 @@ begin
 			Config_0_wready  => ConfigMM_s2m.WReady,
 			Config_0_wstrb   => ConfigMM_m2s.WStrb,
 			Config_0_wvalid  => ConfigMM_m2s.WValid,
-			
+
 			Manager_0_araddr  => Manager_m2s(0).ARAddr,
 			Manager_0_arburst => Manager_m2s(0).ARBurst,
 			Manager_0_arcache => Manager_m2s(0).ARCache,
@@ -128,7 +128,7 @@ begin
 			Manager_0_wready  => Manager_s2m(0).WReady,
 			Manager_0_wstrb   => Manager_m2s(0).WStrb,
 			Manager_0_wvalid  => Manager_m2s(0).WValid,
-			
+
 			Manager_1_araddr  => Manager_m2s(1).ARAddr,
 			Manager_1_arburst => Manager_m2s(1).ARBurst,
 			Manager_1_arcache => Manager_m2s(1).ARCache,
@@ -168,7 +168,7 @@ begin
 			Manager_1_wready  => Manager_s2m(1).WReady,
 			Manager_1_wstrb   => Manager_m2s(1).WStrb,
 			Manager_1_wvalid  => Manager_m2s(1).WValid,
-			
+
 			Subordinate_0_araddr  => Subordinate_m2s(0).ARAddr,
 			Subordinate_0_arburst => Subordinate_m2s(0).ARBurst,
 			Subordinate_0_arcache => Subordinate_m2s(0).ARCache,
@@ -287,9 +287,52 @@ begin
 			Subordinate_2_wlast   => Subordinate_m2s(2).WLast,
 			Subordinate_2_wready  => Subordinate_s2m(2).WReady,
 			Subordinate_2_wstrb   => Subordinate_m2s(2).WStrb,
-			Subordinate_2_wvalid  => Subordinate_m2s(2).WValid
+			Subordinate_2_wvalid  => Subordinate_m2s(2).WValid,
+
+			Subordinate_3_araddr  => Subordinate_m2s(3).ARAddr,
+			Subordinate_3_arburst => Subordinate_m2s(3).ARBurst,
+			Subordinate_3_arcache => Subordinate_m2s(3).ARCache,
+			Subordinate_3_arid    => Subordinate_m2s(3).ARID,
+			Subordinate_3_arlen   => Subordinate_m2s(3).ARLen,
+			Subordinate_3_arlock  => Subordinate_m2s(3).ARLock(0),
+			Subordinate_3_arprot  => Subordinate_m2s(3).ARProt,
+			Subordinate_3_arqos   => Subordinate_m2s(3).ARQoS,
+			Subordinate_3_arready => Subordinate_s2m(3).ARReady,
+			Subordinate_3_arsize  => Subordinate_m2s(3).ARSize,
+			Subordinate_3_aruser  => Subordinate_m2s(3).ARUser(0),
+			Subordinate_3_arvalid => Subordinate_m2s(3).ARValid,
+			Subordinate_3_awaddr  => Subordinate_m2s(3).AWAddr,
+			Subordinate_3_awburst => Subordinate_m2s(3).AWBurst,
+			Subordinate_3_awcache => Subordinate_m2s(3).AWCache,
+			Subordinate_3_awid    => Subordinate_m2s(3).AWID,
+			Subordinate_3_awlen   => Subordinate_m2s(3).AWLen,
+			Subordinate_3_awlock  => Subordinate_m2s(3).AWLock(0),
+			Subordinate_3_awprot  => Subordinate_m2s(3).AWProt,
+			Subordinate_3_awqos   => Subordinate_m2s(3).AWQoS,
+			Subordinate_3_awready => Subordinate_s2m(3).AWReady,
+			Subordinate_3_awsize  => Subordinate_m2s(3).AWSize,
+			Subordinate_3_awuser  => Subordinate_m2s(3).AWUser(0),
+			Subordinate_3_awvalid => Subordinate_m2s(3).AWValid,
+			Subordinate_3_bid     => Subordinate_s2m(3).BID,
+			Subordinate_3_bready  => Subordinate_m2s(3).BReady,
+			Subordinate_3_bresp   => Subordinate_s2m(3).BResp,
+			Subordinate_3_bvalid  => Subordinate_s2m(3).BValid,
+			Subordinate_3_rdata   => Subordinate_s2m(3).RData,
+			Subordinate_3_rid     => Subordinate_s2m(3).RID,
+			Subordinate_3_rlast   => Subordinate_s2m(3).RLast,
+			Subordinate_3_rready  => Subordinate_m2s(3).RReady,
+			Subordinate_3_rresp   => Subordinate_s2m(3).RResp,
+			Subordinate_3_rvalid  => Subordinate_s2m(3).RValid,
+			Subordinate_3_wdata   => Subordinate_m2s(3).WData,
+			Subordinate_3_wlast   => Subordinate_m2s(3).WLast,
+			Subordinate_3_wready  => Subordinate_s2m(3).WReady,
+			Subordinate_3_wstrb   => Subordinate_m2s(3).WStrb,
+			Subordinate_3_wvalid  => Subordinate_m2s(3).WValid,
+
+			UART_1_rxd => '0',  -- todo
+			UART_1_txd => open  -- todo
 		);
-	
+
 	ConvConfig : entity PoC.AXI4_to_AXI4Lite
 		port map (
 			Clock       => Clock,

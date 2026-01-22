@@ -7,7 +7,7 @@ namespace eval ::poc {
 source ../lib/OSVVM-Scripts/StartUp.tcl
 # source ../lib/OSVVM-Scripts/StartNVC.tcl
 
-#build ../lib/OsvvmLibraries.pro
+build ../lib/OsvvmLibraries.pro
 
 if {$::osvvm::ToolName eq "GHDL"} {
     SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
@@ -30,7 +30,7 @@ LinkLibrary axi_infrastructure_v1_1_0 {C:/Tools/precompiled/Riviera-PRO/2025.10/
 LinkLibrary axi_vip_v1_1_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_vip_v1_1_22}
 LinkLibrary zynq_ultra_ps_e_vip_v1_0_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/zynq_ultra_ps_e_vip_v1_0_22}
 
-# build ../lib/PoC/src/PoC.pro
+build ../lib/PoC/src/PoC.pro
 build ../src/BigDesign.pro
 
 #SetSaveWaves

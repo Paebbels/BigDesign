@@ -19,12 +19,15 @@ entity BigDesign_TestController is
 	);
 
 	-- Connect transaction interfaces using external names
+	-- Managers
 	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>>;
 	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>>;
 	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>>;
 
+	-- Subordinates
 	alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecType>>;
 	alias HP1_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP1_FPD.Memory.TransRec : AddressBusRecType>>;
+	alias HP2_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP2_FPD.Memory.TransRec : AddressBusRecType>>;
 	alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecType>>;
 
 	-- alias SubordinateRec is <<signal ^.Subordinate_1.TransRec : AddressBusRecType>> ;
@@ -55,6 +58,11 @@ entity BigDesign_TestController is
 	constant HP1_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP1_FPD_AXI_DATA_WIDTH / 8 ;
 	constant HP1_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP1_FPD_AXI_DATA_BYTE_WIDTH);
 
+	constant HP2_FPD_AXI_ADDR_WIDTH       : integer := HP2_FPD_Rec.Address'length ; 
+	constant HP2_FPD_AXI_DATA_WIDTH       : integer := HP2_FPD_Rec.DataToModel'length ;  
+	constant HP2_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP2_FPD_AXI_DATA_WIDTH / 8 ;
+	constant HP2_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP2_FPD_AXI_DATA_BYTE_WIDTH);
+
 	constant HP3_FPD_AXI_ADDR_WIDTH       : integer := HP3_FPD_Rec.Address'length ; 
 	constant HP3_FPD_AXI_DATA_WIDTH       : integer := HP3_FPD_Rec.DataToModel'length ;  
 	constant HP3_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP3_FPD_AXI_DATA_WIDTH / 8 ;
@@ -72,12 +80,8 @@ entity BigDesign_TestController is
 	alias HP0_FPD_ReadBurstFifo   : ScoreboardIdType is HP0_FPD_Rec.ReadBurstFifo ;
 	alias HP1_FPD_WriteBurstFifo  : ScoreboardIdType is HP1_FPD_Rec.WriteBurstFifo ;
 	alias HP1_FPD_ReadBurstFifo   : ScoreboardIdType is HP1_FPD_Rec.ReadBurstFifo ;
+	alias HP2_FPD_WriteBurstFifo  : ScoreboardIdType is HP2_FPD_Rec.WriteBurstFifo ;
+	alias HP2_FPD_ReadBurstFifo   : ScoreboardIdType is HP2_FPD_Rec.ReadBurstFifo ;
 	alias HP3_FPD_WriteBurstFifo  : ScoreboardIdType is HP3_FPD_Rec.WriteBurstFifo ;
 	alias HP3_FPD_ReadBurstFifo   : ScoreboardIdType is HP3_FPD_Rec.ReadBurstFifo ;
 end entity;
-
-/*
-	- aliase anlegen
-	- Write von einem Prozess -> Toggle (WriteDone) -> Adresse auslesen von anderem Prozess
-	- DDR mit Interconnect (wie in ADL) simulieren.
-*/

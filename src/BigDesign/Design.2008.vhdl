@@ -46,8 +46,8 @@ architecture rtl of Design is
 	signal Manager_m2s     : AXI4_A40_D128.Sized_M2S_Vector(0 to 1);
 	signal Manager_s2m     : AXI4_A40_D128.Sized_S2M_Vector(0 to 1);
 	
-	signal Subordinate_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 2);
-	signal Subordinate_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to 2);
+	signal Subordinate_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 3);
+	signal Subordinate_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to 3);
 
 begin
 
