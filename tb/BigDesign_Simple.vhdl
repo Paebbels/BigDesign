@@ -82,41 +82,53 @@ begin
 	-----------------------------------------------
 	-------------- Memory instances ---------------
 	-----------------------------------------------
-	HP0_FPD_Proc : process
-		constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	begin
-		WaitForClock(HP0_FPD_Rec, 2);
+	-- HP0_FPD_Proc : process
+		-- constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
+		-- variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- begin
+		-- WaitForClock(HP0_FPD_Rec, 2);
 
 		-- Wait for outputs to propagate and signal TestDone
-		WaitForClock(HP0_FPD_Rec, 2);
-		WaitForBarrier(TestDone);
-		wait;
-	end process;
+		-- WaitForClock(HP0_FPD_Rec, 2);
+		-- WaitForBarrier(TestDone);
+		-- wait;
+	-- end process;
 
-	HP1_FPD_Proc : process
-		constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	begin
-		WaitForClock(HP1_FPD_Rec, 2);
-
-		-- Wait for outputs to propagate and signal TestDone
-		WaitForClock(HP1_FPD_Rec, 2);
-		WaitForBarrier(TestDone);
-		wait;
-	end process;
-
-	HP3_FPD_Proc : process
-		constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	begin
-		WaitForClock(HP3_FPD_Rec, 2);
+	-- HP1_FPD_Proc : process
+		-- constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
+		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- begin
+		-- WaitForClock(HP1_FPD_Rec, 2);
 
 		-- Wait for outputs to propagate and signal TestDone
-		WaitForClock(HP3_FPD_Rec, 2);
-		WaitForBarrier(TestDone);
-		wait;
-	end process;
+		-- WaitForClock(HP1_FPD_Rec, 2);
+		-- WaitForBarrier(TestDone);
+		-- wait;
+	-- end process;
+
+	-- HP2_FPD_Proc : process
+		-- constant ProcID : AlertLogIDType := NewID("HP2_FPD_Proc", TCID);
+		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- begin
+		-- WaitForClock(HP2_FPD_Rec, 2);
+
+		-- Wait for outputs to propagate and signal TestDone
+		-- WaitForClock(HP2_FPD_Rec, 2);
+		-- WaitForBarrier(TestDone);
+		-- wait;
+	-- end process;
+
+	-- HP3_FPD_Proc : process
+		-- constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
+		-- variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- begin
+		-- WaitForClock(HP3_FPD_Rec, 2);
+
+		-- Wait for outputs to propagate and signal TestDone
+		-- WaitForClock(HP3_FPD_Rec, 2);
+		-- WaitForBarrier(TestDone);
+		-- wait;
+	-- end process;
 
 end architecture;
 

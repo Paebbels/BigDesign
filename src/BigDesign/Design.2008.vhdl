@@ -3,15 +3,19 @@ use     IEEE.std_logic_1164.all;
 
 library PoC;
 use     PoC.vectors.all;
+use     PoC.AXI4_Full.all;
 use     PoC.AXI4Lite.all;
 
 
 entity Design is
 	port (
 		signal Clock  : in  std_logic;
-		
+
 		signal Button : in  std_logic_vector(1 downto 0);
-		signal LED    : out std_logic_vector(1 downto 0)
+		signal LED    : out std_logic_vector(1 downto 0);
+
+		signal Subordinate_m2s : in  T_AXI4_Bus_M2S_Vector;
+		signal Subordinate_s2m : out T_AXI4_Bus_S2M_Vector
 	);
 end entity;
 
@@ -29,14 +33,7 @@ architecture rtl of Design is
 			USER_BITS    => 16,
 			ID_BITS      => 16
 		);
-	package AXI4_A49_D128_I6 is new PoC.AXI4Full_Sized
-		generic map (
-			ADDRESS_BITS => 49,
-			DATA_BITS    => 128,
-			USER_BITS    => 16,
-			ID_BITS      => 6
-		);
-
+		
 	signal PS_Clock        : std_logic;
 	signal PL_Reset        : std_logic;
 	
@@ -45,9 +42,6 @@ architecture rtl of Design is
 	
 	signal Manager_m2s     : AXI4_A40_D128.Sized_M2S_Vector(0 to 1);
 	signal Manager_s2m     : AXI4_A40_D128.Sized_S2M_Vector(0 to 1);
-	
-	signal Subordinate_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 3);
-	signal Subordinate_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to 3);
 
 begin
 

@@ -12,9 +12,9 @@ entity BlockDesign_PS_0 is
 		pl_resetn0 : out STD_LOGIC;
 		pl_ps_irq0 : in STD_LOGIC_VECTOR ( 7 downto 0 );
 
-		maxihpm0_lpd_aclk : in STD_LOGIC;
 		maxihpm0_fpd_aclk : in STD_LOGIC;
 		maxihpm1_fpd_aclk : in STD_LOGIC;
+		maxihpm0_lpd_aclk : in STD_LOGIC;
 		
 		saxihp0_fpd_aclk  : in STD_LOGIC;
 		saxihp1_fpd_aclk  : in STD_LOGIC;

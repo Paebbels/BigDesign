@@ -329,8 +329,8 @@ begin
 			Subordinate_3_wstrb   => Subordinate_m2s(3).WStrb,
 			Subordinate_3_wvalid  => Subordinate_m2s(3).WValid,
 
-			UART_1_rxd => '0',  -- todo
-			UART_1_txd => open  -- todo
+			UART_1_rxd => '1',  -- todo: Connect to PoC library AXI UART
+			UART_1_txd => open  -- todo: Connect to PoC library AXI UART
 		);
 
 	ConvConfig : entity PoC.AXI4_to_AXI4Lite
