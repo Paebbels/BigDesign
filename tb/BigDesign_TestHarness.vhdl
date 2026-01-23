@@ -38,7 +38,7 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal Subordinate_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 3);
 	signal Subordinate_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to 3);
 
-	signal SubordinateArray : AddressBusRecArrayType(0 to 3)(
+	signal DataGen_Managers : AddressBusRecArrayType(0 to 3)(
 		Address(ADDRESS_BITS - 1 downto 0),
 		DataToModel(DATA_BITS - 1 downto 0),
 		DataFromModel(DATA_BITS - 1 downto 0)
@@ -46,9 +46,9 @@ architecture TestHarness of BigDesign_TestHarness is
 	
 	component BigDesign_TestController is
 		port (
-			Clock       : in  std_logic;
-			Reset       : in  std_logic;
-			AXI_Manager : inout AddressBusRecArrayType
+			Clock            : in  std_logic;
+			Reset            : in  std_logic;
+			DataGen_Managers : inout AddressBusRecArrayType
 		);
 	end component;
 begin
@@ -63,6 +63,10 @@ begin
 			
 			Subordinate_m2s => Subordinate_m2s,
 			Subordinate_s2m => Subordinate_s2m
+			-- Subordinate_0_clk => Subordinate_0_clk,
+			-- Subordinate_1_clk => Subordinate_1_clk,
+			-- Subordinate_2_clk => Subordinate_2_clk,
+			-- Subordinate_3_clk => Subordinate_3_clk,
 		);
 
 	gen_M: for i in Subordinate_m2s'range generate
@@ -107,18 +111,23 @@ begin
 				-- Globals
 				Clk      => Clock_100MHz,  -- todo: add clocks from Stub
 				nReset   => '1',
-				AxiBus   => Axi4Rec,
-				TransRec => SubordinateArray(i)
+				TransRec => DataGen_Managers(i),
+				AxiBus   => Axi4Rec
 			);
 
-		to_PoC_AXI4_Bus_Master(Subordinate_m2s(i), Subordinate_s2m(i), Axi4Rec);
+		conv: to_PoC_AXI4_Bus_Master(
+			OSVVM_Bus => Axi4Rec,
+			PoC_M2S   => Subordinate_m2s(i),
+			PoC_S2M   => Subordinate_s2m(i)
+		);
 	end generate;
 
 	TestCtrl : component BigDesign_TestController
 		port map (
-			Clock       => Clock_100MHz,
-			Reset       => '0',
-			AXI_Manager => SubordinateArray
+			Clock            => Clock_100MHz,
+			Reset            => '0',
+			DataGen_Managers => DataGen_Managers
+			-- Axi4Rec?
 		);
 
 end architecture;

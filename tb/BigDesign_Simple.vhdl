@@ -17,9 +17,9 @@ begin
 	begin
 		SetTestName("BigDesign_Simple");
 
-		SetLogEnable(PASSED, FALSE);
-		SetLogEnable(INFO,   FALSE);
-		SetLogEnable(DEBUG,  FALSE);
+		SetLogEnable(PASSED, TRUE);
+		SetLogEnable(INFO,   TRUE);
+		SetLogEnable(DEBUG,  TRUE);
 		wait for 0 ns; wait for 0 ns;
 
 		TranscriptOpen;
@@ -75,6 +75,59 @@ begin
 
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(HPM0_LPD_Rec, 2);
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
+
+	------------------------------------------
+	-------------- AXI Manager ---------------
+	------------------------------------------
+	-- Generate transaction for data generator managers
+	ManagerProc_0 : process
+	begin
+		WaitForClock(DataGen_Managers(0), 2);
+
+		Write(DataGen_Managers(0), X"0000_0010", X"0000_0001");
+		-- Toggle(WriteDone);
+		-- Wait for outputs to propagate and signal TestDone
+		WaitForClock(DataGen_Managers(0), 2);
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
+
+	ManagerProc_1 : process
+	begin
+		WaitForClock(DataGen_Managers(1), 2);
+		WaitForClock(DataGen_Managers(1), 8);
+		-- WaitForToggle(WriteDone);
+		-- ReadCheck(DataGen_Managers(1), X"0000_0010", X"0000_0001");
+
+		-- Wait for outputs to propagate and signal TestDone
+		WaitForClock(DataGen_Managers(1), 2);
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
+
+	ManagerProc_2 : process
+	begin
+		WaitForClock(DataGen_Managers(2), 2);
+
+		-- Write(DataGen_Managers(0), X"8000_0010", X"0000_0001");
+
+		-- Wait for outputs to propagate and signal TestDone
+		WaitForClock(DataGen_Managers(2), 2);
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
+
+	ManagerProc_3 : process
+	begin
+		WaitForClock(DataGen_Managers(3), 2);
+
+		-- Write(DataGen_Managers(0), X"8000_0010", X"0000_0001");
+
+		-- Wait for outputs to propagate and signal TestDone
+		WaitForClock(DataGen_Managers(3), 2);
 		WaitForBarrier(TestDone);
 		wait;
 	end process;

@@ -580,7 +580,7 @@ begin
 	blk_HP0_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(saxigp2_awaddr'range),
+				Addr(31 downto 0),--(saxigp2_awaddr'range),
 				ID(saxigp2_awid'range),
 				User(0 downto 0)
 			),
@@ -595,7 +595,7 @@ begin
 				User(-1 downto 0)
 			),
 			ReadAddress (
-				Addr(saxigp2_araddr'range),
+				Addr(31 downto 0),--(saxigp2_araddr'range),
 				ID(saxigp2_arid'range),
 				User(0 downto 0)
 			),
@@ -621,7 +621,7 @@ begin
 		);
 
 		AxiBus.WriteAddress.ID      <= saxigp2_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp2_awaddr;
+		AxiBus.WriteAddress.Addr    <= saxigp2_awaddr(31 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp2_awlen;
 		AxiBus.WriteAddress.Size    <= saxigp2_awsize;
 		AxiBus.WriteAddress.Burst   <= saxigp2_awburst;
@@ -645,7 +645,7 @@ begin
 		AxiBus.WriteResponse.Ready  <= saxigp2_bready;
 
 		AxiBus.ReadAddress.ID       <= saxigp2_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp2_araddr;
+		AxiBus.ReadAddress.Addr     <= saxigp2_araddr(31 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp2_arlen;
 		AxiBus.ReadAddress.Size     <= saxigp2_arsize;
 		AxiBus.ReadAddress.Burst    <= saxigp2_arburst;
@@ -668,7 +668,7 @@ begin
 	blk_HP1_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(saxigp3_awaddr'range),
+				Addr(31 downto 0),--saxigp3_awaddr'range),
 				ID(saxigp3_awid'range),
 				User(0 downto 0)
 			),
@@ -683,7 +683,7 @@ begin
 				User(-1 downto 0)
 			),
 			ReadAddress (
-				Addr(saxigp3_araddr'range),
+				Addr(31 downto 0),--(saxigp3_araddr'range),
 				ID(saxigp3_arid'range),
 				User(0 downto 0)
 			),
@@ -709,7 +709,7 @@ begin
 		);
 
 		AxiBus.WriteAddress.ID      <= saxigp3_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp3_awaddr;
+		AxiBus.WriteAddress.Addr    <= saxigp3_awaddr(31 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp3_awlen;
 		AxiBus.WriteAddress.Size    <= saxigp3_awsize;
 		AxiBus.WriteAddress.Burst   <= saxigp3_awburst;
@@ -733,7 +733,7 @@ begin
 		AxiBus.WriteResponse.Ready  <= saxigp3_bready;
 
 		AxiBus.ReadAddress.ID       <= saxigp3_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp3_araddr;
+		AxiBus.ReadAddress.Addr     <= saxigp3_araddr(31 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp3_arlen;
 		AxiBus.ReadAddress.Size     <= saxigp3_arsize;
 		AxiBus.ReadAddress.Burst    <= saxigp3_arburst;
@@ -756,7 +756,7 @@ begin
 	blk_HP2_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(saxigp3_awaddr'range),
+				Addr(31 downto 0),--(saxigp3_awaddr'range),
 				ID(saxigp3_awid'range),
 				User(0 downto 0)
 			),
@@ -771,7 +771,7 @@ begin
 				User(-1 downto 0)
 			),
 			ReadAddress (
-				Addr(saxigp3_araddr'range),
+				Addr(31 downto 0),--(saxigp3_araddr'range),
 				ID(saxigp3_arid'range),
 				User(0 downto 0)
 			),
@@ -797,7 +797,7 @@ begin
 		);
 
 		AxiBus.WriteAddress.ID      <= saxigp4_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp4_awaddr;
+		AxiBus.WriteAddress.Addr    <= saxigp4_awaddr(31 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp4_awlen;
 		AxiBus.WriteAddress.Size    <= saxigp4_awsize;
 		AxiBus.WriteAddress.Burst   <= saxigp4_awburst;
@@ -821,7 +821,7 @@ begin
 		AxiBus.WriteResponse.Ready  <= saxigp4_bready;
 
 		AxiBus.ReadAddress.ID       <= saxigp4_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp4_araddr;
+		AxiBus.ReadAddress.Addr     <= saxigp4_araddr(31 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp4_arlen;
 		AxiBus.ReadAddress.Size     <= saxigp4_arsize;
 		AxiBus.ReadAddress.Burst    <= saxigp4_arburst;
@@ -844,7 +844,7 @@ begin
 	blk_HP3_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(saxigp5_awaddr'range),
+				Addr(31 downto 0),--(saxigp5_awaddr'range),
 				ID(saxigp5_awid'range),
 				User(0 downto 0)
 			),
@@ -859,7 +859,7 @@ begin
 				User(-1 downto 0)
 			),
 			ReadAddress (
-				Addr(saxigp5_araddr'range),
+				Addr(31 downto 0),--(saxigp5_araddr'range),
 				ID(saxigp5_arid'range),
 				User(0 downto 0)
 			),
@@ -885,7 +885,7 @@ begin
 		);
 
 		AxiBus.WriteAddress.ID      <= saxigp5_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp5_awaddr;
+		AxiBus.WriteAddress.Addr    <= saxigp5_awaddr(31 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp5_awlen;
 		AxiBus.WriteAddress.Size    <= saxigp5_awsize;
 		AxiBus.WriteAddress.Burst   <= saxigp5_awburst;
@@ -909,7 +909,7 @@ begin
 		AxiBus.WriteResponse.Ready  <= saxigp5_bready;
 
 		AxiBus.ReadAddress.ID       <= saxigp5_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp5_araddr;
+		AxiBus.ReadAddress.Addr     <= saxigp5_araddr(31 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp5_arlen;
 		AxiBus.ReadAddress.Size     <= saxigp5_arsize;
 		AxiBus.ReadAddress.Burst    <= saxigp5_arburst;

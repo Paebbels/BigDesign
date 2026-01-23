@@ -14,9 +14,9 @@ context OSVVM_AXI4.Axi4Context ;
 
 entity BigDesign_TestController is
 	port (
-		Clock       : in  std_logic;
-		Reset       : in  std_logic;
-		AXI_Manager : inout AddressBusRecArrayType
+		Clock            : in  std_logic;
+		Reset            : in  std_logic;
+		DataGen_Managers : inout AddressBusRecArrayType
 	);
 
 	-- Connect transaction interfaces using external names
