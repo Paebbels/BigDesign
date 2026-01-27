@@ -8,17 +8,20 @@ use     PoC.AXI4Lite.all;
 
 entity BlockDesign_top is
 	port (
-		signal Clock           : out std_logic;
-		signal PL_Reset        : out std_logic;
+		signal Clock            : out std_logic;
+		signal PL_Reset         : out std_logic;
 
-		signal Config_m2s      : out T_AXI4Lite_Bus_M2S;
-		signal Config_s2m      : in  T_AXI4Lite_Bus_S2M;
+		signal Config_m2s       : out T_AXI4Lite_Bus_M2S;
+		signal Config_s2m       : in  T_AXI4Lite_Bus_S2M;
+		signal Config_Clk       : in  std_logic;
 
-		signal Manager_m2s     : out T_AXI4_Bus_M2S_Vector;
-		signal Manager_s2m     : in  T_AXI4_Bus_S2M_Vector;
+		signal Manager_m2s      : out T_AXI4_Bus_M2S_Vector;
+		signal Manager_s2m      : in  T_AXI4_Bus_S2M_Vector;
+		signal Manager_Clks     : in  std_logic_vector(0 to 1);
 
-		signal Subordinate_m2s : in  T_AXI4_Bus_M2S_Vector;
-		signal Subordinate_s2m : out T_AXI4_Bus_S2M_Vector
+		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
+		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
+		signal Subordinate_Clks : in  std_logic_vector(0 to 3)
 	);
 end entity;
 
@@ -38,16 +41,21 @@ architecture wrapper of BlockDesign_top is
 	signal IRQs         : std_logic_vector(7 downto 0);
 
 begin
+
 	-- BD: entity work.BlockDesign_wrapper
 	BD: configuration work.BlockDesign_wrapper_conf
 		port map (
-			Clock_0    => Clock,
+			Clock_0            => Clock,
+			PL_IRQs            => IRQs,
+			PL_Reset_0         => PL_Reset,
 
-			FPD_Clock  => Clock,
-			LPD_Clock  => Clock,
-
-			PL_IRQs    => IRQs,
-			PL_Reset_0 => PL_Reset,
+			Config_Clk         => Config_Clk,
+			Manager_0_Clk      => Manager_Clks(0),
+			Manager_1_Clk      => Manager_Clks(1),
+			Subordinate_0_Clk  => Subordinate_Clks(0),
+			Subordinate_1_Clk  => Subordinate_Clks(1),
+			Subordinate_2_Clk  => Subordinate_Clks(2),
+			Subordinate_3_Clk  => Subordinate_Clks(3),
 
 			Config_0_araddr  => ConfigMM_m2s.ARAddr,
 			Config_0_arburst => ConfigMM_m2s.ARBurst,

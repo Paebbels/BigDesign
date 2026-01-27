@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x8DFC8A8B0BE0CBF8",
+      "boundary_crc": "0xC0F2ADB69089B113",
       "device": "xczu3eg-ubva530-2-i",
       "name": "BlockDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -29,10 +29,6 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
-          },
-          "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
-            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -350,10 +346,6 @@
           "BUSER_WIDTH": {
             "value": "0"
           },
-          "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
-            "value_src": "default"
-          },
           "DATA_WIDTH": {
             "value": "128"
           },
@@ -669,10 +661,6 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
-          },
-          "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
-            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -994,7 +982,7 @@
             "value_src": "const_prop"
           },
           "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
+            "value": "BlockDesign_Config_Clk1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -1328,7 +1316,7 @@
             "value_src": "const_prop"
           },
           "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
+            "value": "BlockDesign_Config_Clk1",
             "value_src": "default"
           },
           "DATA_WIDTH": {
@@ -1992,10 +1980,6 @@
           "BUSER_WIDTH": {
             "value": "0"
           },
-          "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
-            "value_src": "default"
-          },
           "DATA_WIDTH": {
             "value": "128"
           },
@@ -2364,7 +2348,7 @@
           }
         }
       },
-      "LPD_Clock": {
+      "Config_Clk": {
         "type": "clk",
         "direction": "I",
         "parameters": {
@@ -2408,15 +2392,147 @@
           }
         }
       },
-      "FPD_Clock": {
+      "Subordinate_0_Clk": {
         "type": "clk",
         "direction": "I",
         "parameters": {
           "ASSOCIATED_BUSIF": {
-            "value": "Subordinate_0:Subordinate_1:Subordinate_2:Manager_0:Manager_1:Subordinate_3"
+            "value": "Subordinate_0:Subordinate_1:Subordinate_2:Subordinate_3"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "Subordinate_1_Clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk1",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "Subordinate_2_Clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk2",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "Subordinate_3_Clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk3",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "Manager_0_Clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "Manager_0"
           },
           "CLK_DOMAIN": {
-            "value": "BlockDesign_LPD_Clock1",
+            "value": "BlockDesign_Config_Clk1",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "Manager_1_Clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "Manager_1"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Config_Clk1",
             "value_src": "default"
           },
           "FREQ_HZ": {
@@ -2785,15 +2901,22 @@
       }
     },
     "nets": {
-      "FPD_Clock_1": {
+      "Config_Clk_1": {
         "ports": [
-          "FPD_Clock",
-          "PS/maxihpm0_fpd_aclk",
-          "PS/maxihpm1_fpd_aclk",
-          "PS/saxihp0_fpd_aclk",
-          "PS/saxihp1_fpd_aclk",
-          "PS/saxihp3_fpd_aclk",
-          "PS/saxihp2_fpd_aclk"
+          "Config_Clk",
+          "PS/maxihpm0_lpd_aclk"
+        ]
+      },
+      "Manager_0_Clk_1": {
+        "ports": [
+          "Manager_0_Clk",
+          "PS/maxihpm0_fpd_aclk"
+        ]
+      },
+      "Manager_1_Clk_1": {
+        "ports": [
+          "Manager_1_Clk",
+          "PS/maxihpm1_fpd_aclk"
         ]
       },
       "PS_pl_clk0": {
@@ -2808,10 +2931,28 @@
           "PL_Reset_0"
         ]
       },
-      "maxihpm0_lpd_aclk_0_1": {
+      "Subordinate_0_Clk_1": {
         "ports": [
-          "LPD_Clock",
-          "PS/maxihpm0_lpd_aclk"
+          "Subordinate_0_Clk",
+          "PS/saxihp0_fpd_aclk"
+        ]
+      },
+      "Subordinate_1_Clk_1": {
+        "ports": [
+          "Subordinate_1_Clk",
+          "PS/saxihp1_fpd_aclk"
+        ]
+      },
+      "Subordinate_2_Clk_1": {
+        "ports": [
+          "Subordinate_2_Clk",
+          "PS/saxihp2_fpd_aclk"
+        ]
+      },
+      "Subordinate_3_Clk_1": {
+        "ports": [
+          "Subordinate_3_Clk",
+          "PS/saxihp3_fpd_aclk"
         ]
       },
       "pl_ps_irq0_0_1": {

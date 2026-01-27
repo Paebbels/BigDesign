@@ -2,7 +2,7 @@
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
---Date        : Thu Jan 22 14:37:08 2026
+--Date        : Tue Jan 27 13:54:14 2026
 --Host        : DESKTOP-ADRIAN running 64-bit major release  (build 9200)
 --Command     : generate_target BlockDesign_wrapper.bd
 --Design      : BlockDesign_wrapper
@@ -54,8 +54,8 @@ entity BlockDesign_wrapper is
     Config_0_wready : in STD_LOGIC;
     Config_0_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
     Config_0_wvalid : out STD_LOGIC;
-    FPD_Clock : in STD_LOGIC;
-    LPD_Clock : in STD_LOGIC;
+    Config_Clk : in STD_LOGIC;
+    Manager_0_Clk : in STD_LOGIC;
     Manager_0_araddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
     Manager_0_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
     Manager_0_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -95,6 +95,7 @@ entity BlockDesign_wrapper is
     Manager_0_wready : in STD_LOGIC;
     Manager_0_wstrb : out STD_LOGIC_VECTOR ( 15 downto 0 );
     Manager_0_wvalid : out STD_LOGIC;
+    Manager_1_Clk : in STD_LOGIC;
     Manager_1_araddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
     Manager_1_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
     Manager_1_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -136,6 +137,7 @@ entity BlockDesign_wrapper is
     Manager_1_wvalid : out STD_LOGIC;
     PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
     PL_Reset_0 : out STD_LOGIC;
+    Subordinate_0_Clk : in STD_LOGIC;
     Subordinate_0_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_0_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_0_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -175,6 +177,7 @@ entity BlockDesign_wrapper is
     Subordinate_0_wready : out STD_LOGIC;
     Subordinate_0_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_0_wvalid : in STD_LOGIC;
+    Subordinate_1_Clk : in STD_LOGIC;
     Subordinate_1_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_1_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_1_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -214,6 +217,7 @@ entity BlockDesign_wrapper is
     Subordinate_1_wready : out STD_LOGIC;
     Subordinate_1_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_1_wvalid : in STD_LOGIC;
+    Subordinate_2_Clk : in STD_LOGIC;
     Subordinate_2_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_2_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_2_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -253,6 +257,7 @@ entity BlockDesign_wrapper is
     Subordinate_2_wready : out STD_LOGIC;
     Subordinate_2_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_2_wvalid : in STD_LOGIC;
+    Subordinate_3_Clk : in STD_LOGIC;
     Subordinate_3_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_3_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_3_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -534,11 +539,6 @@ architecture STRUCTURE of BlockDesign_wrapper is
     Config_0_rready : out STD_LOGIC;
     Config_0_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
     Config_0_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    Clock_0 : out STD_LOGIC;
-    PL_Reset_0 : out STD_LOGIC;
-    LPD_Clock : in STD_LOGIC;
-    PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    FPD_Clock : in STD_LOGIC;
     Subordinate_3_aruser : in STD_LOGIC;
     Subordinate_3_awuser : in STD_LOGIC;
     Subordinate_3_awid : in STD_LOGIC_VECTOR ( 5 downto 0 );
@@ -579,7 +579,17 @@ architecture STRUCTURE of BlockDesign_wrapper is
     Subordinate_3_awqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
     Subordinate_3_arqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
     UART_1_txd : out STD_LOGIC;
-    UART_1_rxd : in STD_LOGIC
+    UART_1_rxd : in STD_LOGIC;
+    Clock_0 : out STD_LOGIC;
+    PL_Reset_0 : out STD_LOGIC;
+    Config_Clk : in STD_LOGIC;
+    PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    Subordinate_0_Clk : in STD_LOGIC;
+    Subordinate_1_Clk : in STD_LOGIC;
+    Subordinate_2_Clk : in STD_LOGIC;
+    Subordinate_3_Clk : in STD_LOGIC;
+    Manager_0_Clk : in STD_LOGIC;
+    Manager_1_Clk : in STD_LOGIC
   );
   end component BlockDesign;
 begin
@@ -625,8 +635,8 @@ BlockDesign_i: component BlockDesign
       Config_0_wready => Config_0_wready,
       Config_0_wstrb(3 downto 0) => Config_0_wstrb(3 downto 0),
       Config_0_wvalid => Config_0_wvalid,
-      FPD_Clock => FPD_Clock,
-      LPD_Clock => LPD_Clock,
+      Config_Clk => Config_Clk,
+      Manager_0_Clk => Manager_0_Clk,
       Manager_0_araddr(39 downto 0) => Manager_0_araddr(39 downto 0),
       Manager_0_arburst(1 downto 0) => Manager_0_arburst(1 downto 0),
       Manager_0_arcache(3 downto 0) => Manager_0_arcache(3 downto 0),
@@ -666,6 +676,7 @@ BlockDesign_i: component BlockDesign
       Manager_0_wready => Manager_0_wready,
       Manager_0_wstrb(15 downto 0) => Manager_0_wstrb(15 downto 0),
       Manager_0_wvalid => Manager_0_wvalid,
+      Manager_1_Clk => Manager_1_Clk,
       Manager_1_araddr(39 downto 0) => Manager_1_araddr(39 downto 0),
       Manager_1_arburst(1 downto 0) => Manager_1_arburst(1 downto 0),
       Manager_1_arcache(3 downto 0) => Manager_1_arcache(3 downto 0),
@@ -707,6 +718,7 @@ BlockDesign_i: component BlockDesign
       Manager_1_wvalid => Manager_1_wvalid,
       PL_IRQs(7 downto 0) => PL_IRQs(7 downto 0),
       PL_Reset_0 => PL_Reset_0,
+      Subordinate_0_Clk => Subordinate_0_Clk,
       Subordinate_0_araddr(48 downto 0) => Subordinate_0_araddr(48 downto 0),
       Subordinate_0_arburst(1 downto 0) => Subordinate_0_arburst(1 downto 0),
       Subordinate_0_arcache(3 downto 0) => Subordinate_0_arcache(3 downto 0),
@@ -746,6 +758,7 @@ BlockDesign_i: component BlockDesign
       Subordinate_0_wready => Subordinate_0_wready,
       Subordinate_0_wstrb(15 downto 0) => Subordinate_0_wstrb(15 downto 0),
       Subordinate_0_wvalid => Subordinate_0_wvalid,
+      Subordinate_1_Clk => Subordinate_1_Clk,
       Subordinate_1_araddr(48 downto 0) => Subordinate_1_araddr(48 downto 0),
       Subordinate_1_arburst(1 downto 0) => Subordinate_1_arburst(1 downto 0),
       Subordinate_1_arcache(3 downto 0) => Subordinate_1_arcache(3 downto 0),
@@ -785,6 +798,7 @@ BlockDesign_i: component BlockDesign
       Subordinate_1_wready => Subordinate_1_wready,
       Subordinate_1_wstrb(15 downto 0) => Subordinate_1_wstrb(15 downto 0),
       Subordinate_1_wvalid => Subordinate_1_wvalid,
+      Subordinate_2_Clk => Subordinate_2_Clk,
       Subordinate_2_araddr(48 downto 0) => Subordinate_2_araddr(48 downto 0),
       Subordinate_2_arburst(1 downto 0) => Subordinate_2_arburst(1 downto 0),
       Subordinate_2_arcache(3 downto 0) => Subordinate_2_arcache(3 downto 0),
@@ -824,6 +838,7 @@ BlockDesign_i: component BlockDesign
       Subordinate_2_wready => Subordinate_2_wready,
       Subordinate_2_wstrb(15 downto 0) => Subordinate_2_wstrb(15 downto 0),
       Subordinate_2_wvalid => Subordinate_2_wvalid,
+      Subordinate_3_Clk => Subordinate_3_Clk,
       Subordinate_3_araddr(48 downto 0) => Subordinate_3_araddr(48 downto 0),
       Subordinate_3_arburst(1 downto 0) => Subordinate_3_arburst(1 downto 0),
       Subordinate_3_arcache(3 downto 0) => Subordinate_3_arcache(3 downto 0),
