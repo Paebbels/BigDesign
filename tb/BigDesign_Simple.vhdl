@@ -6,7 +6,8 @@ library PoC;
 context PoC.common;
 
 architecture Simple of BigDesign_TestController is
-	signal TestDone : integer_barrier := 1;
+	signal TestDone  : integer_barrier := 1;
+	signal WriteDone : std_logic       := '0';
 
 	constant TCID : AlertLogIDType :=  NewID("TestCtrl");
 
@@ -69,7 +70,7 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 2);
-		Write(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");
+		Write(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");  -- turn on LED
 		WaitForClock(HPM0_LPD_Rec);
 		ReadCheck(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");
 
@@ -88,7 +89,7 @@ begin
 		WaitForClock(DataGen_Managers(0), 2);
 
 		Write(DataGen_Managers(0), X"0000_0010", X"0000_0001");
-		-- Toggle(WriteDone);
+		Toggle(WriteDone);
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(0), 2);
 		WaitForBarrier(TestDone);
@@ -98,9 +99,8 @@ begin
 	ManagerProc_1 : process
 	begin
 		WaitForClock(DataGen_Managers(1), 2);
-		WaitForClock(DataGen_Managers(1), 8);
-		-- WaitForToggle(WriteDone);
-		-- ReadCheck(DataGen_Managers(1), X"0000_0010", X"0000_0001");
+		WaitForToggle(WriteDone);
+		ReadCheck(DataGen_Managers(1), X"0000_0010", X"0000_0001");
 
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(1), 2);

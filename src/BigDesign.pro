@@ -1,8 +1,10 @@
+library lib_BigDesign
+analyze BigDesign/PS_settings_pkg.vhdl
+
 library lib_test
 analyze ../tb/PS_Stub.vhdl
 
 library lib_BigDesign
-
 analyze ../bd/BlockDesign/synth/BlockDesign.vhd
 analyze ../bd/BlockDesign/hdl/BlockDesign_wrapper.vhd
 analyze ../tb/BlockDesign_wrapper_conf.vhdl
