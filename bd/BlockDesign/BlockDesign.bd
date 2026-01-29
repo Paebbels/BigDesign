@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xC0F2ADB637006012",
+      "boundary_crc": "0xC0F2ADB6AF0E8F7B",
       "device": "xczu3eg-ubva530-2-i",
       "name": "BlockDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -22,10 +22,10 @@
             "value": "49"
           },
           "ARUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "AWUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -342,10 +342,10 @@
             "value": "49"
           },
           "ARUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "AWUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -662,10 +662,10 @@
             "value": "49"
           },
           "ARUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "AWUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "BUSER_WIDTH": {
             "value": "0"
@@ -1984,10 +1984,10 @@
             "value": "49"
           },
           "ARUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "AWUSER_WIDTH": {
-            "value": "0"
+            "value": "1"
           },
           "BUSER_WIDTH": {
             "value": "0"
