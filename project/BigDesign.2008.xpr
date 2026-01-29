@@ -234,140 +234,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../src/BigDesign/Toplevel_A0.2008.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="lib_BigDesign"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/utils.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../src/PoC/my_config.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../src/PoC/my_project.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/config.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/strings.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/vectors.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_to_AXI4Lite.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../src/BigDesign/BlockDesign_wrapper_conf.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../src/BigDesign/BlockDesign_top.2008.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../src/BigDesign/Design.2008.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="lib_BigDesign"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../bd/BlockDesign/BlockDesign.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -378,19 +244,138 @@
           <Proxy FileSetName="BlockDesign_PS_0"/>
         </CompFileExtendedInfo>
       </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/utils.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/PoC/my_config.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/PoC/my_project.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/config.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/strings.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/vectors.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_to_AXI4Lite.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/PS_settings_pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../bd/BlockDesign/hdl/BlockDesign_wrapper.vhd">
         <FileInfo SFType="VHDL2019">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../src/BigDesign/BlockDesign_wrapper_conf.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/BlockDesign_top.2008.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/Design.2008.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="lib_BigDesign"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/Toplevel_A0.2008.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="lib_BigDesign"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="BlockDesign_wrapper"/>
-        <Option Name="TopLib" Val="lib_BigDesign"/>
-        <Option Name="TopArchitecture" Val="STRUCTURE"/>
-        <Option Name="TopRTLFile" Val="$PPRDIR/../bd/BlockDesign/hdl/BlockDesign_wrapper.vhd"/>
-        <Option Name="TopAutoSet" Val="TRUE"/>
+        <Option Name="TopModule" Val="Toplevel"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">

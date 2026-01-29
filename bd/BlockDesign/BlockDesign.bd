@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xC0F2ADB69089B113",
+      "boundary_crc": "0xC0F2ADB637006012",
       "device": "xczu3eg-ubva530-2-i",
       "name": "BlockDesign",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -19,7 +19,7 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "40"
+            "value": "49"
           },
           "ARUSER_WIDTH": {
             "value": "0"
@@ -29,6 +29,10 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk",
+            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -115,8 +119,8 @@
         "address_space_ref": "Subordinate_0",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x00FFFFFFFFFF",
-          "width": "40"
+          "maximum": "0x0001FFFFFFFFFFFF",
+          "width": "49"
         },
         "bd_attributes": {
           "TYPE": {
@@ -335,7 +339,7 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "40"
+            "value": "49"
           },
           "ARUSER_WIDTH": {
             "value": "0"
@@ -345,6 +349,10 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk1",
+            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -431,8 +439,8 @@
         "address_space_ref": "Subordinate_1",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x00FFFFFFFFFF",
-          "width": "40"
+          "maximum": "0x0001FFFFFFFFFFFF",
+          "width": "49"
         },
         "bd_attributes": {
           "TYPE": {
@@ -651,7 +659,7 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "40"
+            "value": "49"
           },
           "ARUSER_WIDTH": {
             "value": "0"
@@ -661,6 +669,10 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk2",
+            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -747,8 +759,8 @@
         "address_space_ref": "Subordinate_2",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x00FFFFFFFFFF",
-          "width": "40"
+          "maximum": "0x0001FFFFFFFFFFFF",
+          "width": "49"
         },
         "bd_attributes": {
           "TYPE": {
@@ -1969,7 +1981,7 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "40"
+            "value": "49"
           },
           "ARUSER_WIDTH": {
             "value": "0"
@@ -1979,6 +1991,10 @@
           },
           "BUSER_WIDTH": {
             "value": "0"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk3",
+            "value_src": "default"
           },
           "DATA_WIDTH": {
             "value": "128"
@@ -2065,8 +2081,8 @@
         "address_space_ref": "Subordinate_3",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x00FFFFFFFFFF",
-          "width": "40"
+          "maximum": "0x0001FFFFFFFFFFFF",
+          "width": "49"
         },
         "bd_attributes": {
           "TYPE": {
@@ -2397,7 +2413,11 @@
         "direction": "I",
         "parameters": {
           "ASSOCIATED_BUSIF": {
-            "value": "Subordinate_0:Subordinate_1:Subordinate_2:Subordinate_3"
+            "value": "Subordinate_0"
+          },
+          "CLK_DOMAIN": {
+            "value": "BlockDesign_Subordinate_0_Clk",
+            "value_src": "default"
           },
           "FREQ_HZ": {
             "value": "100000000",
@@ -2421,6 +2441,9 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "Subordinate_1"
+          },
           "CLK_DOMAIN": {
             "value": "BlockDesign_Subordinate_0_Clk1",
             "value_src": "default"
@@ -2447,6 +2470,9 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "Subordinate_2"
+          },
           "CLK_DOMAIN": {
             "value": "BlockDesign_Subordinate_0_Clk2",
             "value_src": "default"
@@ -2473,6 +2499,9 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "Subordinate_3"
+          },
           "CLK_DOMAIN": {
             "value": "BlockDesign_Subordinate_0_Clk3",
             "value_src": "default"
@@ -2966,65 +2995,65 @@
       "/": {
         "address_spaces": {
           "Subordinate_0": {
-            "range": "1T",
-            "width": "40",
+            "range": "512T",
+            "width": "49",
             "segments": {
               "SEG_PS_HP0_DDR_LOW": {
                 "address_block": "/PS/SAXIGP2/HP0_DDR_LOW",
-                "offset": "0x0000000000",
+                "offset": "0x0000000000000",
                 "range": "2G"
               },
               "SEG_PS_HP0_LPS_OCM": {
                 "address_block": "/PS/SAXIGP2/HP0_LPS_OCM",
-                "offset": "0x00FF000000",
+                "offset": "0x00000FF000000",
                 "range": "16M"
               }
             }
           },
           "Subordinate_1": {
-            "range": "1T",
-            "width": "40",
+            "range": "512T",
+            "width": "49",
             "segments": {
               "SEG_PS_HP1_DDR_LOW": {
                 "address_block": "/PS/SAXIGP3/HP1_DDR_LOW",
-                "offset": "0x0000000000",
+                "offset": "0x0000000000000",
                 "range": "2G"
               },
               "SEG_PS_HP1_LPS_OCM": {
                 "address_block": "/PS/SAXIGP3/HP1_LPS_OCM",
-                "offset": "0x00FF000000",
+                "offset": "0x00000FF000000",
                 "range": "16M"
               }
             }
           },
           "Subordinate_2": {
-            "range": "1T",
-            "width": "40",
+            "range": "512T",
+            "width": "49",
             "segments": {
               "SEG_PS_HP2_DDR_LOW": {
                 "address_block": "/PS/SAXIGP4/HP2_DDR_LOW",
-                "offset": "0x0000000000",
+                "offset": "0x0000000000000",
                 "range": "2G"
               },
               "SEG_PS_HP2_LPS_OCM": {
                 "address_block": "/PS/SAXIGP4/HP2_LPS_OCM",
-                "offset": "0x00FF000000",
+                "offset": "0x00000FF000000",
                 "range": "16M"
               }
             }
           },
           "Subordinate_3": {
-            "range": "1T",
-            "width": "40",
+            "range": "512T",
+            "width": "49",
             "segments": {
               "SEG_PS_HP3_DDR_LOW": {
                 "address_block": "/PS/SAXIGP5/HP3_DDR_LOW",
-                "offset": "0x0000000000",
+                "offset": "0x0000000000000",
                 "range": "2G"
               },
               "SEG_PS_HP3_LPS_OCM": {
                 "address_block": "/PS/SAXIGP5/HP3_LPS_OCM",
-                "offset": "0x00FF000000",
+                "offset": "0x00000FF000000",
                 "range": "16M"
               }
             }

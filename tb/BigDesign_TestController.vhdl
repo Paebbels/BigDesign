@@ -11,6 +11,9 @@ use     OSVVM.ScoreboardPkg_slv.all ;
 library OSVVM_AXI4 ;
 context OSVVM_AXI4.Axi4Context ; 
 
+library lib_BigDesign;
+use     lib_BigDesign.PS_settings_pkg.all;
+
 
 entity BigDesign_TestController is
 	port (
@@ -88,7 +91,7 @@ entity BigDesign_TestController is
 
 	signal MemoryID : MemoryIDType := NewID (
 		Name      => "PSDDR4",
-		AddrWidth => 49,
-		DataWidth => 128
+		AddrWidth => MEMORY_MODEL_ADDRESS_BITS,
+		DataWidth => DATA_BITS
 	);
 end entity;

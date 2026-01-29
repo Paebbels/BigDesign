@@ -5,6 +5,9 @@ library PoC;
 use     PoC.AXI4_Full.all;
 use     PoC.AXI4Lite.all;
 
+library lib_BigDesign;
+use     lib_BigDesign.PS_settings_pkg.all;
+
 
 entity BlockDesign_top is
 	port (
@@ -17,24 +20,24 @@ entity BlockDesign_top is
 
 		signal Manager_m2s      : out T_AXI4_Bus_M2S_Vector;
 		signal Manager_s2m      : in  T_AXI4_Bus_S2M_Vector;
-		signal Manager_Clks     : in  std_logic_vector(0 to 1);
+		signal Manager_Clks     : in  std_logic_vector(0 to NUM_MANAGERS - 1);
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : in  std_logic_vector(0 to 3)
+		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_SUBORDINATES - 1)
 	);
 end entity;
 
 
 architecture wrapper of BlockDesign_top is
-	package AXI4_A40_D32 is new PoC.AXI4Full_Sized
-		generic map (
-			ADDRESS_BITS => 40,
-			DATA_BITS    => 32,
-			USER_BITS    => 16,
-			ID_BITS      => 16
-		);
-		
+	-- package AXI4_A40_D32 is new PoC.AXI4Full_Sized
+		-- generic map (
+			-- ADDRESS_BITS => ADDRESS_BITS,
+			-- DATA_BITS    => 32,
+			-- USER_BITS    => USER_BITS,
+			-- ID_BITS      => ID_BITS
+		-- );
+
 	signal ConfigMM_m2s : AXI4_A40_D32.Sized_M2S;
 	signal ConfigMM_s2m : AXI4_A40_D32.Sized_S2M;
 
