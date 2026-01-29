@@ -6,3 +6,5 @@
 !/project/*.xpr
 
 /src/PoC/my_project.vhdl
+
+/temp

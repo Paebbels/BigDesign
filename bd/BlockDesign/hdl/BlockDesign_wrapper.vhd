@@ -1,9 +1,9 @@
 --Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
---Date        : Tue Jul  8 10:36:39 2025
---Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+--Date        : Wed Jan 28 16:54:24 2026
+--Host        : DESKTOP-ADRIAN running 64-bit major release  (build 9200)
 --Command     : generate_target BlockDesign_wrapper.bd
 --Design      : BlockDesign_wrapper
 --Purpose     : IP block netlist
@@ -54,8 +54,8 @@ entity BlockDesign_wrapper is
     Config_0_wready : in STD_LOGIC;
     Config_0_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
     Config_0_wvalid : out STD_LOGIC;
-    FPD_Clock : in STD_LOGIC;
-    LPD_Clock : in STD_LOGIC;
+    Config_Clk : in STD_LOGIC;
+    Manager_0_Clk : in STD_LOGIC;
     Manager_0_araddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
     Manager_0_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
     Manager_0_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -95,6 +95,7 @@ entity BlockDesign_wrapper is
     Manager_0_wready : in STD_LOGIC;
     Manager_0_wstrb : out STD_LOGIC_VECTOR ( 15 downto 0 );
     Manager_0_wvalid : out STD_LOGIC;
+    Manager_1_Clk : in STD_LOGIC;
     Manager_1_araddr : out STD_LOGIC_VECTOR ( 39 downto 0 );
     Manager_1_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
     Manager_1_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -136,6 +137,7 @@ entity BlockDesign_wrapper is
     Manager_1_wvalid : out STD_LOGIC;
     PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
     PL_Reset_0 : out STD_LOGIC;
+    Subordinate_0_Clk : in STD_LOGIC;
     Subordinate_0_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_0_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_0_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -175,6 +177,7 @@ entity BlockDesign_wrapper is
     Subordinate_0_wready : out STD_LOGIC;
     Subordinate_0_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_0_wvalid : in STD_LOGIC;
+    Subordinate_1_Clk : in STD_LOGIC;
     Subordinate_1_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_1_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_1_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -214,6 +217,7 @@ entity BlockDesign_wrapper is
     Subordinate_1_wready : out STD_LOGIC;
     Subordinate_1_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     Subordinate_1_wvalid : in STD_LOGIC;
+    Subordinate_2_Clk : in STD_LOGIC;
     Subordinate_2_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
     Subordinate_2_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Subordinate_2_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -252,7 +256,49 @@ entity BlockDesign_wrapper is
     Subordinate_2_wlast : in STD_LOGIC;
     Subordinate_2_wready : out STD_LOGIC;
     Subordinate_2_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    Subordinate_2_wvalid : in STD_LOGIC
+    Subordinate_2_wvalid : in STD_LOGIC;
+    Subordinate_3_Clk : in STD_LOGIC;
+    Subordinate_3_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
+    Subordinate_3_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_arid : in STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_arlen : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    Subordinate_3_arlock : in STD_LOGIC;
+    Subordinate_3_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_arqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_arready : out STD_LOGIC;
+    Subordinate_3_arsize : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_aruser : in STD_LOGIC;
+    Subordinate_3_arvalid : in STD_LOGIC;
+    Subordinate_3_awaddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
+    Subordinate_3_awburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_awcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_awid : in STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_awlen : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    Subordinate_3_awlock : in STD_LOGIC;
+    Subordinate_3_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_awqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_awready : out STD_LOGIC;
+    Subordinate_3_awsize : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_awuser : in STD_LOGIC;
+    Subordinate_3_awvalid : in STD_LOGIC;
+    Subordinate_3_bid : out STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_bready : in STD_LOGIC;
+    Subordinate_3_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_bvalid : out STD_LOGIC;
+    Subordinate_3_rdata : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    Subordinate_3_rid : out STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_rlast : out STD_LOGIC;
+    Subordinate_3_rready : in STD_LOGIC;
+    Subordinate_3_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_rvalid : out STD_LOGIC;
+    Subordinate_3_wdata : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    Subordinate_3_wlast : in STD_LOGIC;
+    Subordinate_3_wready : out STD_LOGIC;
+    Subordinate_3_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    Subordinate_3_wvalid : in STD_LOGIC;
+    UART_1_rxd : in STD_LOGIC;
+    UART_1_txd : out STD_LOGIC
   );
 end BlockDesign_wrapper;
 
@@ -493,11 +539,57 @@ architecture STRUCTURE of BlockDesign_wrapper is
     Config_0_rready : out STD_LOGIC;
     Config_0_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
     Config_0_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_aruser : in STD_LOGIC;
+    Subordinate_3_awuser : in STD_LOGIC;
+    Subordinate_3_awid : in STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_awaddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
+    Subordinate_3_awlen : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    Subordinate_3_awsize : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_awburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_awlock : in STD_LOGIC;
+    Subordinate_3_awcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_awvalid : in STD_LOGIC;
+    Subordinate_3_awready : out STD_LOGIC;
+    Subordinate_3_wdata : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    Subordinate_3_wstrb : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    Subordinate_3_wlast : in STD_LOGIC;
+    Subordinate_3_wvalid : in STD_LOGIC;
+    Subordinate_3_wready : out STD_LOGIC;
+    Subordinate_3_bid : out STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_bvalid : out STD_LOGIC;
+    Subordinate_3_bready : in STD_LOGIC;
+    Subordinate_3_arid : in STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_araddr : in STD_LOGIC_VECTOR ( 48 downto 0 );
+    Subordinate_3_arlen : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    Subordinate_3_arsize : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_arburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_arlock : in STD_LOGIC;
+    Subordinate_3_arcache : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    Subordinate_3_arvalid : in STD_LOGIC;
+    Subordinate_3_arready : out STD_LOGIC;
+    Subordinate_3_rid : out STD_LOGIC_VECTOR ( 5 downto 0 );
+    Subordinate_3_rdata : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    Subordinate_3_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    Subordinate_3_rlast : out STD_LOGIC;
+    Subordinate_3_rvalid : out STD_LOGIC;
+    Subordinate_3_rready : in STD_LOGIC;
+    Subordinate_3_awqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    Subordinate_3_arqos : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    UART_1_txd : out STD_LOGIC;
+    UART_1_rxd : in STD_LOGIC;
     Clock_0 : out STD_LOGIC;
     PL_Reset_0 : out STD_LOGIC;
-    LPD_Clock : in STD_LOGIC;
+    Config_Clk : in STD_LOGIC;
     PL_IRQs : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    FPD_Clock : in STD_LOGIC
+    Subordinate_0_Clk : in STD_LOGIC;
+    Subordinate_1_Clk : in STD_LOGIC;
+    Subordinate_2_Clk : in STD_LOGIC;
+    Subordinate_3_Clk : in STD_LOGIC;
+    Manager_0_Clk : in STD_LOGIC;
+    Manager_1_Clk : in STD_LOGIC
   );
   end component BlockDesign;
 begin
@@ -543,8 +635,8 @@ BlockDesign_i: component BlockDesign
       Config_0_wready => Config_0_wready,
       Config_0_wstrb(3 downto 0) => Config_0_wstrb(3 downto 0),
       Config_0_wvalid => Config_0_wvalid,
-      FPD_Clock => FPD_Clock,
-      LPD_Clock => LPD_Clock,
+      Config_Clk => Config_Clk,
+      Manager_0_Clk => Manager_0_Clk,
       Manager_0_araddr(39 downto 0) => Manager_0_araddr(39 downto 0),
       Manager_0_arburst(1 downto 0) => Manager_0_arburst(1 downto 0),
       Manager_0_arcache(3 downto 0) => Manager_0_arcache(3 downto 0),
@@ -584,6 +676,7 @@ BlockDesign_i: component BlockDesign
       Manager_0_wready => Manager_0_wready,
       Manager_0_wstrb(15 downto 0) => Manager_0_wstrb(15 downto 0),
       Manager_0_wvalid => Manager_0_wvalid,
+      Manager_1_Clk => Manager_1_Clk,
       Manager_1_araddr(39 downto 0) => Manager_1_araddr(39 downto 0),
       Manager_1_arburst(1 downto 0) => Manager_1_arburst(1 downto 0),
       Manager_1_arcache(3 downto 0) => Manager_1_arcache(3 downto 0),
@@ -625,6 +718,7 @@ BlockDesign_i: component BlockDesign
       Manager_1_wvalid => Manager_1_wvalid,
       PL_IRQs(7 downto 0) => PL_IRQs(7 downto 0),
       PL_Reset_0 => PL_Reset_0,
+      Subordinate_0_Clk => Subordinate_0_Clk,
       Subordinate_0_araddr(48 downto 0) => Subordinate_0_araddr(48 downto 0),
       Subordinate_0_arburst(1 downto 0) => Subordinate_0_arburst(1 downto 0),
       Subordinate_0_arcache(3 downto 0) => Subordinate_0_arcache(3 downto 0),
@@ -664,6 +758,7 @@ BlockDesign_i: component BlockDesign
       Subordinate_0_wready => Subordinate_0_wready,
       Subordinate_0_wstrb(15 downto 0) => Subordinate_0_wstrb(15 downto 0),
       Subordinate_0_wvalid => Subordinate_0_wvalid,
+      Subordinate_1_Clk => Subordinate_1_Clk,
       Subordinate_1_araddr(48 downto 0) => Subordinate_1_araddr(48 downto 0),
       Subordinate_1_arburst(1 downto 0) => Subordinate_1_arburst(1 downto 0),
       Subordinate_1_arcache(3 downto 0) => Subordinate_1_arcache(3 downto 0),
@@ -703,6 +798,7 @@ BlockDesign_i: component BlockDesign
       Subordinate_1_wready => Subordinate_1_wready,
       Subordinate_1_wstrb(15 downto 0) => Subordinate_1_wstrb(15 downto 0),
       Subordinate_1_wvalid => Subordinate_1_wvalid,
+      Subordinate_2_Clk => Subordinate_2_Clk,
       Subordinate_2_araddr(48 downto 0) => Subordinate_2_araddr(48 downto 0),
       Subordinate_2_arburst(1 downto 0) => Subordinate_2_arburst(1 downto 0),
       Subordinate_2_arcache(3 downto 0) => Subordinate_2_arcache(3 downto 0),
@@ -741,6 +837,48 @@ BlockDesign_i: component BlockDesign
       Subordinate_2_wlast => Subordinate_2_wlast,
       Subordinate_2_wready => Subordinate_2_wready,
       Subordinate_2_wstrb(15 downto 0) => Subordinate_2_wstrb(15 downto 0),
-      Subordinate_2_wvalid => Subordinate_2_wvalid
+      Subordinate_2_wvalid => Subordinate_2_wvalid,
+      Subordinate_3_Clk => Subordinate_3_Clk,
+      Subordinate_3_araddr(48 downto 0) => Subordinate_3_araddr(48 downto 0),
+      Subordinate_3_arburst(1 downto 0) => Subordinate_3_arburst(1 downto 0),
+      Subordinate_3_arcache(3 downto 0) => Subordinate_3_arcache(3 downto 0),
+      Subordinate_3_arid(5 downto 0) => Subordinate_3_arid(5 downto 0),
+      Subordinate_3_arlen(7 downto 0) => Subordinate_3_arlen(7 downto 0),
+      Subordinate_3_arlock => Subordinate_3_arlock,
+      Subordinate_3_arprot(2 downto 0) => Subordinate_3_arprot(2 downto 0),
+      Subordinate_3_arqos(3 downto 0) => Subordinate_3_arqos(3 downto 0),
+      Subordinate_3_arready => Subordinate_3_arready,
+      Subordinate_3_arsize(2 downto 0) => Subordinate_3_arsize(2 downto 0),
+      Subordinate_3_aruser => Subordinate_3_aruser,
+      Subordinate_3_arvalid => Subordinate_3_arvalid,
+      Subordinate_3_awaddr(48 downto 0) => Subordinate_3_awaddr(48 downto 0),
+      Subordinate_3_awburst(1 downto 0) => Subordinate_3_awburst(1 downto 0),
+      Subordinate_3_awcache(3 downto 0) => Subordinate_3_awcache(3 downto 0),
+      Subordinate_3_awid(5 downto 0) => Subordinate_3_awid(5 downto 0),
+      Subordinate_3_awlen(7 downto 0) => Subordinate_3_awlen(7 downto 0),
+      Subordinate_3_awlock => Subordinate_3_awlock,
+      Subordinate_3_awprot(2 downto 0) => Subordinate_3_awprot(2 downto 0),
+      Subordinate_3_awqos(3 downto 0) => Subordinate_3_awqos(3 downto 0),
+      Subordinate_3_awready => Subordinate_3_awready,
+      Subordinate_3_awsize(2 downto 0) => Subordinate_3_awsize(2 downto 0),
+      Subordinate_3_awuser => Subordinate_3_awuser,
+      Subordinate_3_awvalid => Subordinate_3_awvalid,
+      Subordinate_3_bid(5 downto 0) => Subordinate_3_bid(5 downto 0),
+      Subordinate_3_bready => Subordinate_3_bready,
+      Subordinate_3_bresp(1 downto 0) => Subordinate_3_bresp(1 downto 0),
+      Subordinate_3_bvalid => Subordinate_3_bvalid,
+      Subordinate_3_rdata(127 downto 0) => Subordinate_3_rdata(127 downto 0),
+      Subordinate_3_rid(5 downto 0) => Subordinate_3_rid(5 downto 0),
+      Subordinate_3_rlast => Subordinate_3_rlast,
+      Subordinate_3_rready => Subordinate_3_rready,
+      Subordinate_3_rresp(1 downto 0) => Subordinate_3_rresp(1 downto 0),
+      Subordinate_3_rvalid => Subordinate_3_rvalid,
+      Subordinate_3_wdata(127 downto 0) => Subordinate_3_wdata(127 downto 0),
+      Subordinate_3_wlast => Subordinate_3_wlast,
+      Subordinate_3_wready => Subordinate_3_wready,
+      Subordinate_3_wstrb(15 downto 0) => Subordinate_3_wstrb(15 downto 0),
+      Subordinate_3_wvalid => Subordinate_3_wvalid,
+      UART_1_rxd => UART_1_rxd,
+      UART_1_txd => UART_1_txd
     );
 end STRUCTURE;
