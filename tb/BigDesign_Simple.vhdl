@@ -5,11 +5,16 @@ use     IEEE.numeric_std.all;
 library PoC;
 context PoC.common;
 
-architecture Simple of BigDesign_TestController is
-	signal TestDone  : integer_barrier := 1;
-	signal WriteDone : std_logic       := '0';
+library lib_BigDesign;
+use     lib_BigDesign.PS_settings_pkg.all;
 
-	constant TCID : AlertLogIDType :=  NewID("TestCtrl");
+library lib_test;
+use     lib_test.BigDesign_tb_pkg.all;
+
+
+architecture Simple of BigDesign_TestController is
+
+	signal WriteDone : std_logic       := '0';
 
 begin
 	ControlProc: process
@@ -44,10 +49,10 @@ begin
 		constant ProcID : AlertLogIDType := NewID("HPM0_FPD_Proc", TCID);
 		variable Data   : std_logic_vector(HPM0_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
-		WaitForClock(HPM0_FPD_Rec, 2); 
-
-		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(HPM0_FPD_Rec, 2);
+
+		-- Currently not doing anything
+
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
@@ -57,10 +62,9 @@ begin
 		variable Data   : std_logic_vector(HPM1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM1_FPD_Rec, 2); 
-		-- Write(HPM1_FPD_Rec, X"8000_0004", X"0000_0001" );
 
-		-- Wait for outputs to propagate and signal TestDone
-		WaitForClock(HPM1_FPD_Rec, 2);
+		-- Currently not doing anything
+
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
@@ -70,11 +74,10 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 2);
-		Write(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");  -- turn on LED
+		Write(HPM0_LPD_Rec, Reg_LED, 32x"01");  -- turn on LED
 		WaitForClock(HPM0_LPD_Rec);
-		ReadCheck(HPM0_LPD_Rec, X"8000_0004", X"0000_0001");
+		ReadCheck(HPM0_LPD_Rec, X"8000_0004", 32x"01");
 
-		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(HPM0_LPD_Rec, 2);
 		WaitForBarrier(TestDone);
 		wait;
@@ -88,7 +91,7 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(0), 2);
 
-		Write(DataGen_Managers(0), X"0000_0010", X"0000_0001");
+		Write(DataGen_Managers(0), Reg_Test_1, resize(Data_Test_1, DATA_BITS));
 		Toggle(WriteDone);
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(0), 2);
@@ -100,9 +103,8 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(1), 2);
 		WaitForToggle(WriteDone);
-		ReadCheck(DataGen_Managers(1), X"0000_0010", X"0000_0001");
+		ReadCheck(DataGen_Managers(1), Reg_Test_1, resize(Data_Test_1, DATA_BITS));
 
-		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(1), 2);
 		WaitForBarrier(TestDone);
 		wait;
@@ -112,9 +114,8 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(2), 2);
 
-		-- Write(DataGen_Managers(0), X"8000_0010", X"0000_0001");
+		-- Currently not doing anything
 
-		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(2), 2);
 		WaitForBarrier(TestDone);
 		wait;
@@ -124,9 +125,8 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(3), 2);
 
-		-- Write(DataGen_Managers(0), X"8000_0010", X"0000_0001");
+		-- Currently not doing anything
 
-		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(3), 2);
 		WaitForBarrier(TestDone);
 		wait;
@@ -135,17 +135,34 @@ begin
 	-----------------------------------------------
 	-------------- Memory instances ---------------
 	-----------------------------------------------
-	-- HP0_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP0_FPD_Rec, 2);
+	BackdoorProc : process
+		variable ReadData : std_logic_vector(7 downto 0);
+	begin
+		-- report "Mem initialized: " & to_string(IsInitialized(MemoryID));
+		WaitForToggle(WriteDone);
+		Read(MemoryID, Reg_Test_1, ReadData);  -- alias for MemRead
+		AffirmIfEqual(ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
 
-		-- Wait for outputs to propagate and signal TestDone
-		-- WaitForClock(HP0_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
+
+	-----------------------------------------------
+	---------------- Subordinates -----------------
+	-----------------------------------------------
+	HP0_FPD_Proc : process
+		constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
+		variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	begin
+		WaitForClock(HP0_FPD_Rec, 2);
+
+		WaitForToggle(WriteDone);
+		ReadCheck(HP0_FPD_Rec, Reg_Test_1, resize(Data_Test_1, DATA_BITS));
+
+		WaitForClock(HP0_FPD_Rec, 2);
+		WaitForBarrier(TestDone);
+		wait;
+	end process;
 
 	-- HP1_FPD_Proc : process
 		-- constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
@@ -153,7 +170,9 @@ begin
 	-- begin
 		-- WaitForClock(HP1_FPD_Rec, 2);
 
-		-- Wait for outputs to propagate and signal TestDone
+		-- WaitForToggle(WriteDone);
+		-- ReadCheck(HP1_FPD_Rec, Reg_Test_1, resize(Data_Test_1, DATA_BITS));
+
 		-- WaitForClock(HP1_FPD_Rec, 2);
 		-- WaitForBarrier(TestDone);
 		-- wait;
@@ -165,7 +184,6 @@ begin
 	-- begin
 		-- WaitForClock(HP2_FPD_Rec, 2);
 
-		-- Wait for outputs to propagate and signal TestDone
 		-- WaitForClock(HP2_FPD_Rec, 2);
 		-- WaitForBarrier(TestDone);
 		-- wait;
@@ -177,7 +195,6 @@ begin
 	-- begin
 		-- WaitForClock(HP3_FPD_Rec, 2);
 
-		-- Wait for outputs to propagate and signal TestDone
 		-- WaitForClock(HP3_FPD_Rec, 2);
 		-- WaitForBarrier(TestDone);
 		-- wait;
