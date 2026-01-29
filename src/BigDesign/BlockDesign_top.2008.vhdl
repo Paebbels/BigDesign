@@ -30,13 +30,6 @@ end entity;
 
 
 architecture wrapper of BlockDesign_top is
-	-- package AXI4_A40_D32 is new PoC.AXI4Full_Sized
-		-- generic map (
-			-- ADDRESS_BITS => ADDRESS_BITS,
-			-- DATA_BITS    => 32,
-			-- USER_BITS    => USER_BITS,
-			-- ID_BITS      => ID_BITS
-		-- );
 
 	signal ConfigMM_m2s : AXI4_A40_D32.Sized_M2S;
 	signal ConfigMM_s2m : AXI4_A40_D32.Sized_S2M;

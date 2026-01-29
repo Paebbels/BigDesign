@@ -66,28 +66,28 @@ begin
 		subtype T_Axi4Rec is Axi4RecType(
 			WriteAddress (
 				Addr(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
-				ID(ID_BITS - 1 downto 0),
+				ID(SUBORDINATE_ID_BITS - 1 downto 0),
 				User(USER_BITS - 1 downto 0)
 			),
 			WriteData (
 				Data(DATA_BITS - 1 downto 0),
 				Strb(DATA_BITS / 8 - 1 downto 0),
 				User(USER_BITS - 1 downto 0),
-				ID(ID_BITS - 1 downto 0)
+				ID(SUBORDINATE_ID_BITS - 1 downto 0)
 			),
 			WriteResponse (
-				ID(ID_BITS - 1 downto 0),
+				ID(SUBORDINATE_ID_BITS - 1 downto 0),
 				User(USER_BITS - 1 downto 0)
 			),
 			ReadAddress (
 				Addr(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
-				ID(ID_BITS - 1 downto 0),
+				ID(SUBORDINATE_ID_BITS - 1 downto 0),
 				User(USER_BITS - 1 downto 0)
 			),
 			ReadData (
 				Data(DATA_BITS - 1 downto 0),
 				User(USER_BITS - 1 downto 0),
-				ID(ID_BITS - 1 downto 0)
+				ID(SUBORDINATE_ID_BITS - 1 downto 0)
 			)
 		);
 
