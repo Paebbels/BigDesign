@@ -25,7 +25,7 @@ if {$::osvvm::ToolName eq "NVC"} {
 set ::osvvm::AnalyzeErrorStopCount 1
 set ::osvvm::SimulateErrorStopCount 1
 
-# LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
+LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
 # LinkLibrary axi_infrastructure_v1_1_0 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_infrastructure_v1_1_0}
 # LinkLibrary axi_vip_v1_1_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_vip_v1_1_22}
 # LinkLibrary zynq_ultra_ps_e_vip_v1_0_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/zynq_ultra_ps_e_vip_v1_0_22}

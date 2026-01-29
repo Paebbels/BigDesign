@@ -138,11 +138,22 @@ begin
 	BackdoorProc : process
 		variable ReadData : std_logic_vector(7 downto 0);
 	begin
-		-- report "Mem initialized: " & to_string(IsInitialized(MemoryID));
 		WaitForToggle(WriteDone);
 		Read(MemoryID, Reg_Test_1, ReadData);  -- alias for MemRead
 		AffirmIfEqual(ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
 
+		-- 1st pattern (sequentially fill memory)
+		-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
+		-- 	2. measure time from start to finish
+		-- 	-> loop n times so that n equals 1 min
+
+		-- 2nd pattern (randomly fill memory with same data amount -> worst case)
+		-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
+		--  -> 4b Byte address + 18b word address
+
+		-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
+		-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
+		--  -> 4b Byte address + 26b word address
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
