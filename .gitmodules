@@ -6,13 +6,13 @@
 	url = ../../VHDL/Interfaces.git
 [submodule "lib/OSVVM"]
 	path = lib/OSVVM
-	url = ../../OSVVM/OSVVM.git
+	url = ../OSVVM.git
 [submodule "lib/OSVVM-AXI4"]
 	path = lib/OSVVM-AXI4
-	url = ../../OSVVM/AXI4.git
+	url = ../OSVVM-AXI4.git
 [submodule "lib/OSVVM-Common"]
 	path = lib/OSVVM-Common
-	url = ../../OSVVM/OSVVM-Common.git
+	url = ../OSVVM-Common.git
 [submodule "lib/OSVVM-Scripts"]
 	path = lib/OSVVM-Scripts
-	url = ../../OSVVM/OSVVM-Scripts.git
+	url = ../OSVVM-Scripts.git
