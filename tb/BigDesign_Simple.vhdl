@@ -137,23 +137,47 @@ begin
 	-----------------------------------------------
 	BackdoorProc : process
 		variable ReadData : std_logic_vector(7 downto 0);
+		variable Reg_i  : AXIAddressType := 32x"00";
+		variable Data_i : AXIAddressType := 32x"11";
+		variable DataRV                  : RandomPType;
 	begin
 		WaitForToggle(WriteDone);
 		Read(MemoryID, Reg_Test_1, ReadData);  -- alias for MemRead
 		AffirmIfEqual(ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
+		wait for 100 ns;
 
-		-- 1st pattern (sequentially fill memory)
-		-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
-		-- 	2. measure time from start to finish
-		-- 	-> loop n times so that n equals 1 min
+		if PATTERN = "RepeatedSequentialBlockWrite" then
+			-- 1st pattern (sequentially fill memory)
+			-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
+			-- 	2. measure time from start to finish
+			-- 	-> loop n times so that n equals 1 min
+			for i in 0 to NUM_ITERATIONS loop  -- ~1 min
+				for j in 0 to NUM_BYTES_PER_BLOCK - 1 loop
+					Write(MemoryID, std_logic_vector(to_unsigned(j, AXI_ADDR_WIDTH)), Data_i(7 downto 0));
+				end loop;
+			end loop;
+		
+		elsif PATTERN = "RandomSequentialWrite_4MB_Range" then
+			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
+			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
+			--  -> 4b Byte address + 18b word address
+			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
+				Write(MemoryID, Reg_i, Data_i(7 downto 0));
+				Reg_i := 10x"00" & DataRV.RandSlv(22);
+			end loop;
 
-		-- 2nd pattern (randomly fill memory with same data amount -> worst case)
-		-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
-		--  -> 4b Byte address + 18b word address
+		elsif PATTERN = "RandomSequentialWrite_1TB_Range" then
+			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
+			-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
+			--  -> 4b Byte address + 26b word address
+			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
+				Write(MemoryID, Reg_i, Data_i(7 downto 0));
+				Reg_i := 2x"00" & DataRV.RandSlv(30);
+			end loop;
+		else
+			assert False report "Invalid test pattern " & PATTERN & "!" severity failure;
+		end if;
 
-		-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
-		-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
-		--  -> 4b Byte address + 26b word address
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
