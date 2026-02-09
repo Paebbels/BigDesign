@@ -16,6 +16,9 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 
 entity BigDesign_TestController is
+	generic (
+		PATTERN : string
+	);
 	port (
 		Clock            : in  std_logic;
 		Reset            : in  std_logic;

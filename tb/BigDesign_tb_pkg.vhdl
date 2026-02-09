@@ -17,7 +17,8 @@ package BigDesign_tb_pkg is
 
   constant Data_Test_1 : AXIDataType   := 32x"01";
 
-  -- todo: add the following constants
-  -- 	BLOCK_SIZE
-  -- 	NUM_OF_64k_BLOCK_WRITES
+  constant BLOCK_SIZE : unsigned(AXI_ADDR_WIDTH - 1 downto 0) := to_unsigned(16, AXI_ADDR_WIDTH);
+  constant NUM_BYTES_PER_BLOCK : positive := 64 * 1024;  -- 64 kB
+  constant NUM_ITERATIONS      : positive := 6000;
+
 end package;
