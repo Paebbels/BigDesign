@@ -39,6 +39,10 @@ jobs:
         with:
           version: latest
 
+      - name: Prepare
+        run: |
+          mv src/PoC/my_project.vhdl.template src/PoC/my_project.vhdl
+
       - name: 🚧 Run tests on Ubuntu
         if: matrix.name == 'Ubuntu'
         run: |
