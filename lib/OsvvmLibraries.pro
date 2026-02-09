@@ -37,7 +37,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-include ./OSVVM
+include ./OSVVM/osvvm.pro
 include ./OSVVM-Common
 
 if {[DirectoryExists OSVVM-UART]} { 
