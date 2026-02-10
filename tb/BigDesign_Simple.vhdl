@@ -136,6 +136,7 @@ begin
 	-------------- Memory instances ---------------
 	-----------------------------------------------
 	BackdoorProc : process
+		constant ProcID  : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
 		variable Reg_i  : AXIAddressType := 32x"00";
 		variable Data_i : AXIAddressType := 32x"11";
@@ -143,7 +144,7 @@ begin
 	begin
 		WaitForToggle(WriteDone);
 		Read(MemoryID, Reg_Test_1, ReadData);  -- alias for MemRead
-		AffirmIfEqual(ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
+		AffirmIfEqual(ProcID, ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
 		wait for 100 ns;
 
 		if PATTERN = "RepeatedSequentialBlockWrite" then
