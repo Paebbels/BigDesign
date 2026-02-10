@@ -12,6 +12,9 @@ build ../lib/OsvvmLibraries.pro
 if {$::osvvm::ToolName eq "GHDL"} {
     SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
     SetExtendedSimulateOptions {-frelaxed -Wno-specs -Wno-binding}
+
+	library unisim
+	analyze ../tb/unisim/vcomponents.pkg.vhdl
 }
 
 if {$::osvvm::ToolName eq "RiveraPRO"} {
@@ -25,7 +28,7 @@ if {$::osvvm::ToolName eq "RiveraPRO"} {
 
 if {$::osvvm::ToolName eq "NVC"} {
     SetExtendedAnalyzeOptions {--relaxed}
-	
+
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
 }
