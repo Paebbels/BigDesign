@@ -6,6 +6,9 @@
 /project/**/*.*
 !/project/*.xpr
 
+/.sigasi/**/*.*
+!/.sigasi/project.sigasi
+
 /src/PoC/my_project.vhdl
 
 /temp

@@ -1,0 +1,21 @@
+{
+    "name": "BigDesign",
+    "targets": {
+       "Generic": {
+			"environment": {
+				"BOARD": "GENERIC",
+				"VENDOR": "GENERIC",
+                "OSVVM_TOOL": "Sigasi"
+			},
+            "command" : "cd temp && vsim -do ../regression.tcl",
+			"ignore": ["temp"],
+            "dependencies": [
+                {
+                    "Vivado": [
+                        "unisim"
+                    ]
+                }
+            ]
+        }
+    }
+}
