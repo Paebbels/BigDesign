@@ -111,7 +111,7 @@ jobs:
       - name: 🔧 Install GHDL
         uses: ghdl/setup-ghdl@v1
         with:
-          version: latest
+          version: nightly
 
       - name: Prepare
         run: |
