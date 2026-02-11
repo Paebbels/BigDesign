@@ -10,27 +10,37 @@ source ../lib/OSVVM-Scripts/StartUp.tcl
 build ../lib/OsvvmLibraries.pro
 
 if {$::osvvm::ToolName eq "GHDL"} {
-    SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
+	SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
     SetExtendedSimulateOptions {-frelaxed -Wno-specs -Wno-binding}
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
-}
 
-if {$::osvvm::ToolName eq "RiveraPRO"} {
-    SetExtendedSimulationOptions {-unbounderror}
+} elseif {$::osvvm::ToolName eq "RivieraPRO"} {
+	set RivieraSimOptions {-unbounderror}
 
 	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
 	# LinkLibrary axi_infrastructure_v1_1_0 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_infrastructure_v1_1_0}
 	# LinkLibrary axi_vip_v1_1_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_vip_v1_1_22}
 	# LinkLibrary zynq_ultra_ps_e_vip_v1_0_22 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/zynq_ultra_ps_e_vip_v1_0_22}
-}
 
-if {$::osvvm::ToolName eq "NVC"} {
-    SetExtendedAnalyzeOptions {--relaxed}
+} elseif {$::osvvm::ToolName eq "NVC"} {
+   SetExtendedAnalyzeOptions {--relaxed}
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
+
+} else {
+	error [format {
+======================================
+Unknown simulator selected: %s
+
+Supported simulators:
+  - GHDL
+  - RivieraPRO
+  - NVC
+======================================
+} $::osvvm::ToolName]
 }
 
 set ::osvvm::AnalyzeErrorStopCount 1
