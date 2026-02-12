@@ -10,11 +10,7 @@
             "command" : "cd temp && vsim -do ../regression.tcl",
 			"ignore": ["temp"],
             "dependencies": [
-                {
-                    "Vivado": [
-                        "unisim"
-                    ]
-                }
+                {"Vivado": {"version": "Vivado2025.2", "targets": ["unisim"] } }
             ]
         }
     }

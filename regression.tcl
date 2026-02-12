@@ -30,6 +30,8 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
 
+} elseif {$::osvvm::ToolName eq "Sigasi"} {
+
 } else {
 	error [format {
 ======================================
