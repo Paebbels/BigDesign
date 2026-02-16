@@ -9,7 +9,8 @@ source ../lib/OSVVM-Scripts/StartUp.tcl
 
 build ../lib/OsvvmLibraries.pro
 
-global scalingFactor;  # scale length of simulation (usually 0 to 100)
+global scalingFactor   ;# scale length of simulation (usually 0 to 100)
+set scalingFactor 100  ;# Default
 
 if {$::osvvm::ToolName eq "GHDL"} {
 	SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
@@ -30,7 +31,6 @@ if {$::osvvm::ToolName eq "GHDL"} {
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
    SetExtendedAnalyzeOptions {--relaxed}
-   # set scalingFactor 100
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
