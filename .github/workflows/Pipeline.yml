@@ -161,7 +161,8 @@ jobs:
       - GHDL
     with:
       unittest_artifacts_pattern: "junit-*"
-      testsuite-summary-name:     "Interfaces"
+      testsuite-summary-name:     "BigDesign"
+      merge-input-dialect:        "Any-JUnit"
       dorny:                      true
 #      codecov:                    true
     secrets: inherit
