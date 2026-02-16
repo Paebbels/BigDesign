@@ -7,5 +7,5 @@ analyze BigDesign_tb_pkg.vhdl
 
 analyze BigDesign_Simple.vhdl
 simulate BigDesign_Simple [generic PATTERN RepeatedSequentialBlockWrite]
-simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range]
-simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range]
+# simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range]
+# simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range]

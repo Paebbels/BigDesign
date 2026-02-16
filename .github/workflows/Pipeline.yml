@@ -52,21 +52,20 @@ jobs:
           sed -i 's|StartUp|StartNVC|' ../regression.tcl
           nvc --do ../regression.tcl
 
-      # - name: 🚧 Run tests on Windows + MSYS2/UCRT64
-      #   if: matrix.name == 'Windows' && startsWith(matrix.shell, 'msys2')
-      #   run: |
-      #     export PATH="/c/Program Files/NVC/bin:$PATH"
+      - name: 🚧 Run tests on Windows + MSYS2/UCRT64
+        if: matrix.name == 'Windows' && startsWith(matrix.shell, 'msys2')
+        run: |
+          export PATH="/c/Program Files/NVC/bin:$PATH"
 
-      #     mkdir -p temp
-      #     cd temp
+          mkdir -p temp
+          cd temp
 
-      #     ../scripts/NVC.sh
+          ../scripts/NVC.sh
 
       - name: 🚧 Inspect Ant+JUnit Unittest Summary XML
 #        if: matrix.name == 'Ubuntu'
         run: |
-          tree .
-          # cat temp/*.xml
+          cat temp/*.xml
 
       - name: '📤 Upload artifact: logs'
         uses: actions/upload-artifact@v4
@@ -85,7 +84,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      backend: "llvm"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      backend: "mcode"}
 ##        - {icon: "🪟",   name: "Windows", image: "windows-2022", shell: "powershell"}      # Scripting is Bash-based
 ##        - {icon: "🪟🟨", name: "Windows", image: "windows-2022", shell: "msys2 {0}"}       # Installation in Windows via MSI, but called from UCRT64.
 
@@ -113,6 +113,7 @@ jobs:
         uses: ghdl/setup-ghdl@v1
         with:
           version: nightly
+          backend: ${{ matrix.backend }}
 
       - name: Prepare
         run: |
@@ -126,21 +127,20 @@ jobs:
 
           tclsh ../regression.tcl
 
-      # - name: 🚧 Run tests on Windows + MSYS2/UCRT64
-      #   if: matrix.name == 'Windows' && startsWith(matrix.shell, 'msys2')
-      #   run: |
-      #     export PATH="/c/Program Files/NVC/bin:$PATH"
+      - name: 🚧 Run tests on Windows + MSYS2/UCRT64
+        if: matrix.name == 'Windows' && startsWith(matrix.shell, 'msys2')
+        run: |
+          export PATH="/c/Program Files/NVC/bin:$PATH"
 
-      #     mkdir -p temp
-      #     cd temp
+          mkdir -p temp
+          cd temp
 
-      #     ../scripts/NVC.sh
+          ../scripts/NVC.sh
 
       - name: 🚧 Inspect Ant+JUnit Unittest Summary XML
 #        if: matrix.name == 'Ubuntu'
         run: |
-          tree .
-          # cat temp/*.xml
+          cat temp/*/*.xml
 
       - name: '📤 Upload artifact: logs'
         uses: actions/upload-artifact@v4
@@ -148,7 +148,7 @@ jobs:
           name: junit-${{ matrix.name }}-nvc
           include-hidden-files: true
           path: |
-            temp/*.xml
+            temp/*/*.xml
           if-no-files-found: error
           retention-days: 1
 
