@@ -56,6 +56,6 @@ set ::osvvm::SimulateErrorStopCount 1
 build ../lib/PoC/src/PoC.pro
 build ../src/BigDesign.pro
 
-SetSaveWaves
+# SetSaveWaves
 
 build ../tb/RunAllTests.pro

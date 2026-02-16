@@ -86,8 +86,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: true, backend: "llvm"}
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: true, backend: "mcode"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: true,  backend: "llvm"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: false, backend: "mcode"}
 ##        - {icon: "🪟",   name: "Windows", image: "windows-2022", shell: "powershell"}      # Scripting is Bash-based
 ##        - {icon: "🪟🟨", name: "Windows", image: "windows-2022", shell: "msys2 {0}"}       # Installation in Windows via MSI, but called from UCRT64.
 
