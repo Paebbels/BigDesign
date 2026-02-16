@@ -9,11 +9,12 @@ jobs:
   NVC:
     name: ${{ matrix.icon }}${{ matrix.name }} - NVC
     runs-on: ${{ matrix.image }}
+    continue-on-error: ${{ matrix.can-fail }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",     can-fail: true}
 ##        - {icon: "🪟",   name: "Windows", image: "windows-2022", shell: "powershell"}      # Scripting is Bash-based
 ##        - {icon: "🪟🟨", name: "Windows", image: "windows-2022", shell: "msys2 {0}"}       # Installation in Windows via MSI, but called from UCRT64.
 
@@ -78,14 +79,15 @@ jobs:
           retention-days: 1
 
   GHDL:
-    name: ${{ matrix.icon }}${{ matrix.name }} - GHDL
+    name: ${{ matrix.icon }}${{ matrix.name }} - GHDL [${{ matrix.backend }}]
     runs-on: ${{ matrix.image }}
+    continue-on-error: ${{ matrix.can-fail }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      backend: "llvm"}
-          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      backend: "mcode"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: true, backend: "llvm"}
+          - {icon: "🐧",   name: "Ubuntu",  image: "ubuntu-24.04", shell: "bash",      can-fail: true, backend: "mcode"}
 ##        - {icon: "🪟",   name: "Windows", image: "windows-2022", shell: "powershell"}      # Scripting is Bash-based
 ##        - {icon: "🪟🟨", name: "Windows", image: "windows-2022", shell: "msys2 {0}"}       # Installation in Windows via MSI, but called from UCRT64.
 

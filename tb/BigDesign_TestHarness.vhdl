@@ -17,7 +17,8 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity BigDesign_TestHarness is
 	generic (
-		PATTERN : string := "1"
+		PATTERN        : string  := "1";
+		SCALING_FACTOR : natural := 100
 	);
 end entity;
 
@@ -41,7 +42,8 @@ architecture TestHarness of BigDesign_TestHarness is
 	
 	component BigDesign_TestController is
 		generic (
-			PATTERN : string
+			PATTERN        : string;
+			SCALING_FACTOR : natural
 		);
 		port (
 			Clock            : in  std_logic;
@@ -123,7 +125,8 @@ begin
 
 	TestCtrl : component BigDesign_TestController
 		generic map (
-			PATTERN => PATTERN
+			PATTERN        => PATTERN,
+			SCALING_FACTOR => SCALING_FACTOR
 		)
 		port map (
 			Clock            => Clock_100MHz,

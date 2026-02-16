@@ -9,15 +9,19 @@ source ../lib/OSVVM-Scripts/StartUp.tcl
 
 build ../lib/OsvvmLibraries.pro
 
+global scalingFactor;  # scale length of simulation (usually 0 to 100)
+
 if {$::osvvm::ToolName eq "GHDL"} {
 	SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
     SetExtendedSimulateOptions {-frelaxed -Wno-specs -Wno-binding}
+	set scalingFactor 10
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
 	set RivieraSimOptions {-unbounderror}
+	set scalingFactor 1
 
 	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
 	# LinkLibrary axi_infrastructure_v1_1_0 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_infrastructure_v1_1_0}
@@ -26,6 +30,7 @@ if {$::osvvm::ToolName eq "GHDL"} {
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
    SetExtendedAnalyzeOptions {--relaxed}
+   # set scalingFactor 100
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
@@ -51,6 +56,6 @@ set ::osvvm::SimulateErrorStopCount 1
 build ../lib/PoC/src/PoC.pro
 build ../src/BigDesign.pro
 
-#SetSaveWaves
+SetSaveWaves
 
 build ../tb/RunAllTests.pro

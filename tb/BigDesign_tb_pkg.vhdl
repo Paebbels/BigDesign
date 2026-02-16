@@ -19,6 +19,6 @@ package BigDesign_tb_pkg is
 
   constant BLOCK_SIZE : unsigned(AXI_ADDR_WIDTH - 1 downto 0) := to_unsigned(16, AXI_ADDR_WIDTH);
   constant NUM_BYTES_PER_BLOCK : positive := 64 * 1024;  -- 64 kB
-  constant NUM_ITERATIONS      : positive := 6000;
+  constant NUM_ITERATIONS      : positive := 60;  -- default SCALING_FACTOR is 100 which results in 60000 iterations
 
 end package;

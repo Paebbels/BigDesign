@@ -14,7 +14,7 @@ use     lib_test.BigDesign_tb_pkg.all;
 
 architecture Simple of BigDesign_TestController is
 
-	signal WriteDone : std_logic       := '0';
+	signal WriteDone : std_logic := '0';
 
 begin
 	ControlProc: process
@@ -152,7 +152,7 @@ begin
 			-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
 			-- 	2. measure time from start to finish
 			-- 	-> loop n times so that n equals 1 min
-			for i in 0 to NUM_ITERATIONS loop  -- ~1 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
 				for j in 0 to NUM_BYTES_PER_BLOCK - 1 loop
 					Write(MemoryID, std_logic_vector(to_unsigned(j, AXI_ADDR_WIDTH)), Data_i(7 downto 0));
 				end loop;
@@ -162,7 +162,7 @@ begin
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
 			--  -> 4b Byte address + 18b word address
-			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
 				Write(MemoryID, Reg_i, Data_i(7 downto 0));
 				Reg_i := 10x"00" & DataRV.RandSlv(22);
 			end loop;
@@ -171,7 +171,7 @@ begin
 			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
 			--  -> 4b Byte address + 26b word address
-			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
 				Write(MemoryID, Reg_i, Data_i(7 downto 0));
 				Reg_i := 2x"00" & DataRV.RandSlv(30);
 			end loop;
