@@ -142,7 +142,7 @@ jobs:
       - name: 🚧 Inspect Ant+JUnit Unittest Summary XML
 #        if: matrix.name == 'Ubuntu'
         run: |
-          cat temp/tb_RunAllTests/*.xml
+          cat temp/*/*.xml
 
       - name: '📤 Upload artifact: logs'
         uses: actions/upload-artifact@v6
@@ -150,7 +150,7 @@ jobs:
           name: junit-${{ matrix.name }}-ghdl-${{ matrix.backend }}
           include-hidden-files: true
           path: |
-            temp/tb_RunAllTests/*.xml
+            temp/*/*.xml
           if-no-files-found: error
           retention-days: 1
 
