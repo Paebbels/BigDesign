@@ -30,10 +30,14 @@ namespace eval ::poc {
 	variable vendorName [getEnv VENDOR "GENERIC"]
 	variable boardName  [getEnv BOARD  "GENERIC"]
 
-	variable myConfigFile  "../tb/common/my_config_$boardName.vhdl"
-	variable myProjectFile "../tb/common/my_project.vhdl"
+	variable myConfigFile  "../../../src/PoC/my_config_$boardName.vhdl"
+	variable myProjectFile "../../../src/PoC/my_project.vhdl"
 
 	variable vendor $vendorName; # GENERIC for vendor-less build; Xilinx, Altera,... for vendor specific build
+}
+
+namespace eval ::BigDesign {
+	variable scalingFactor 100;  # scale length of simulation
 }
 
 source ../lib/OSVVM-Scripts/StartUp.tcl
@@ -41,20 +45,17 @@ source ../lib/OSVVM-Scripts/StartUp.tcl
 
 build ../lib/OsvvmLibraries.pro
 
-global scalingFactor   ;# scale length of simulation (usually 0 to 100)
-set scalingFactor 100  ;# Default
-
 if {$::osvvm::ToolName eq "GHDL"} {
 	SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
-    SetExtendedSimulateOptions {-frelaxed -Wno-specs -Wno-binding}
-	set scalingFactor 10
+	SetExtendedSimulateOptions {-frelaxed -Wno-specs -Wno-binding}
+	set ::BigDesign::scalingFactor 10
 
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
 	set RivieraSimOptions {-unbounderror}
-	set scalingFactor 1
+	set ::BigDesign::scalingFactor 1
 
 	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
 
