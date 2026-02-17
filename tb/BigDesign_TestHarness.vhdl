@@ -38,8 +38,8 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity BigDesign_TestHarness is
 	generic (
-		PATTERN        : string  := "1";
-		SCALING_FACTOR : natural := 100
+		PATTERN        : string := "1";
+		SCALING_FACTOR : string := "100"
 	);
 end entity;
 
@@ -60,7 +60,7 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataToModel(DATA_BITS - 1 downto 0),
 		DataFromModel(DATA_BITS - 1 downto 0)
 	);
-	
+
 	component BigDesign_TestController is
 		generic (
 			PATTERN        : string;
@@ -122,12 +122,12 @@ begin
 
 		signal Axi4Rec : T_Axi4Rec;
 	begin
-		
+
 		manager: entity OSVVM_AXI4.Axi4Manager
 			generic map (
 				MODEL_ID_NAME => "manager_" & to_string(i),
 				tperiod_Clk   => 10 ns,
-				DEFAULT_DELAY => 0 ns 
+				DEFAULT_DELAY => 0 ns
 			)
 			port map (
 				-- Globals
@@ -147,7 +147,7 @@ begin
 	TestCtrl : component BigDesign_TestController
 		generic map (
 			PATTERN        => PATTERN,
-			SCALING_FACTOR => SCALING_FACTOR
+			SCALING_FACTOR => integer'value(SCALING_FACTOR)
 		)
 		port map (
 			Clock            => Clock_100MHz,
