@@ -19,6 +19,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =============================================================================
+source ../lib/OSVVM-Scripts/StartUp.tcl
+# source ../lib/PoC/Tools/OSVVM/poc.tcl
+
 namespace eval ::poc {
 	proc getEnv {var {default ""}} {
 		if {[info exists ::env($var)]} {
@@ -40,10 +43,13 @@ namespace eval ::BigDesign {
 	variable scalingFactor 100;  # scale length of simulation
 }
 
-source ../lib/OSVVM-Scripts/StartUp.tcl
-# source ../lib/OSVVM-Scripts/StartNVC.tcl
+if {[info exists ::env(GITLAB_CI)]} {
+	set buildNamePrefix ""
+} else {
+	set buildNamePrefix "${::osvvm::ToolNameVersion}-"
+}
 
-build ../lib/OsvvmLibraries.pro
+build ../lib/OsvvmLibraries.pro [BuildName "${buildNamePrefix}OsvvmLibraries"]
 
 if {$::osvvm::ToolName eq "GHDL"} {
 	SetExtendedAnalyzeOptions {-frelaxed -Wno-specs -Wno-elaboration}
@@ -85,9 +91,9 @@ Other tools:
 set ::osvvm::AnalyzeErrorStopCount 1
 set ::osvvm::SimulateErrorStopCount 1
 
-build ../lib/PoC/src/PoC.pro
-build ../src/BigDesign.pro
+build ../lib/PoC/src/PoC.pro [BuildName "${buildNamePrefix}PoC"]
+build ../src/BigDesign.pro   [BuildName "${buildNamePrefix}BigDesign"]
 
 # SetSaveWaves
 
-build ../tb/RunAllTests.pro
+build ../tb/RunAllTests.pro  [BuildName "${buildNamePrefix}RunAllTests"]

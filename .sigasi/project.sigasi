@@ -1,17 +1,26 @@
 {
-    "name": "BigDesign",
-    "targets": {
-       "Generic": {
+	"name": "BigDesign",
+	"targets": {
+		"Generic": {
 			"environment": {
 				"BOARD": "GENERIC",
 				"VENDOR": "GENERIC",
-                "OSVVM_TOOL": "Sigasi"
+				"OSVVM_TOOL": "Sigasi"
 			},
-            "command" : "cd temp && vsim -do ../regression.tcl",
-			"ignore": ["temp"],
-            "dependencies": [
-                {"Vivado": {"version": "Vivado2025.2", "targets": ["unisim"] } }
-            ]
-        }
-    }
+			"command": "cd temp && vsim -do ../regression.tcl",
+			"ignore": [
+				"temp"
+			],
+			"dependencies": [
+				{
+					"Vivado": {
+						"version": "Vivado2025.2",
+						"targets": [
+							"unisim"
+						]
+					}
+				}
+			]
+		}
+	}
 }
