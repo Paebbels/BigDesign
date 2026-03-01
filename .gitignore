@@ -1,8 +1,14 @@
 /bd/*/**/*.*
 !/bd/*/*.bd
 !/bd/*/hdl/*_wrapper.vhd*
+!/bd/*/synth/*.vhd*
 
 /project/**/*.*
 !/project/*.xpr
 
+/.sigasi/**/*.*
+!/.sigasi/project.sigasi
+
 /src/PoC/my_project.vhdl
+
+/temp
