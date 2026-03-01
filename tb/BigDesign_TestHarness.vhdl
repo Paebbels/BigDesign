@@ -1,3 +1,24 @@
+-- =============================================================================
+-- Authors:
+--   Adrian Weiland
+--
+-- License:
+-- =============================================================================
+-- Copyright 2025-2026 The BigDesign Authors
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--    http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =============================================================================
+
 library IEEE;
 use     IEEE.std_logic_1164.all;
 
@@ -17,7 +38,8 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity BigDesign_TestHarness is
 	generic (
-		PATTERN : string := "1"
+		PATTERN        : string := "1";
+		SCALING_FACTOR : string := "100"
 	);
 end entity;
 
@@ -38,10 +60,11 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataToModel(DATA_BITS - 1 downto 0),
 		DataFromModel(DATA_BITS - 1 downto 0)
 	);
-	
+
 	component BigDesign_TestController is
 		generic (
-			PATTERN : string
+			PATTERN        : string;
+			SCALING_FACTOR : natural
 		);
 		port (
 			Clock            : in  std_logic;
@@ -99,12 +122,12 @@ begin
 
 		signal Axi4Rec : T_Axi4Rec;
 	begin
-		
+
 		manager: entity OSVVM_AXI4.Axi4Manager
 			generic map (
 				MODEL_ID_NAME => "manager_" & to_string(i),
 				tperiod_Clk   => 10 ns,
-				DEFAULT_DELAY => 0 ns 
+				DEFAULT_DELAY => 0 ns
 			)
 			port map (
 				-- Globals
@@ -123,7 +146,8 @@ begin
 
 	TestCtrl : component BigDesign_TestController
 		generic map (
-			PATTERN => PATTERN
+			PATTERN        => PATTERN,
+			SCALING_FACTOR => integer'value(SCALING_FACTOR)
 		)
 		port map (
 			Clock            => Clock_100MHz,

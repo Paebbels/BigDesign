@@ -1,3 +1,24 @@
+-- =============================================================================
+-- Authors:
+--   Adrian Weiland
+--
+-- License:
+-- =============================================================================
+-- Copyright 2025-2026 The BigDesign Authors
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--    http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =============================================================================
+
 library IEEE;
 use     IEEE.std_logic_1164.all;
 use     IEEE.numeric_std.all;
@@ -14,7 +35,7 @@ use     lib_test.BigDesign_tb_pkg.all;
 
 architecture Simple of BigDesign_TestController is
 
-	signal WriteDone : std_logic       := '0';
+	signal WriteDone : std_logic := '0';
 
 begin
 	ControlProc: process
@@ -136,6 +157,7 @@ begin
 	-------------- Memory instances ---------------
 	-----------------------------------------------
 	BackdoorProc : process
+		constant ProcID  : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
 		variable Reg_i  : AXIAddressType := 32x"00";
 		variable Data_i : AXIAddressType := 32x"11";
@@ -143,7 +165,7 @@ begin
 	begin
 		WaitForToggle(WriteDone);
 		Read(MemoryID, Reg_Test_1, ReadData);  -- alias for MemRead
-		AffirmIfEqual(ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
+		AffirmIfEqual(ProcID, ReadData, resize(Data_Test_1, 8), "Reading memory through backdoor.");
 		wait for 100 ns;
 
 		if PATTERN = "RepeatedSequentialBlockWrite" then
@@ -151,7 +173,7 @@ begin
 			-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
 			-- 	2. measure time from start to finish
 			-- 	-> loop n times so that n equals 1 min
-			for i in 0 to NUM_ITERATIONS loop  -- ~1 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
 				for j in 0 to NUM_BYTES_PER_BLOCK - 1 loop
 					Write(MemoryID, std_logic_vector(to_unsigned(j, AXI_ADDR_WIDTH)), Data_i(7 downto 0));
 				end loop;
@@ -161,7 +183,7 @@ begin
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
 			--  -> 4b Byte address + 18b word address
-			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
 				Write(MemoryID, Reg_i, Data_i(7 downto 0));
 				Reg_i := 10x"00" & DataRV.RandSlv(22);
 			end loop;
@@ -170,7 +192,7 @@ begin
 			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
 			--  -> 4b Byte address + 26b word address
-			for i in 0 to NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
+			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
 				Write(MemoryID, Reg_i, Data_i(7 downto 0));
 				Reg_i := 2x"00" & DataRV.RandSlv(30);
 			end loop;
