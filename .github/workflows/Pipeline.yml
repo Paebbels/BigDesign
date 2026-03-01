@@ -66,15 +66,16 @@ jobs:
       - name: 🚧 Inspect Ant+JUnit Unittest Summary XML
 #        if: matrix.name == 'Ubuntu'
         run: |
-          cat temp/*.xml
+          cat temp/*/*.xml
 
-      - name: '📤 Upload artifact: logs'
-        uses: actions/upload-artifact@v6
+      - name: '📤 Upload artifact: junit-${{ matrix.name }}-nvc'
+        uses: pyTooling/upload-artifact@v7
         with:
           name: junit-${{ matrix.name }}-nvc
-          include-hidden-files: true
+          working-directory: temp
           path: |
-            temp/*.xml
+            */*.xml
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
 
@@ -144,13 +145,14 @@ jobs:
         run: |
           cat temp/*/*.xml
 
-      - name: '📤 Upload artifact: logs'
-        uses: actions/upload-artifact@v6
+      - name: '📤 Upload artifact: junit-${{ matrix.name }}-ghdl-${{ matrix.backend }}'
+        uses: pyTooling/upload-artifact@v7
         with:
           name: junit-${{ matrix.name }}-ghdl-${{ matrix.backend }}
-          include-hidden-files: true
+          working-directory: temp
           path: |
-            temp/*/*.xml
+            */*.xml
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
 
