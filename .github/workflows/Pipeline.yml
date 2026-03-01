@@ -69,7 +69,7 @@ jobs:
           cat temp/*.xml
 
       - name: '📤 Upload artifact: logs'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: junit-${{ matrix.name }}-nvc
           include-hidden-files: true
@@ -145,7 +145,7 @@ jobs:
           cat temp/*/*.xml
 
       - name: '📤 Upload artifact: logs'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: junit-${{ matrix.name }}-ghdl-${{ matrix.backend }}
           include-hidden-files: true
