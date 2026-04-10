@@ -37,7 +37,6 @@ entity Toplevel is
 end entity;
 
 architecture top of Toplevel is
-
 	package AXI4_A49_D128_I6 is new PoC.AXI4Full_Sized
 		generic map (
 			ADDRESS_BITS => 49,
