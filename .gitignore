@@ -11,4 +11,6 @@
 
 /src/PoC/my_project.vhdl
 
+*.bkp
+
 /temp

@@ -2,8 +2,8 @@
 --Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
---Date        : Thu Jan 29 10:25:17 2026
---Host        : DESKTOP-ADRIAN running 64-bit major release  (build 9200)
+--Date        : Fri Apr 10 17:56:14 2026
+--Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
 --Command     : generate_target BlockDesign.bd
 --Design      : BlockDesign
 --Purpose     : IP block netlist
