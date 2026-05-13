@@ -82,14 +82,14 @@ begin
 		constant ProcID : AlertLogIDType := NewID("HPM1_FPD_Proc", TCID);
 		variable Data   : std_logic_vector(HPM1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
-		WaitForClock(HPM1_FPD_Rec, 2); 
+		WaitForClock(HPM1_FPD_Rec, 2);
 
 		-- Currently not doing anything
 
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
-	
+
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
@@ -178,10 +178,10 @@ begin
 					Write(MemoryID, std_logic_vector(to_unsigned(j, AXI_ADDR_WIDTH)), Data_i(7 downto 0));
 				end loop;
 			end loop;
-		
+
 		elsif PATTERN = "RandomSequentialWrite_4MB_Range" then
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
-			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB) 
+			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB)
 			--  -> 4b Byte address + 18b word address
 			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
 				Write(MemoryID, Reg_i, Data_i(7 downto 0));

@@ -67,13 +67,8 @@ architecture rtl of Design is
 	signal Manager_m2s    : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
 	signal Manager_s2m    : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
 
-	-- signal Config_m2s_Stream : ;
-	-- signal Config_s2m_Stream : ;
-	
-	-- signal Config_m2s_vec : T_AXI4STREAM_M2S_VECTOR;
-	-- signal Config_s2m_vec : T_AXI4STREAM_M2S_VECTOR;
-	-- signal DeMuxControl   : std_logic_vector(0 downto 0) := (others => '0');  -- currently only GPIO (Version Reg, Sampling Reg will be added)
-
+	signal Config_GPIO_m2s : AXI4Lite_A40_D32.Sized_M2S;
+	signal Config_GPIO_s2m : AXI4Lite_A40_D32.Sized_S2M;
 begin
 
 	-- Create clocks (later replaced by MMCM)
@@ -103,19 +98,36 @@ begin
 			Subordinate_clks => Subordinate_clks
 		);
 
-	-- Conv_AXI4L_AXI4S: convert AXI4 Lite to AXI4 Stream
+	Demux_blk : block
+		--                                                           GPIO
+		constant BASE_ADDRESS      : T_SLUV               := (0 => 32x"0000");
+		constant BASE_ADDRESS_MASK : BASE_ADDRESS'subtype := (0 => 32x"E000");  -- 3 select bits
 
-	-- AXI4_DeMux: entity PoC.AXI4Lite_DeMux
-		-- port map (
-			-- Clock        => PS_Clock,
-			-- Reset        => PL_Reset,
+		signal DeMux_Out_m2s : AXI4Lite_A40_D32.Sized_M2S_vector(BASE_ADDRESS'range);
+		signal DeMux_Out_s2m : AXI4Lite_A40_D32.Sized_S2M_vector(BASE_ADDRESS'range);
 
-			-- DeMuxControl => DeMuxControl,
-			-- In_M2S       => Config_m2s,
-			-- In_S2M       => Config_s2m,
-			-- Out_M2S      => Config_m2s_vec,
-			-- Out_S2M      => Config_s2m_vec
-		-- );
+	begin
+		AXI4L_DeMux: entity PoC.AXI4Lite_DeMux
+			generic map (
+				BASE_ADDRESS      => BASE_ADDRESS,
+				BASE_ADDRESS_MASK => BASE_ADDRESS_MASK,
+				PIPELINE_IN       => 0,
+				PIPELINE_OUT      => (BASE_ADDRESS'range => 0)
+			)
+			port map (
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+
+				In_M2S       => Config_m2s,
+				In_S2M       => Config_s2m,
+
+				Out_M2S      => DeMux_Out_m2s,
+				Out_S2M      => DeMux_Out_s2m
+			);
+
+			Config_GPIO_m2s  <= DeMux_Out_m2s(0);
+			DeMux_Out_s2m(0) <= Config_GPIO_s2m;
+	end block;
 
 	blkGPIO : block
 		constant CONFIG : T_AXI4_Register_Vector := (
@@ -134,8 +146,8 @@ begin
 				Clock                         => PS_Clock,
 				Reset                         => PL_Reset,
 
-				AXI4Lite_m2s                  => Config_m2s,
-				AXI4Lite_s2m                  => Config_s2m,
+				AXI4Lite_m2s                  => Config_GPIO_m2s,
+				AXI4Lite_s2m                  => Config_GPIO_s2m,
 				AXI4Lite_IRQ                  => open,
 
 				RegisterFile_ReadPort         => ReadPort,
