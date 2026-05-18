@@ -546,7 +546,7 @@ begin
 	begin
 		Manager : Axi4ManagerVti
 		generic map (
-			MODEL_ID_NAME => "HPM0_LPD"
+			MODEL_ID_NAME => "HPM0_LPD (Config)"
 		)
 		port map (
 			-- Globals

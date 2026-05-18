@@ -99,16 +99,21 @@ begin
 		);
 
 	Demux_blk : block
-		--                                                           GPIO            HRC
-		constant BASE_ADDRESS      : T_SLUV               := (0 => 40x"0000");--, 1 => 40x"2000");
-		constant BASE_ADDRESS_MASK : BASE_ADDRESS'subtype := (0 to 0 => 40x"E000");  -- 3 select bits
+		constant DEVICE_GPIO_IDX : natural := 0;
+		constant DEVICE_HRC_IDX  : natural := 1;
+
+		constant BASE_ADDRESS : T_SLUV := (
+			DEVICE_GPIO_IDX => 40x"8008_0000",
+			DEVICE_HRC_IDX  => 40x"8002_2000"
+		);
+		constant BASE_ADDRESS_MASK : BASE_ADDRESS'subtype := (BASE_ADDRESS'range => 40x"8FFF_0000");
 
 		signal DeMux_Out_m2s : AXI4Lite_A40_D32.Sized_M2S_vector(BASE_ADDRESS'range);
 		signal DeMux_Out_s2m : AXI4Lite_A40_D32.Sized_S2M_vector(BASE_ADDRESS'range);
 
 		-- UART
-		signal UART_TX : std_logic;
-		signal UART_RX : std_logic := '1';
+		--signal UART_TX : std_logic;
+		--signal UART_RX : std_logic := '1';
 
 	begin
 		AXI4L_DeMux: entity PoC.AXI4Lite_DeMux
@@ -129,29 +134,29 @@ begin
 				Out_S2M      => DeMux_Out_s2m
 			);
 
-			Config_GPIO_m2s  <= DeMux_Out_m2s(0);
-			DeMux_Out_s2m(0) <= Config_GPIO_s2m;
+			Config_GPIO_m2s  <= DeMux_Out_m2s(DEVICE_GPIO_IDX);
+			DeMux_Out_s2m(DEVICE_GPIO_IDX) <= Config_GPIO_s2m;
 
 		-- High resolution clock
-		--HRC: entity PoC.AXI4Lite_HighResolutionClock
-		--	generic map (
-		--		CLOCK_FREQUENCY      => 100 MHz,
-		--		USE_CDC              => True
-		--		--SECOND_RESOLUTION    => SECOND_RESOLUTION
-		--	)
-		--	port map (
-		--		Clock        => PS_Clock,
-		--		Reset        => PL_Reset,
-		--
-		--		AXI_clock    => PS_Clock,  -- todo: check
-		--		AXI_reset    => PL_Reset,  -- todo: check
-		--
-		--		AXI4Lite_m2s => DeMux_Out_m2s(1),
-		--		AXI4Lite_s2m => DeMux_Out_s2m(1),
-		--
-		--		Nanoseconds  => open,
-		--		Datetime     => open
-		--	);
+		HRC: entity PoC.AXI4Lite_HighResolutionClock
+			generic map (
+				CLOCK_FREQUENCY      => 100 MHz,
+				USE_CDC              => False
+				--SECOND_RESOLUTION    => SECOND_RESOLUTION
+			)
+			port map (
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+
+				AXI_clock    => PS_Clock,  -- todo: check
+				AXI_reset    => PL_Reset,  -- todo: check
+
+				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_HRC_IDX),
+				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_HRC_IDX),
+
+				Nanoseconds  => open,
+				Datetime     => open
+			);
 
 		-- UART
 		--UART: entity PoC.AXI4Lite_UART
