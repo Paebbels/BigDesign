@@ -51,8 +51,7 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	set ::BigDesign::scalingFactor 1
 
 	# FIXME: this is a hardcoded path
-	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
-
+	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2026.04/Vivado/2025.2/unisim}
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl

@@ -40,7 +40,7 @@ entity BlockDesign_PS_0 is
 		maxihpm0_fpd_aclk : in STD_LOGIC;
 		maxihpm1_fpd_aclk : in STD_LOGIC;
 		maxihpm0_lpd_aclk : in STD_LOGIC;
-		
+
 		saxihp0_fpd_aclk  : in STD_LOGIC;
 		saxihp1_fpd_aclk  : in STD_LOGIC;
 		saxihp2_fpd_aclk  : in STD_LOGIC;
@@ -351,12 +351,12 @@ begin
 			WriteData   (
 				Data(maxigp0_wdata'range),
 				Strb(maxigp0_wstrb'range),
-				User(-1 downto 0),
+				User(maxigp0_awuser'range),
 				ID(maxigp0_awid'range)
 			),
 			WriteResponse(
 				ID(maxigp0_bid'range),
-				User(-1 downto 0)
+				User(maxigp0_awuser'range)
 			),
 			ReadAddress (
 				Addr(maxigp0_araddr'range),
@@ -366,7 +366,7 @@ begin
 			ReadData    (
 				Data(maxigp0_rdata'range),
 				ID(maxigp0_rid'range),
-				User(-1 downto 0)
+				User(maxigp0_aruser'range)
 			)
 		);
 	begin
@@ -404,6 +404,7 @@ begin
 
 		AxiBus.WriteResponse.ID    <= maxigp0_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp0_bresp;
+		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp0_bvalid;
 		maxigp0_bready             <= AxiBus.WriteResponse.Ready;
 
@@ -424,6 +425,7 @@ begin
 		AxiBus.ReadData.Data       <= maxigp0_rdata;
 		AxiBus.ReadData.Resp       <= maxigp0_rresp;
 		AxiBus.ReadData.Last       <= maxigp0_rlast;
+		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp0_rvalid;
 		maxigp0_rready             <= AxiBus.ReadData.Ready;
 	end block;
@@ -438,12 +440,12 @@ begin
 			WriteData   (
 				Data(maxigp1_wdata'range),
 				Strb(maxigp1_wstrb'range),
-				User(-1 downto 0),
+				User(maxigp1_awuser'range),
 				ID(maxigp1_awid'range)
 			),
 			WriteResponse(
 				ID(maxigp1_bid'range),
-				User(-1 downto 0)
+				User(maxigp1_awuser'range)
 			),
 			ReadAddress (
 				Addr(maxigp1_araddr'range),
@@ -453,7 +455,7 @@ begin
 			ReadData    (
 				Data(maxigp1_rdata'range),
 				ID(maxigp1_rid'range),
-				User(-1 downto 0)
+				User(maxigp1_aruser'range)
 			)
 		);
 	begin
@@ -491,6 +493,7 @@ begin
 
 		AxiBus.WriteResponse.ID    <= maxigp1_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp1_bresp;
+		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp1_bvalid;
 		maxigp1_bready             <= AxiBus.WriteResponse.Ready;
 
@@ -511,6 +514,7 @@ begin
 		AxiBus.ReadData.Data       <= maxigp1_rdata;
 		AxiBus.ReadData.Resp       <= maxigp1_rresp;
 		AxiBus.ReadData.Last       <= maxigp1_rlast;
+		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp1_rvalid;
 		maxigp1_rready             <= AxiBus.ReadData.Ready;
 	end block;
@@ -525,12 +529,12 @@ begin
 			WriteData   (
 				Data(maxigp2_wdata'range),
 				Strb(maxigp2_wstrb'range),
-				User(-1 downto 0),
+				User(maxigp2_awuser'range),
 				ID(maxigp2_awid'range)
 			),
 			WriteResponse(
 				ID(maxigp2_bid'range),
-				User(-1 downto 0)
+				User(maxigp2_awuser'range)
 			),
 			ReadAddress (
 				Addr(maxigp2_araddr'range),
@@ -540,7 +544,7 @@ begin
 			ReadData    (
 				Data(maxigp2_rdata'range),
 				ID(maxigp2_rid'range),
-				User(-1 downto 0)
+				User(maxigp2_aruser'range)
 			)
 		);
 	begin
@@ -578,6 +582,7 @@ begin
 
 		AxiBus.WriteResponse.ID    <= maxigp2_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp2_bresp;
+		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp2_bvalid;
 		maxigp2_bready             <= AxiBus.WriteResponse.Ready;
 
@@ -598,6 +603,7 @@ begin
 		AxiBus.ReadData.Data       <= maxigp2_rdata;
 		AxiBus.ReadData.Resp       <= maxigp2_rresp;
 		AxiBus.ReadData.Last       <= maxigp2_rlast;
+		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp2_rvalid;
 		maxigp2_rready             <= AxiBus.ReadData.Ready;
 	end block;
@@ -612,12 +618,12 @@ begin
 			WriteData   (
 				Data(saxigp2_wdata'range),
 				Strb(saxigp2_wstrb'range),
-				User(-1 downto 0),
+				User(0 downto 0),
 				ID(saxigp2_awid'range)
 			),
 			WriteResponse(
 				ID(saxigp2_bid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			),
 			ReadAddress (
 				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp2_araddr'range),
@@ -627,7 +633,7 @@ begin
 			ReadData    (
 				Data(saxigp2_rdata'range),
 				ID(saxigp2_rid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			)
 		);
 	begin
@@ -661,6 +667,7 @@ begin
 		AxiBus.WriteData.Data       <= saxigp2_wdata;
 		AxiBus.WriteData.Strb       <= saxigp2_wstrb;
 		AxiBus.WriteData.Last       <= saxigp2_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp2_wvalid;
 		saxigp2_wready              <= AxiBus.WriteData.Ready;
 
@@ -700,12 +707,12 @@ begin
 			WriteData   (
 				Data(saxigp3_wdata'range),
 				Strb(saxigp3_wstrb'range),
-				User(-1 downto 0),
+				User(0 downto 0),
 				ID(saxigp3_awid'range)
 			),
 			WriteResponse(
 				ID(saxigp3_bid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			),
 			ReadAddress (
 				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp3_araddr'range),
@@ -715,7 +722,7 @@ begin
 			ReadData    (
 				Data(saxigp3_rdata'range),
 				ID(saxigp3_rid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			)
 		);
 	begin
@@ -749,6 +756,7 @@ begin
 		AxiBus.WriteData.Data       <= saxigp3_wdata;
 		AxiBus.WriteData.Strb       <= saxigp3_wstrb;
 		AxiBus.WriteData.Last       <= saxigp3_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp3_wvalid;
 		saxigp3_wready              <= AxiBus.WriteData.Ready;
 
@@ -788,12 +796,12 @@ begin
 			WriteData   (
 				Data(saxigp3_wdata'range),
 				Strb(saxigp3_wstrb'range),
-				User(-1 downto 0),
+				User(0 downto 0),
 				ID(saxigp3_awid'range)
 			),
 			WriteResponse(
 				ID(saxigp3_bid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			),
 			ReadAddress (
 				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp3_araddr'range),
@@ -803,7 +811,7 @@ begin
 			ReadData    (
 				Data(saxigp3_rdata'range),
 				ID(saxigp3_rid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			)
 		);
 	begin
@@ -837,6 +845,7 @@ begin
 		AxiBus.WriteData.Data       <= saxigp4_wdata;
 		AxiBus.WriteData.Strb       <= saxigp4_wstrb;
 		AxiBus.WriteData.Last       <= saxigp4_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp4_wvalid;
 		saxigp4_wready              <= AxiBus.WriteData.Ready;
 
@@ -876,12 +885,12 @@ begin
 			WriteData   (
 				Data(saxigp5_wdata'range),
 				Strb(saxigp5_wstrb'range),
-				User(-1 downto 0),
+				User(0 downto 0),
 				ID(saxigp5_awid'range)
 			),
 			WriteResponse(
 				ID(saxigp5_bid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			),
 			ReadAddress (
 				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp5_araddr'range),
@@ -891,7 +900,7 @@ begin
 			ReadData    (
 				Data(saxigp5_rdata'range),
 				ID(saxigp5_rid'range),
-				User(-1 downto 0)
+				User(0 downto 0)
 			)
 		);
 	begin
@@ -925,6 +934,7 @@ begin
 		AxiBus.WriteData.Data       <= saxigp5_wdata;
 		AxiBus.WriteData.Strb       <= saxigp5_wstrb;
 		AxiBus.WriteData.Last       <= saxigp5_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp5_wvalid;
 		saxigp5_wready              <= AxiBus.WriteData.Ready;
 
