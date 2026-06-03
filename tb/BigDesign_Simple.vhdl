@@ -160,7 +160,7 @@ begin
 		constant ProcID  : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
 		variable Reg_i  : AXIAddressType;
-		variable Data_i : AXIAddressType := 40x"11";
+		variable Data_i : AXIAddressType := 32x"11";
 		variable DataRV                  : RandomPType;
 	begin
 		WaitForToggle(WriteDone);

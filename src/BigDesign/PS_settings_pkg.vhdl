@@ -24,6 +24,7 @@ use     IEEE.std_logic_1164.all;
 use     IEEE.numeric_std.all;
 
 library PoC;
+use     PoC.vectors.all;
 use     PoC.AXI4_Full.all;
 
 
@@ -48,6 +49,16 @@ package PS_settings_pkg is
 	constant CONFIG_DATA_BITS          : positive := 32;
 	constant DATA_BITS                 : positive := 128;
 	constant USER_BITS                 : positive := 16;
+
+	constant AXI_ADDR_WIDTH : integer := 32;
+  constant AXI_DATA_WIDTH   : integer := 32;
+  constant AXI_STRB_WIDTH   : integer := AXI_DATA_WIDTH / 8;
+
+	----------------------
+	------- Types --------
+	----------------------
+  subtype AXIAddressType is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
+  subtype AXIDataType    is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
 
 	----------------------
 	------ Packages ------
@@ -81,4 +92,34 @@ package PS_settings_pkg is
 			USER_BITS    => USER_BITS,
 			ID_BITS      => SUBORDINATE_ID_BITS
 		);
+
+	------------------------
+  -- Register addresses --
+	------------------------
+	constant DEVICE_VERSION_IDX : natural := 0;
+	constant DEVICE_SETTING_IDX : natural := 1;
+	constant DEVICE_HRC_IDX     : natural := 2;
+	constant DEVICE_GPIO_IDX    : natural := 3;
+	constant DEVICE_UART_IDX    : natural := 4;
+	-- constant DEVICE_I2C_IDX     : natural := 5;
+	-- constant DEVICE_SPI_IDX     : natural := 6;
+	-- constant DEVICE_AXI_DMA_IDX : natural := 7;
+
+	constant BASE_ADDRESS_VERSION : AXIAddressType := 32x"8000_0000";
+	constant BASE_ADDRESS_SETTING : AXIAddressType := 32x"8001_0000";
+	constant BASE_ADDRESS_HRC     : AXIAddressType := 32x"8002_0000";
+	constant BASE_ADDRESS_GPIO    : AXIAddressType := 32x"8008_0000";
+	constant BASE_ADDRESS_UART    : AXIAddressType := 32x"8009_0000";
+	-- constant BASE_ADDRESS_I2C     : AXIAddressType := 40x"800A_0000";
+	-- constant BASE_ADDRESS_SPI     : AXIAddressType := 40x"800B_0000";
+	-- constant BASE_ADDRESS_AXI_DMA : AXIAddressType := 40x"8100_0000";
+
+	constant BASE_ADDRESSES : T_SLUV := (
+		DEVICE_VERSION_IDX => unsigned(BASE_ADDRESS_VERSION),
+		DEVICE_SETTING_IDX => unsigned(BASE_ADDRESS_SETTING),
+		DEVICE_HRC_IDX     => unsigned(BASE_ADDRESS_HRC),
+		DEVICE_GPIO_IDX    => unsigned(BASE_ADDRESS_GPIO),
+		DEVICE_UART_IDX    => unsigned(BASE_ADDRESS_UART)
+	);
+	constant BASE_ADDRESSES_MASK : BASE_ADDRESSES'subtype := (BASE_ADDRESSES'range => 32x"8FFF_0000");
 end package;

@@ -99,29 +99,20 @@ begin
 		);
 
 	Demux_blk : block
-		constant DEVICE_GPIO_IDX : natural := 0;
-		constant DEVICE_HRC_IDX  : natural := 1;
-
-		constant BASE_ADDRESS : T_SLUV := (
-			DEVICE_GPIO_IDX => 40x"8008_0000",
-			DEVICE_HRC_IDX  => 40x"8002_2000"
-		);
-		constant BASE_ADDRESS_MASK : BASE_ADDRESS'subtype := (BASE_ADDRESS'range => 40x"8FFF_0000");
-
-		signal DeMux_Out_m2s : AXI4Lite_A40_D32.Sized_M2S_vector(BASE_ADDRESS'range);
-		signal DeMux_Out_s2m : AXI4Lite_A40_D32.Sized_S2M_vector(BASE_ADDRESS'range);
+		signal DeMux_Out_m2s : AXI4Lite_A40_D32.Sized_M2S_vector(BASE_ADDRESSES'range);
+		signal DeMux_Out_s2m : AXI4Lite_A40_D32.Sized_S2M_vector(BASE_ADDRESSES'range);
 
 		-- UART
-		--signal UART_TX : std_logic;
-		--signal UART_RX : std_logic := '1';
+		signal UART_TX : std_logic;
+		signal UART_RX : std_logic := '1';
 
 	begin
 		AXI4L_DeMux: entity PoC.AXI4Lite_DeMux
 			generic map (
-				BASE_ADDRESS      => BASE_ADDRESS,
-				BASE_ADDRESS_MASK => BASE_ADDRESS_MASK,
+				BASE_ADDRESS      => BASE_ADDRESSES,
+				BASE_ADDRESS_MASK => BASE_ADDRESSES_MASK,
 				PIPELINE_IN       => 0,
-				PIPELINE_OUT      => (BASE_ADDRESS'range => 0)
+				PIPELINE_OUT      => (BASE_ADDRESSES'range => 0)
 			)
 			port map (
 				Clock        => PS_Clock,
@@ -137,6 +128,11 @@ begin
 			Config_GPIO_m2s  <= DeMux_Out_m2s(DEVICE_GPIO_IDX);
 			DeMux_Out_s2m(DEVICE_GPIO_IDX) <= Config_GPIO_s2m;
 
+		-------------
+		-- Devices --
+		-------------
+		-- Version register (todo)
+		-- Setting register (todo)
 		-- High resolution clock
 		HRC: entity PoC.AXI4Lite_HighResolutionClock
 			generic map (
@@ -159,25 +155,26 @@ begin
 			);
 
 		-- UART
-		--UART: entity PoC.AXI4Lite_UART
-		--	generic map (
-		--		CLOCK_FREQ  => 100 MHz
-		--	)
-		--	port map (
-		--		Clock       => PS_Clock,
-		--		Reset	      => PL_Reset,
-		--
-		--		Config_m2s  => DeMux_Out_m2s(2),
-		--		Config_s2m  => DeMux_Out_s2m(2),
-		--		Config_IRQ  => open,
-		--
-		--		UART_TX	    => UART_TX,
-		--		UART_RX	    => UART_RX,
-		--		UART_RTS    => open,
-		--		UART_CTS    => 'U'
-		--	);
+		UART: entity PoC.AXI4Lite_UART
+			generic map (
+				CLOCK_FREQ  => 100 MHz
+			)
+			port map (
+				Clock       => PS_Clock,
+				Reset	      => PL_Reset,
+
+				Config_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
+				Config_s2m  => DeMux_Out_s2m(DEVICE_UART_IDX),
+				Config_IRQ  => open,
+
+				UART_TX	    => UART_TX,
+				UART_RX	    => UART_RX,
+				UART_RTS    => open,
+				UART_CTS    => 'U'
+			);
 	end block;
 
+	-- GPIO
 	GPIO_blk : block
 		constant CONFIG : T_AXI4_Register_Vector := (
 			to_AXI4_Register(Name => "Buttons", Address => 32x"00", RegisterMode => ReadOnly_NotRegistered),
