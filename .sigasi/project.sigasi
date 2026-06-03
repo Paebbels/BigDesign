@@ -5,7 +5,8 @@
 			"environment": {
 				"BOARD": "GENERIC",
 				"VENDOR": "GENERIC",
-				"OSVVM_TOOL": "Sigasi"
+				"OSVVM_TOOL": "Sigasi",
+				"OSVVM_VHDL_TARGET": "2019"
 			},
 			"command": "cd temp && vsim -do ../regression.tcl",
 			"ignore": [
