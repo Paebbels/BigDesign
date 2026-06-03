@@ -40,7 +40,7 @@ checkForBuildErrors
 # -d -debug       enable debugging
 # -w -waves       save waveforms
 # -g -gui         disables system exit (i.e. on errors)
-configureOSVVM -stop 1
+configureOSVVM -stop 1 -g
 if {$::osvvm::ToolName eq "GHDL"} {
 	set ::BigDesign::scalingFactor 10
 

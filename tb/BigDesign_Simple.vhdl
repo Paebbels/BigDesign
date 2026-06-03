@@ -157,11 +157,11 @@ begin
 	-------------- Memory instances ---------------
 	-----------------------------------------------
 	BackdoorProc : process
-		constant ProcID  : AlertLogIDType := NewID("Memory", TCID);
+		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i  : AXIAddressType;
-		variable Data_i : AXIAddressType := 32x"11";
-		variable DataRV                  : RandomPType;
+		variable Reg_i    : AXIAddressType;
+		variable Data_i   : AXIDataType := 32x"11";
+		variable DataRV   : RandomPType;
 	begin
 		WaitForToggle(WriteDone);
 		Read(MemoryID, REG_TEST, ReadData);  -- alias for MemRead

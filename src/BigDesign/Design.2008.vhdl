@@ -61,14 +61,14 @@ architecture rtl of Design is
 	signal Clock_300 : std_logic;
 
 	-- Control signals
-	signal Config_m2s     : AXI4Lite_A40_D32.Sized_M2S;
-	signal Config_s2m     : AXI4Lite_A40_D32.Sized_S2M;
+	signal Config_m2s     : AXI4Lite_A32_D32.Sized_M2S;
+	signal Config_s2m     : AXI4Lite_A32_D32.Sized_S2M;
 
 	signal Manager_m2s    : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
 	signal Manager_s2m    : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
 
-	signal Config_GPIO_m2s : AXI4Lite_A40_D32.Sized_M2S;
-	signal Config_GPIO_s2m : AXI4Lite_A40_D32.Sized_S2M;
+	signal Config_GPIO_m2s : AXI4Lite_A32_D32.Sized_M2S;
+	signal Config_GPIO_s2m : AXI4Lite_A32_D32.Sized_S2M;
 begin
 
 	-- Create clocks (later replaced by MMCM)
@@ -99,8 +99,8 @@ begin
 		);
 
 	Demux_blk : block
-		signal DeMux_Out_m2s : AXI4Lite_A40_D32.Sized_M2S_vector(BASE_ADDRESSES'range);
-		signal DeMux_Out_s2m : AXI4Lite_A40_D32.Sized_S2M_vector(BASE_ADDRESSES'range);
+		signal DeMux_Out_m2s : AXI4Lite_A32_D32.Sized_M2S_vector(BASE_ADDRESSES'range);
+		signal DeMux_Out_s2m : AXI4Lite_A32_D32.Sized_S2M_vector(BASE_ADDRESSES'range);
 
 		-- UART
 		signal UART_TX : std_logic;
@@ -132,7 +132,23 @@ begin
 		-- Devices --
 		-------------
 		-- Version register (todo)
+		TermVersion : entity PoC.AXI4Lite_Termination_Subordinate
+			port map(
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_VERSION_IDX),
+				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_VERSION_IDX)
+			);
+		
 		-- Setting register (todo)
+		TermSetting : entity PoC.AXI4Lite_Termination_Subordinate
+			port map(
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_SETTING_IDX),
+				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_SETTING_IDX)
+			);
+
 		-- High resolution clock
 		HRC: entity PoC.AXI4Lite_HighResolutionClock
 			generic map (
@@ -141,36 +157,35 @@ begin
 				--SECOND_RESOLUTION    => SECOND_RESOLUTION
 			)
 			port map (
-				Clock        => PS_Clock,
-				Reset        => PL_Reset,
+				Clock          => PS_Clock,
+				Reset          => PL_Reset,
+				AXI4Lite_Clock => PS_Clock,  -- todo: check
+				AXI4Lite_Reset => PL_Reset,  -- todo: check
 
-				AXI_clock    => PS_Clock,  -- todo: check
-				AXI_reset    => PL_Reset,  -- todo: check
+				AXI4Lite_m2s   => DeMux_Out_m2s(DEVICE_HRC_IDX),
+				AXI4Lite_s2m   => DeMux_Out_s2m(DEVICE_HRC_IDX),
 
-				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_HRC_IDX),
-				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_HRC_IDX),
-
-				Nanoseconds  => open,
-				Datetime     => open
+				Nanoseconds    => open,
+				Datetime       => open
 			);
 
 		-- UART
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
-				CLOCK_FREQ  => 100 MHz
+				CLOCK_FREQ    => 100 MHz
 			)
 			port map (
-				Clock       => PS_Clock,
+				Clock         => PS_Clock,
 				Reset	      => PL_Reset,
 
-				Config_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
-				Config_s2m  => DeMux_Out_s2m(DEVICE_UART_IDX),
-				Config_IRQ  => open,
+				AXI4Lite_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
+				AXI4Lite_s2m  => DeMux_Out_s2m(DEVICE_UART_IDX),
+				AXI4Lite_irq  => open,
 
-				UART_TX	    => UART_TX,
-				UART_RX	    => UART_RX,
-				UART_RTS    => open,
-				UART_CTS    => 'U'
+				UART_TX	      => UART_TX,
+				UART_RX	      => UART_RX,
+				UART_RTS      => open,
+				UART_CTS      => 'U'
 			);
 	end block;
 

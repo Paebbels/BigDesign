@@ -1,4 +1,6 @@
-log /BigDesign_TestHarness/*
-log /BigDesign_TestHarness/DUT/*
-log /BigDesign_TestHarness/TestCtrl/*
-log /BigDesign_TestHarness/DUT/Demux_blk/*
+if {![info exists ::env(CI)]} {
+	log -rec /*
+	if {[file exists "../tb/BigDesign_Simple.do"]} {
+		do ../tb/BigDesign_Simple.do
+	}
+}

@@ -46,19 +46,20 @@ package PS_settings_pkg is
 
 	constant MEMORY_MODEL_ADDRESS_BITS : positive := 32;  -- fails for i.e. 40 ("bad pointer ...")
 
+	constant CONFIG_ADDRESS_BITS       : positive := 32;
 	constant CONFIG_DATA_BITS          : positive := 32;
 	constant DATA_BITS                 : positive := 128;
 	constant USER_BITS                 : positive := 16;
 
 	constant AXI_ADDR_WIDTH : integer := 32;
-  constant AXI_DATA_WIDTH   : integer := 32;
-  constant AXI_STRB_WIDTH   : integer := AXI_DATA_WIDTH / 8;
+	constant AXI_DATA_WIDTH : integer := 32;
+	constant AXI_STRB_WIDTH : integer := AXI_DATA_WIDTH / 8;
 
 	----------------------
 	------- Types --------
 	----------------------
-  subtype AXIAddressType is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
-  subtype AXIDataType    is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
+	subtype AXIAddressType is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
+	subtype AXIDataType    is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
 
 	----------------------
 	------ Packages ------
@@ -74,6 +75,12 @@ package PS_settings_pkg is
 	package AXI4Lite_A40_D32 is new PoC.AXI4Lite_Sized
 		generic map (
 			ADDRESS_BITS => MANAGER_ADDRESS_BITS,
+			DATA_BITS    => CONFIG_DATA_BITS
+		);
+	
+	package AXI4Lite_A32_D32 is new PoC.AXI4Lite_Sized
+		generic map (
+			ADDRESS_BITS => CONFIG_ADDRESS_BITS,
 			DATA_BITS    => CONFIG_DATA_BITS
 		);
 
