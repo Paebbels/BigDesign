@@ -33,8 +33,23 @@ namespace eval ::BigDesign {
 	variable scalingFactor 100;  # scale length of simulation
 }
 
-build ../lib/OsvvmLibraries.pro [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
-checkForBuildErrors
+set level 0 ;# Everything is built
+if {$argc > 0} {
+    switch -nocase -- [lindex $argv 0] {
+        "osvvm" { set level 0 }
+        "poc"   { set level 1 }
+        "dut"   { set level 2 }
+        "test"  { set level 3 }
+        default {
+            error "\nUnknown build level '[lindex $argv 0]' - Available levels are: 'osvvm', 'poc', 'dut', 'test'.\n"
+        }
+    }
+}
+
+if {$level <= 0} {
+	build ../lib/OsvvmLibraries.pro [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
+	checkForBuildErrors
+}
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
@@ -51,19 +66,25 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	set ::BigDesign::scalingFactor 1
 
 	# FIXME: this is a hardcoded path
-	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2026.04/Vivado/2025.2/unisim}
+	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	library unisim
 	analyze ../tb/unisim/vcomponents.pkg.vhdl
 
 }
 
-# configurePoC
-build ../lib/PoC/src/PoC.pro [BuildName "${::poc::buildNamePrefix}PoC"]
-checkForBuildErrors
+if {$level <= 1} {
+	# configurePoC
+	build ../lib/PoC/src/PoC.pro [BuildName "${::poc::buildNamePrefix}PoC"]
+	checkForBuildErrors
+}
 
-build ../src/BigDesign.pro   [BuildName "${::poc::buildNamePrefix}BigDesign"]
-checkForBuildErrors
+if {$level <= 2} {
+	build ../src/BigDesign.pro   [BuildName "${::poc::buildNamePrefix}BigDesign"]
+	checkForBuildErrors
+}
 
-build ../tb/RunAllTests.pro  [BuildName "${::poc::buildNamePrefix}RunAllTests"]
-checkForRunErrors
+if {$level <= 3} {
+	build ../tb/RunAllTests.pro  [BuildName "${::poc::buildNamePrefix}RunAllTests"]
+	checkForRunErrors
+}
