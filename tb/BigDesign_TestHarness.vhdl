@@ -69,7 +69,8 @@ architecture TestHarness of BigDesign_TestHarness is
 		port (
 			Clock            : in  std_logic;
 			Reset            : in  std_logic;
-			DataGen_Managers : inout AddressBusRecArrayType
+			DataGen_Managers : inout AddressBusRecArrayType;
+			GPIO_Button      : out std_logic_vector(1 downto 0) := (others => '0')
 		);
 	end component;
 begin
@@ -152,7 +153,8 @@ begin
 		port map (
 			Clock            => Clock_100MHz,
 			Reset            => '0',
-			DataGen_Managers => DataGen_Managers
+			DataGen_Managers => DataGen_Managers,
+			GPIO_Button      => GPIO_Button 
 		);
 
 end architecture;

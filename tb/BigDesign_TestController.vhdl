@@ -44,7 +44,8 @@ entity BigDesign_TestController is
 	port (
 		Clock            : in  std_logic;
 		Reset            : in  std_logic;
-		DataGen_Managers : inout AddressBusRecArrayType
+		DataGen_Managers : inout AddressBusRecArrayType;
+		GPIO_Button      : out std_logic_vector(1 downto 0) := (others => '0')
 	);
 
 	-- Connect transaction interfaces using external names

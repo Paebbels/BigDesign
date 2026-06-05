@@ -24,8 +24,8 @@ architecture rtl of design_GPIORegister is
 		to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite)
 	);
 
-	signal ReadPort  : T_SLVV(0 to CONFIG'length - 1)(31 downto 0) := (others => (others => 'Z'));
-	signal WritePort : T_SLVV(0 to CONFIG'length - 1)(31 downto 0) := (others => (others => 'Z'));
+	signal ReadPort  : T_SLVV(0 to CONFIG'length - 1)(31 downto 0);
+	signal WritePort : T_SLVV(0 to CONFIG'length - 1)(31 downto 0);
 begin
 	Reg: entity PoC.AXI4Lite_Register
 		generic map (
