@@ -33,8 +33,10 @@ package BigDesign_tb_pkg is
   -- Register addresses --
 	------------------------
   constant REG_TEST         : AXIAddressType := 32x"10";
-  constant REG_GPIO_BUTTONS : AXIAddressType := BASE_ADDRESS_GPIO;
+  constant REG_GPIO_BUTTONS : AXIAddressType := BASE_ADDRESS_GPIO or 32x"0000";
   constant REG_GPIO_LED     : AXIAddressType := BASE_ADDRESS_GPIO or 32x"0004";
+  
+  constant REG_SETTINGS_BAUDRATE : AXIAddressType := BASE_ADDRESS_SETTING or 32x"0000";
 
   constant DATA_TEST : AXIDataType   := 32x"01";
 

@@ -28,8 +28,10 @@ analyze BigDesign_tb_pkg.vhdl
 
 analyze BigDesign_Simple.vhdl
 analyze BigDesign_GPIO.vhdl
+analyze BigDesign_Settings.vhdl
 
 simulate BigDesign_Simple [generic PATTERN RepeatedSequentialBlockWrite]    [generic SCALING_FACTOR $::BigDesign::scalingFactor]
 simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
 simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
 simulate BigDesign_GPIO
+simulate BigDesign_Settings
