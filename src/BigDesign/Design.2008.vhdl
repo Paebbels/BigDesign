@@ -67,8 +67,6 @@ architecture rtl of Design is
 	signal Manager_m2s    : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
 	signal Manager_s2m    : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
 
-	signal Config_GPIO_m2s : AXI4Lite_A32_D32.Sized_M2S;
-	signal Config_GPIO_s2m : AXI4Lite_A32_D32.Sized_S2M;
 begin
 
 	-- Create clocks (later replaced by MMCM)
@@ -125,24 +123,28 @@ begin
 				Out_S2M      => DeMux_Out_s2m
 			);
 
-			Config_GPIO_m2s  <= DeMux_Out_m2s(DEVICE_GPIO_IDX);
-			DeMux_Out_s2m(DEVICE_GPIO_IDX) <= Config_GPIO_s2m;
-
 		-------------
 		-- Devices --
 		-------------
-		-- Version register (todo)
-		TermVersion : entity PoC.AXI4Lite_Termination_Subordinate
-			port map(
+		-- Version register
+		VersionRegister: entity PoC.AXI4Lite_GitVersionRegister
+			generic map (
+				VERSION_FILE_NAME      => "./temp/GitVersion.mem",
+				WRITE_FILE_NAME        => "",  --"./gen/Version_Register.csv",
+				INCLUDE_XIL_DNA        => false,
+				USER_ID                => (others => '0')
+			)
+			port map (
 				Clock        => PS_Clock,
 				Reset        => PL_Reset,
-				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_VERSION_IDX),
-				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_VERSION_IDX)
+				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_VERSION_IDX),
+				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_VERSION_IDX),
+				Version      => open
 			);
 		
-		-- Setting register (todo)
-		TermSetting : entity PoC.AXI4Lite_Termination_Subordinate
-			port map(
+		-- Setting register
+		SettingsRegister : entity work.SettingsRegister
+			port map (
 				Clock        => PS_Clock,
 				Reset        => PL_Reset,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_SETTING_IDX),
@@ -169,6 +171,18 @@ begin
 				Datetime       => open
 			);
 
+		-- GPIO
+		GPIO_Register : entity work.GPIORegister
+			port map (
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_GPIO_IDX),
+				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_GPIO_IDX),
+
+				Button       => Button,
+				LED          => LED
+			);
+
 		-- UART
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
@@ -187,39 +201,5 @@ begin
 				UART_RTS      => open,
 				UART_CTS      => 'U'
 			);
-	end block;
-
-	-- GPIO
-	GPIO_blk : block
-		constant CONFIG : T_AXI4_Register_Vector := (
-			to_AXI4_Register(Name => "Buttons", Address => 32x"00", RegisterMode => ReadOnly_NotRegistered),
-			to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite)
-		);
-
-		signal ReadPort  : T_SLVV(0 to 1)(31 downto 0);
-		signal WritePort : T_SLVV(0 to 1)(31 downto 0);
-	begin
-		GPIO: entity PoC.AXI4Lite_Register
-			generic map (
-				CONFIG => CONFIG
-			)
-			port map (
-				Clock                         => PS_Clock,
-				Reset                         => PL_Reset,
-
-				AXI4Lite_m2s                  => Config_GPIO_m2s,
-				AXI4Lite_s2m                  => Config_GPIO_s2m,
-				AXI4Lite_IRQ                  => open,
-
-				RegisterFile_ReadPort         => ReadPort,
-				RegisterFile_ReadPort_hit     => open,
-				RegisterFile_WritePort        => WritePort,
-				RegisterFile_WritePort_hit    => open,
-				RegisterFile_WritePort_strobe => open
-			);
-
-		WritePort(get_Index("Buttons", CONFIG)) <= 30x"0" & Button;
-
-		LED <= ReadPort(get_Index("LEDs", CONFIG))(1 downto 0);
 	end block;
 end architecture;

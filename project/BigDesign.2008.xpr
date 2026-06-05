@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="71" Path="C:/git/GitHub/Paebbels/BigDesign/project/BigDesign.2008.xpr">
+<Project Product="Vivado" Version="7" Minor="71" Path="C:/Projects/GitHub/BigDesign/project/BigDesign.2008.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="e64a1fe2bf454ded826c9e97191b27cd"/>
@@ -122,14 +122,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../lib/PoC/src/common/physical.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -139,14 +131,6 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../lib/PoC/src/common/debug.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Stream/AXI4Stream.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="AutoDisabled" Val="1"/>
@@ -294,7 +278,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Stream/AXI4Stream.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -308,13 +306,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -322,7 +313,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_DeMux.vhdl">
+        <FileInfo>
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -438,6 +443,14 @@
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
       <Filter Type="Utils"/>
+      <File Path="$PPRDIR/../lib/PoC/tools/git/preSynth_GitVersionRegister_Vivado.tcl">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+          <Attr Name="UsedInSteps" Val="synth_1;SYNTH_DESIGN;TCL.PRE"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
@@ -473,7 +486,7 @@
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
           <Desc>Vivado Synthesis Defaults</Desc>
         </StratHandle>
-        <Step Id="synth_design">
+        <Step Id="synth_design" PreStepTclHook="$PPRDIR/../lib/PoC/tools/git/preSynth_GitVersionRegister_Vivado.tcl">
           <Option Id="Assert">1</Option>
         </Step>
       </Strategy>
@@ -494,7 +507,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 10 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 10 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025">
           <Desc>Default settings for Implementation.</Desc>
@@ -509,7 +522,6 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2025"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
