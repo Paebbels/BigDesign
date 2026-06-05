@@ -25,6 +25,7 @@ use     IEEE.std_logic_1164.all;
 
 library PoC;
 use     PoC.vectors.all;
+use     PoC.physical.all;
 use     PoC.AXI4_Full.all;
 use     PoC.AXI4Lite.all;
 
@@ -51,6 +52,11 @@ end entity;
 
 
 architecture rtl of Design is
+	constant LED_COUNT     : positive := 2;
+	constant BUTTON_COUNT  : positive := 2;
+	constant AXI_FREQUENCY : FREQ     := 100 MHz;
+	constant UART_BAUDRATE : BAUD     := 921.600 kBd;
+
 	-- Clocks
 	signal PS_Clock  : std_logic;
 	signal PL_Reset  : std_logic := '0';
@@ -126,13 +132,12 @@ begin
 		-------------
 		-- Devices --
 		-------------
-		-- Version register
-		VersionRegister: entity PoC.AXI4Lite_GitVersionRegister
+		Version: entity PoC.AXI4Lite_GitVersionRegister
 			generic map (
-				VERSION_FILE_NAME      => "./temp/GitVersion.mem",
-				WRITE_FILE_NAME        => "",  --"./gen/Version_Register.csv",
-				INCLUDE_XIL_DNA        => false,
-				USER_ID                => (others => '0')
+				VERSION_FILE_NAME => "./temp/GitVersion.mem",
+				WRITE_FILE_NAME   => "",  --"./gen/Version_Register.csv",
+				INCLUDE_XIL_DNA   => TRUE,
+				USER_ID           => (others => '0')
 			)
 			port map (
 				Clock        => PS_Clock,
@@ -141,9 +146,11 @@ begin
 				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_VERSION_IDX),
 				Version      => open
 			);
-		
-		-- Setting register
-		SettingsRegister : entity work.SettingsRegister
+
+		Settings : entity work.design_SettingsRegister
+			generic map (
+				UART_BAUDRATE => UART_BAUDRATE
+			)
 			port map (
 				Clock        => PS_Clock,
 				Reset        => PL_Reset,
@@ -151,28 +158,25 @@ begin
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_SETTING_IDX)
 			);
 
-		-- High resolution clock
 		HRC: entity PoC.AXI4Lite_HighResolutionClock
 			generic map (
-				CLOCK_FREQUENCY      => 100 MHz,
-				USE_CDC              => False
-				--SECOND_RESOLUTION    => SECOND_RESOLUTION
+				CLOCK_FREQUENCY => AXI_FREQUENCY,
+				USE_CDC         => False
 			)
 			port map (
-				Clock          => PS_Clock,
-				Reset          => PL_Reset,
-				AXI4Lite_Clock => PS_Clock,  -- todo: check
-				AXI4Lite_Reset => PL_Reset,  -- todo: check
+				Clock           => PS_Clock,
+				Reset           => PL_Reset,
+				AXI4Lite_Clock  => PS_Clock,
+				AXI4Lite_Reset  => PL_Reset,
 
-				AXI4Lite_m2s   => DeMux_Out_m2s(DEVICE_HRC_IDX),
-				AXI4Lite_s2m   => DeMux_Out_s2m(DEVICE_HRC_IDX),
+				AXI4Lite_m2s    => DeMux_Out_m2s(DEVICE_HRC_IDX),
+				AXI4Lite_s2m    => DeMux_Out_s2m(DEVICE_HRC_IDX),
 
-				Nanoseconds    => open,
-				Datetime       => open
+				Nanoseconds     => open,
+				Datetime        => open
 			);
 
-		-- GPIO
-		GPIO_Register : entity work.GPIORegister
+		GPIO : entity work.design_GPIORegister
 			port map (
 				Clock        => PS_Clock,
 				Reset        => PL_Reset,
@@ -183,10 +187,10 @@ begin
 				LED          => LED
 			);
 
-		-- UART
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
-				CLOCK_FREQ    => 100 MHz
+				CLOCK_FREQ    => AXI_FREQUENCY,
+				BAUDRATE      => UART_BAUDRATE 
 			)
 			port map (
 				Clock         => PS_Clock,

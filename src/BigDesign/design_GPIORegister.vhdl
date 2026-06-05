@@ -6,7 +6,7 @@ library PoC;
 use     PoC.vectors.all;
 use     PoC.AXI4Lite.all;
 
-entity GPIORegister is
+entity design_GPIORegister is
 	port (
 		Clock        : in std_logic;
 		Reset        : in std_logic;
@@ -18,7 +18,7 @@ entity GPIORegister is
 	);
 end entity;
 
-architecture rtl of GPIORegister is
+architecture rtl of design_GPIORegister is
 	constant CONFIG : T_AXI4_Register_Vector := (
 		to_AXI4_Register(Name => "Buttons", Address => 32x"00", RegisterMode => ReadOnly_NotRegistered),
 		to_AXI4_Register(Name => "LEDs",    Address => 32x"04", RegisterMode => ReadWrite)
