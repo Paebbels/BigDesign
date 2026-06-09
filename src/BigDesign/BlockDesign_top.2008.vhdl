@@ -1,6 +1,7 @@
 -- =============================================================================
 -- Authors:
 --   Patrick Lehmann
+--   Adrian Weiland
 --
 -- License:
 -- =============================================================================
@@ -45,7 +46,10 @@ entity BlockDesign_top is
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_SUBORDINATES - 1)
+		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_SUBORDINATES - 1);
+
+		signal UART_TX          : out std_logic;
+		signal UART_RX          : in  std_logic
 	);
 end entity;
 
@@ -354,8 +358,8 @@ begin
 			Subordinate_3_wstrb   => Subordinate_m2s(3).WStrb,
 			Subordinate_3_wvalid  => Subordinate_m2s(3).WValid,
 
-			UART_1_rxd => '1',  -- todo: Connect to PoC library AXI UART
-			UART_1_txd => open  -- todo: Connect to PoC library AXI UART
+			UART_1_txd => UART_TX,
+			UART_1_rxd => UART_RX
 		);
 
 	ConvConfig : entity PoC.AXI4_to_AXI4Lite

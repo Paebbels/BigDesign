@@ -37,8 +37,8 @@ entity Design is
 	port (
 		signal Clock  : in  std_logic;
 
-		signal Button : in  std_logic_vector(1 downto 0);
-		signal LED    : out std_logic_vector(1 downto 0);
+		signal Button  : in  std_logic_vector(1 downto 0);
+		signal LED     : out std_logic_vector(1 downto 0);
 
 		signal Config_Clk : out std_logic;
 
@@ -54,8 +54,7 @@ end entity;
 architecture rtl of Design is
 	constant LED_COUNT     : positive := 2;
 	constant BUTTON_COUNT  : positive := 2;
-	constant AXI_FREQUENCY : FREQ     := 100 MHz;
-	constant UART_BAUDRATE : BAUD     := 921.600 kBd;
+	constant AXI_FREQUENCY : FREQ     := 50 MHz;
 
 	-- Clocks
 	signal PS_Clock  : std_logic;
@@ -72,6 +71,9 @@ architecture rtl of Design is
 
 	signal Manager_m2s    : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
 	signal Manager_s2m    : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
+
+	signal BD_UART_TX : std_logic;
+	signal UART_TX    : std_logic;
 
 begin
 
@@ -99,17 +101,15 @@ begin
 
 			Subordinate_m2s  => Subordinate_m2s,
 			Subordinate_s2m  => Subordinate_s2m,
-			Subordinate_clks => Subordinate_clks
+			Subordinate_clks => Subordinate_clks,
+
+			UART_TX          => BD_UART_TX,
+			UART_RX          => UART_TX
 		);
 
 	Demux_blk : block
 		signal DeMux_Out_m2s : AXI4Lite_A32_D32.Sized_M2S_vector(BASE_ADDRESSES'range);
 		signal DeMux_Out_s2m : AXI4Lite_A32_D32.Sized_S2M_vector(BASE_ADDRESSES'range);
-
-		-- UART
-		signal UART_TX : std_logic;
-		signal UART_RX : std_logic := '1';
-
 	begin
 		AXI4L_DeMux: entity PoC.AXI4Lite_DeMux
 			generic map (
@@ -136,7 +136,7 @@ begin
 			generic map (
 				VERSION_FILE_NAME => "./temp/GitVersion.mem",
 				WRITE_FILE_NAME   => "",  --"./gen/Version_Register.csv",
-				INCLUDE_XIL_DNA   => TRUE,
+				INCLUDE_XIL_DNA   => FALSE,  -- disabled because of NVC / GHDL
 				USER_ID           => (others => '0')
 			)
 			port map (
@@ -161,7 +161,7 @@ begin
 		HRC: entity PoC.AXI4Lite_HighResolutionClock
 			generic map (
 				CLOCK_FREQUENCY => AXI_FREQUENCY,
-				USE_CDC         => False
+				USE_CDC         => FALSE
 			)
 			port map (
 				Clock           => PS_Clock,
@@ -190,18 +190,18 @@ begin
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
 				CLOCK_FREQ    => AXI_FREQUENCY,
-				BAUDRATE      => UART_BAUDRATE 
+				BAUDRATE      => UART_BAUDRATE
 			)
 			port map (
 				Clock         => PS_Clock,
-				Reset	      => PL_Reset,
+				Reset         => PL_Reset,
 
 				AXI4Lite_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
 				AXI4Lite_s2m  => DeMux_Out_s2m(DEVICE_UART_IDX),
 				AXI4Lite_irq  => open,
 
-				UART_TX	      => UART_TX,
-				UART_RX	      => UART_RX,
+				UART_TX       => UART_TX,
+				UART_RX       => BD_UART_TX,
 				UART_RTS      => open,
 				UART_CTS      => 'U'
 			);

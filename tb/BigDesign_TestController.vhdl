@@ -27,10 +27,13 @@ use     PoC.utils.all;
 
 library OSVVM;
 context OSVVM.OsvvmContext;
-use     OSVVM.ScoreboardPkg_slv.all ; 
+use     OSVVM.ScoreboardPkg_slv.all ;
 
 library OSVVM_AXI4 ;
-context OSVVM_AXI4.Axi4Context ; 
+context OSVVM_AXI4.Axi4Context ;
+
+library OSVVM_UART;
+context OSVVM_UART.UartContext;
 
 library lib_BigDesign;
 use     lib_BigDesign.PS_settings_pkg.all;
@@ -60,39 +63,43 @@ entity BigDesign_TestController is
 	-- alias HP2_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP2_FPD.Memory.TransRec : AddressBusRecType>>;
 	-- alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecType>>;
 
+	-- UART
+	alias UART_TX_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_UART.TX.TransRec : UartRecType>>;
+	alias UART_RX_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_UART.RX.TransRec : UartRecType>>;
+
 	-- Derive AXI interface properties from the HPM0_LPD_Rec
-	constant HPM0_FPD_AXI_ADDR_WIDTH      : integer := HPM0_FPD_Rec.Address'length ; 
-	constant HPM0_FPD_AXI_DATA_WIDTH      : integer := HPM0_FPD_Rec.DataToModel'length ;  
+	constant HPM0_FPD_AXI_ADDR_WIDTH      : integer := HPM0_FPD_Rec.Address'length ;
+	constant HPM0_FPD_AXI_DATA_WIDTH      : integer := HPM0_FPD_Rec.DataToModel'length ;
 	constant HPM0_FPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_FPD_AXI_DATA_WIDTH / 8 ;
 	constant HPM0_FPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_FPD_AXI_DATA_BYTE_WIDTH);
 
-	constant HPM1_FPD_AXI_ADDR_WIDTH      : integer := HPM1_FPD_Rec.Address'length ; 
-	constant HPM1_FPD_AXI_DATA_WIDTH      : integer := HPM1_FPD_Rec.DataToModel'length ;  
+	constant HPM1_FPD_AXI_ADDR_WIDTH      : integer := HPM1_FPD_Rec.Address'length ;
+	constant HPM1_FPD_AXI_DATA_WIDTH      : integer := HPM1_FPD_Rec.DataToModel'length ;
 	constant HPM1_FPD_AXI_DATA_BYTE_WIDTH : integer := HPM1_FPD_AXI_DATA_WIDTH / 8 ;
 	constant HPM1_FPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM1_FPD_AXI_DATA_BYTE_WIDTH);
 
-	constant HPM0_LPD_AXI_ADDR_WIDTH      : integer := HPM0_LPD_Rec.Address'length ; 
-	constant HPM0_LPD_AXI_DATA_WIDTH      : integer := HPM0_LPD_Rec.DataToModel'length ;  
+	constant HPM0_LPD_AXI_ADDR_WIDTH      : integer := HPM0_LPD_Rec.Address'length ;
+	constant HPM0_LPD_AXI_DATA_WIDTH      : integer := HPM0_LPD_Rec.DataToModel'length ;
 	constant HPM0_LPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_LPD_AXI_DATA_WIDTH / 8 ;
 	constant HPM0_LPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_LPD_AXI_DATA_BYTE_WIDTH);
 
-	constant HP0_FPD_AXI_ADDR_WIDTH       : integer := HP0_FPD_Rec.Address'length ; 
-	constant HP0_FPD_AXI_DATA_WIDTH       : integer := HP0_FPD_Rec.DataToModel'length ;  
+	constant HP0_FPD_AXI_ADDR_WIDTH       : integer := HP0_FPD_Rec.Address'length ;
+	constant HP0_FPD_AXI_DATA_WIDTH       : integer := HP0_FPD_Rec.DataToModel'length ;
 	constant HP0_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP0_FPD_AXI_DATA_WIDTH / 8 ;
 	constant HP0_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP0_FPD_AXI_DATA_BYTE_WIDTH);
 
-	-- constant HP1_FPD_AXI_ADDR_WIDTH       : integer := HP1_FPD_Rec.Address'length ; 
-	-- constant HP1_FPD_AXI_DATA_WIDTH       : integer := HP1_FPD_Rec.DataToModel'length ;  
+	-- constant HP1_FPD_AXI_ADDR_WIDTH       : integer := HP1_FPD_Rec.Address'length ;
+	-- constant HP1_FPD_AXI_DATA_WIDTH       : integer := HP1_FPD_Rec.DataToModel'length ;
 	-- constant HP1_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP1_FPD_AXI_DATA_WIDTH / 8 ;
 	-- constant HP1_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP1_FPD_AXI_DATA_BYTE_WIDTH);
 
-	-- constant HP2_FPD_AXI_ADDR_WIDTH       : integer := HP2_FPD_Rec.Address'length ; 
-	-- constant HP2_FPD_AXI_DATA_WIDTH       : integer := HP2_FPD_Rec.DataToModel'length ;  
+	-- constant HP2_FPD_AXI_ADDR_WIDTH       : integer := HP2_FPD_Rec.Address'length ;
+	-- constant HP2_FPD_AXI_DATA_WIDTH       : integer := HP2_FPD_Rec.DataToModel'length ;
 	-- constant HP2_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP2_FPD_AXI_DATA_WIDTH / 8 ;
 	-- constant HP2_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP2_FPD_AXI_DATA_BYTE_WIDTH);
 
-	-- constant HP3_FPD_AXI_ADDR_WIDTH       : integer := HP3_FPD_Rec.Address'length ; 
-	-- constant HP3_FPD_AXI_DATA_WIDTH       : integer := HP3_FPD_Rec.DataToModel'length ;  
+	-- constant HP3_FPD_AXI_ADDR_WIDTH       : integer := HP3_FPD_Rec.Address'length ;
+	-- constant HP3_FPD_AXI_DATA_WIDTH       : integer := HP3_FPD_Rec.DataToModel'length ;
 	-- constant HP3_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP3_FPD_AXI_DATA_WIDTH / 8 ;
 	-- constant HP3_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP3_FPD_AXI_DATA_BYTE_WIDTH);
 
@@ -123,6 +130,6 @@ entity BigDesign_TestController is
 		ParentID  => SharedID,
 		SEARCH    => NAME
 	);
-	
+
 	signal TestDone : integer_barrier := 1;
 end entity;

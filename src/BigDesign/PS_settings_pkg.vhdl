@@ -25,6 +25,7 @@ use     IEEE.numeric_std.all;
 
 library PoC;
 use     PoC.vectors.all;
+use     PoC.physical.all;
 use     PoC.AXI4_Full.all;
 
 
@@ -34,6 +35,8 @@ package PS_settings_pkg is
 	----------------------
 	constant NUM_MANAGERS         : positive := 2;
 	constant NUM_SUBORDINATES     : positive := 4;
+
+	constant UART_BAUDRATE : BAUD := 921.600 kBd;  -- set in Design and PS_Stub
 
 	----------------------
 	----- Bit widths -----
@@ -77,7 +80,7 @@ package PS_settings_pkg is
 			ADDRESS_BITS => MANAGER_ADDRESS_BITS,
 			DATA_BITS    => CONFIG_DATA_BITS
 		);
-	
+
 	package AXI4Lite_A32_D32 is new PoC.AXI4Lite_Sized
 		generic map (
 			ADDRESS_BITS => CONFIG_ADDRESS_BITS,

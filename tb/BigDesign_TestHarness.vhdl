@@ -25,12 +25,16 @@ use     IEEE.std_logic_1164.all;
 library PoC;
 use     PoC.AXI4_Full.all;
 use     PoC.AXI4_OSVVM.all;
+use     PoC.UART.all;
 
 library OSVVM_Common ;
 context OSVVM_Common.OsvvmCommonContext ;
 
 library OSVVM_AXI4;
 use     OSVVM_AXI4.Axi4InterfacePkg.all ;
+
+library OSVVM_UART;
+context OSVVM_UART.UartContext;
 
 library lib_BigDesign;
 use     lib_BigDesign.PS_settings_pkg.all;
@@ -60,6 +64,10 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataToModel(DATA_BITS - 1 downto 0),
 		DataFromModel(DATA_BITS - 1 downto 0)
 	);
+
+	-- UART Interface
+	signal UART_TX : std_logic := 'H';  -- todo: check initial value
+	signal UART_RX : std_logic := 'H';  -- todo: check initial value
 
 	component BigDesign_TestController is
 		generic (
@@ -154,7 +162,7 @@ begin
 			Clock            => Clock_100MHz,
 			Reset            => '0',
 			DataGen_Managers => DataGen_Managers,
-			GPIO_Button      => GPIO_Button 
+			GPIO_Button      => GPIO_Button
 		);
 
 end architecture;

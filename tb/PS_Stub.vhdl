@@ -27,6 +27,12 @@ use     IEEE.numeric_std.all;
 library OSVVM_AXI4;
 context OSVVM_AXI4.Axi4Context;
 
+library OSVVM_UART;
+context OSVVM_UART.UartContext;
+
+library PoC;
+use     PoC.physical.all;
+
 library lib_BigDesign;
 use     lib_BigDesign.PS_settings_pkg.all;
 
@@ -339,7 +345,30 @@ begin
 	pl_clock0 <= not pl_clock0 after 10 ns;
 	pl_clk0   <= pl_clock0;
 
-	-- Slave -> Axi memory
+	blk_UART : block
+		signal UART_RX_Rec : UartRecType;  -- todo: constrain?
+		signal UART_TX_Rec : UartRecType;  -- todo: constrain?
+	begin
+		RX: entity OSVVM_UART.UartRx
+			generic map (
+				DEFAULT_BAUD        => to_time(to_freq(UART_BAUDRATE)),
+				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE --UARTTB_PARITY_EVEN,UARTTB_PARITY_NONE,UARTTB_PARITY_ODD
+			)
+			port map (
+				TransRec            => UART_RX_Rec,
+				SerialDataIn        => emio_uart1_rxd
+			);
+
+		TX: entity OSVVM_UART.UartTx
+			generic map (
+				DEFAULT_BAUD        => to_time(to_freq(UART_BAUDRATE)),
+				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE
+			)
+			port map (
+				TransRec            => UART_TX_Rec,
+				SerialDataOut       => emio_uart1_txd
+			);
+	end block;
 
 	blk_HPM0_FPD : block
 		signal AxiBus : Axi4RecType(

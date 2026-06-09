@@ -51,10 +51,10 @@ architecture top of Toplevel is
 begin
 	InnerTop : entity work.Design
 		port map (
-			Clock  => Clock_100MHz,
+			Clock   => Clock_100MHz,
 
-			Button => GPIO_Button,
-			LED    => GPIO_LED,
+			Button  => GPIO_Button,
+			LED     => GPIO_LED,
 
 			Subordinate_m2s => Subordinate_m2s,
 			Subordinate_s2m => Subordinate_s2m

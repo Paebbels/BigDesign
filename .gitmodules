@@ -16,3 +16,6 @@
 [submodule "lib/OSVVM-Scripts"]
 	path = lib/OSVVM-Scripts
 	url = ../OSVVM-Scripts.git
+[submodule "lib/OSVVM-UART"]
+	path = lib/OSVVM-UART
+	url = ../../OSVVM/UART.git
