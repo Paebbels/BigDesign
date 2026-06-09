@@ -25,6 +25,7 @@ source ../lib/PoC/tools/OSVVM/poc.tcl
 namespace import ::poc::*
 
 namespace eval ::poc {
+	variable vendorName "Xilinx"
 	variable boardName "XCZU3EG"
 	variable myConfigFile  "../../../src/PoC/my_config_${::poc::boardName}.vhdl"
 	variable myProjectFile "../../../src/PoC/my_project.vhdl"
