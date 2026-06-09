@@ -46,10 +46,12 @@ package BigDesign_tb_pkg is
   constant REG_GPIO_BUTTONS      : AXIAddressType := BASE_ADDRESS_GPIO or 32x"00";
   constant REG_GPIO_LED          : AXIAddressType := BASE_ADDRESS_GPIO or 32x"04";
 
-  constant REG_HRC_NANOSECONDS_TO_LOAD_L : AXIAddressType := BASE_ADDRESS_HRC or 32x"08";
-  constant REG_HRC_NANOSECONDS_TO_LOAD_H : AXIAddressType := BASE_ADDRESS_HRC or 32x"0C";
+  constant REG_HRC_NANOSECONDS_L         : AXIAddressType := BASE_ADDRESS_HRC or 32x"08";
+  constant REG_HRC_NANOSECONDS_H         : AXIAddressType := BASE_ADDRESS_HRC or 32x"0C";
   constant REG_HRC_TIME_HMS              : AXIAddressType := BASE_ADDRESS_HRC or 32x"10";
   constant REG_HRC_DATE_YMD              : AXIAddressType := BASE_ADDRESS_HRC or 32x"14";
+  constant REG_HRC_NANOSECONDS_TO_LOAD_L : AXIAddressType := BASE_ADDRESS_HRC or 32x"20";
+  constant REG_HRC_NANOSECONDS_TO_LOAD_H : AXIAddressType := BASE_ADDRESS_HRC or 32x"24";
   constant REG_HRC_DATETME_TO_LOAD_HMS   : AXIAddressType := BASE_ADDRESS_HRC or 32x"28";
   constant REG_HRC_DATETME_TO_LOAD_YMD   : AXIAddressType := BASE_ADDRESS_HRC or 32x"2C";
 
