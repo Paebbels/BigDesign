@@ -66,14 +66,16 @@ architecture rtl of Design is
 	signal Clock_300 : std_logic;
 
 	-- Control signals
-	signal Config_m2s     : AXI4Lite_A32_D32.Sized_M2S;
-	signal Config_s2m     : AXI4Lite_A32_D32.Sized_S2M;
+	signal Config_m2s  : AXI4Lite_A32_D32.Sized_M2S;
+	signal Config_s2m  : AXI4Lite_A32_D32.Sized_S2M;
 
-	signal Manager_m2s    : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
-	signal Manager_s2m    : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
+	signal Manager_m2s : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
+	signal Manager_s2m : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
 
-	signal BD_UART_TX : std_logic;
-	signal UART_TX    : std_logic;
+	signal BD_UART_TX   : std_logic;
+	signal BD_UART_TX_d : std_logic := '1';
+	signal UART_TX      : std_logic;
+	signal UART_TX_d    : std_logic := '1';
 
 begin
 
@@ -87,6 +89,8 @@ begin
 	Manager_Clks     <= (others => Clock_300);
 	Subordinate_Clks <= (others => Clock_300);
 
+	--UART_TX_d <= UART_TX'delayed(UART_WIRE_DELAY);  -- todo: Create Riviera bug report
+	UART_TX_d <= transport UART_TX after UART_WIRE_DELAY;
 	BD: entity work.BlockDesign_top
 		port map (
 			Clock            => PS_Clock,
@@ -187,6 +191,8 @@ begin
 				LED          => LED
 			);
 
+		--BD_UART_TX_d <= BD_UART_TX'delayed(UART_WIRE_DELAY);  -- todo: Create Riviera bug report
+		BD_UART_TX_d <= transport BD_UART_TX after UART_WIRE_DELAY;
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
 				CLOCK_FREQ    => AXI_FREQUENCY,

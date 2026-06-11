@@ -36,7 +36,8 @@ package PS_settings_pkg is
 	constant NUM_MANAGERS         : positive := 2;
 	constant NUM_SUBORDINATES     : positive := 4;
 
-	constant UART_BAUDRATE : BAUD := 921.600 kBd;  -- set in Design and PS_Stub
+	constant UART_BAUDRATE   : BAUD         := 921.600 kBd;  -- set in Design and PS_Stub
+	constant UART_WIRE_DELAY : delay_length := 9 ns;
 
 	----------------------
 	----- Bit widths -----
