@@ -3,6 +3,34 @@
 #   Patrick Lehmann
 #   Adrian Weiland
 #
+# Description:
+#   This file is structured in a way that it can run in different modes locally
+#   and on the CI server. Parameters can be set through arguments (1) if used
+#   interactively and through environment variables (2).
+#
+#   (1) When in interactive mode arguments can be set as shown below
+#       set argv {<build_step>}; set argc 1
+#       (it has been tested with Riviera-PRO, NVC and GHDL)
+#
+#   (2) The following environment variables can be set:
+#       REGRESSION_START_STEP  : <build_step> (similar to (1))
+#       REGRESSION_SINGLE_STEP : Execute only the selected step in
+#                                REGRESSION_START_STEP (can be "1" or "0")
+#
+#   Afterwards the file can be sourced as usual.
+#   Note that (1) always has priority over (2). If none are specified all steps
+#   are executed and everything is built.
+#
+#   Examples:
+#     Riviera-PRO:
+#       'set argv {poc}; set argc 1; source ../regression.tcl'
+#       This will built everything starting with the PoC. If only the PoC should
+#       be build REGRESSION_SINGLE_STEP has to be set to "1" previously
+#     exec-NVC:
+#       'export REGRESSION_START_STEP="test"; export REGRESSION_SINGLE_STEP="1"'
+#       'exec-NVC.sh -n --tcl-file=regression.tcl'
+#       This will only run the tests.
+#
 # License:
 # =============================================================================
 # Copyright 2025-2026 The BigDesign Authors
@@ -19,74 +47,123 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =============================================================================
-source ../lib/OSVVM-Scripts/StartUp.tcl
-source ../lib/PoC/tools/OSVVM/poc.tcl
+
+set root [file dirname [info script]]
+# noqa: W300
+source ${root}/lib/OSVVM-Scripts/StartUp.tcl
+# noqa: W300
+source ${root}/lib/PoC/tools/OSVVM/poc.tcl
 
 namespace import ::poc::*
 
-namespace eval ::poc {
-	variable vendorName "Xilinx"
-	variable boardName "XCZU3EG"
-	variable myConfigFile  "../../../src/PoC/my_config_${::poc::boardName}.vhdl"
-	variable myProjectFile "../../../src/PoC/my_project.vhdl"
+set executeSingleStep 0
+if {[info exists ::env(REGRESSION_SINGLE_STEP)]} {
+	set executeSingleStep [expr {$::env(REGRESSION_SINGLE_STEP) == 1}] ; # Only build selected step
 }
+
+proc map_level {step} {
+	switch -nocase -- $step {
+		"all"   { return 0 }
+		"osvvm" { return 0 }
+		"poc"   { return 1 }
+		"dut"   { return 2 }
+		"test"  { return 3 }
+		default {
+			puts "\[WARNING\] Unknown build level '$step', using 'all'"
+			return 0
+		}
+	}
+}
+
+# 1. argv (when used interactively)
+#    example for only compiling poc and running the tests: 'set argv {poc}; set argc 1; clear; source ../regression.tcl'
+if {[info exists argv] && [llength $argv] > 0} {
+	set buildConfigSource "interactive"
+	set level [map_level [lindex $argv 0]]
+
+# 2. Check for environment variables
+#    can i.e. set by 'export REGRESSION_START_STEP="test"'
+} elseif {[info exists ::env(REGRESSION_START_STEP)]} {
+	set buildConfigSource "environment variable"
+	set level [map_level $::env(REGRESSION_START_STEP)]
+} else {
+	set buildConfigSource "default"
+	set level 0
+}
+
+# 3. output result
+puts "=================================="
+puts "Build configuration"
+puts "  Level: $level (set by $buildConfigSource)"
+puts "  Executing [expr {$executeSingleStep ? "single step" : "multiple steps"}]"
+puts "=================================="
 
 namespace eval ::BigDesign {
 	variable scalingFactor 100;  # scale length of simulation
 }
-
-set level 0 ;# Everything is built
-if {$argc > 0} {
-    switch -nocase -- [lindex $argv 0] {
-        "osvvm" { set level 0 }
-        "poc"   { set level 1 }
-        "dut"   { set level 2 }
-        "test"  { set level 3 }
-        default {
-            error "\nUnknown build level '[lindex $argv 0]' - Available levels are: 'osvvm', 'poc', 'dut', 'test'.\n"
-        }
-    }
-}
-
-if {$level <= 0} {
-	build ../lib/OsvvmLibraries.pro [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
-	checkForBuildErrors
-}
+# -g -gui         disables system exit (i.e. on errors)
+# -v -vendor      Vendor name
+# -b -board       Board name
+# -p -projectFile Path to the my_project file
+# -c -configFile  Path to the my_config file
+configurePoC \
+	-g \
+	-v Xilinx \
+	-b XCZU3EG \
+	-p "../../../src/PoC/my_project.vhdl" \
+	-c "../../../src/PoC/my_config_XCZU3EG.vhdl"
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
 # -w -waves       save waveforms
-# -g -gui         disables system exit (i.e. on errors)
-configureOSVVM -stop 1 -g
+configureOSVVM -stop 1
+
+if {$level <= 0} {
+	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
+	if {[checkForBuildErrors] || $executeSingleStep} {
+		return
+	}
+}
+
+# Load vendor specific precompiled libraries
 if {$::osvvm::ToolName eq "GHDL"} {
 	set ::BigDesign::scalingFactor 10
-
-	library unisim
-	analyze ../tb/unisim/vcomponents.pkg.vhdl
+	# Precompile Vivado for GHDL
+	#   execute compile-Xilinx-vivado.sh (can be found i.e. msys64/ucrt64/lib/ghdl/vendors)
+	#   compile-Xilinx-vivado.sh --all --vhdl2008 --output /c/.../2025.2 -v
+	LinkLibrary unisim {C:/Tools/precompiled/GHDL/7.0.0-dev/Vivado/2025.2}
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
 	set ::BigDesign::scalingFactor 1
 
 	# FIXME: this is a hardcoded path
 	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
+	LinkLibrary axi_dma_v7_1_37 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_dma_v7_1_37}
 } elseif {$::osvvm::ToolName eq "NVC"} {
-	library unisim
-	analyze ../tb/unisim/vcomponents.pkg.vhdl
-
+	# Precompile Vivado for NVC:
+	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
+	#   nvc --install vivado
+	#   ls -l ~/.nvc/lib
+	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
 }
 
 if {$level <= 1} {
-	# configurePoC
-	build ../lib/PoC/src/PoC.pro [BuildName "${::poc::buildNamePrefix}PoC"]
-	checkForBuildErrors
+	build "${root}/lib/PoC/src/PoC.pro" [BuildName "${::poc::buildNamePrefix}PoC"]
+	if {[checkForBuildErrors] || $executeSingleStep} {
+		return
+	}
 }
 
 if {$level <= 2} {
-	build ../src/BigDesign.pro   [BuildName "${::poc::buildNamePrefix}BigDesign"]
-	checkForBuildErrors
+	build "${root}/src/BigDesign.pro" [BuildName "${::poc::buildNamePrefix}BigDesign"]
+	if {[checkForBuildErrors] || $executeSingleStep} {
+		return
+	}
 }
 
 if {$level <= 3} {
-	build ../tb/RunAllTests.pro  [BuildName "${::poc::buildNamePrefix}RunAllTests"]
-	checkForRunErrors
+	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::buildNamePrefix}RunAllTests"]
+	if {[checkForRunErrors] || $executeSingleStep} {
+		return
+	}
 }
