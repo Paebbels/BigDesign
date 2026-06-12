@@ -55,10 +55,11 @@ package PS_settings_pkg is
 	constant DATA_BITS                 : positive := 128;
 	constant USER_BITS                 : positive := 16;
 
-	constant AXI_ADDR_WIDTH : integer := 32;
-	constant AXI_DATA_WIDTH : integer := 32;
-	constant AXI_STRB_WIDTH : integer := AXI_DATA_WIDTH / 8;
+	constant AXI_ADDR_WIDTH : positive := 32;
+	constant AXI_DATA_WIDTH : positive := 32;
+	constant AXI_STRB_WIDTH : positive := AXI_DATA_WIDTH / 8;
 
+	constant AXI_STREAM_DATA_WIDTH : positive := 32;
 	----------------------
 	------- Types --------
 	----------------------
@@ -104,6 +105,15 @@ package PS_settings_pkg is
 			ID_BITS      => SUBORDINATE_ID_BITS
 		);
 
+	package AXI4S_D32 is new PoC.AXI4Stream_Sized
+		generic map (
+			DATA_BITS     => AXI_STREAM_DATA_WIDTH,
+			USER_BITS     => 1,
+			DEST_BITS     => 1,
+			ID_BITS       => 1,
+			REV_USER_BITS => 1
+		);
+
 	------------------------
   -- Register addresses --
 	------------------------
@@ -112,25 +122,26 @@ package PS_settings_pkg is
 	constant DEVICE_HRC_IDX     : natural := 2;
 	constant DEVICE_GPIO_IDX    : natural := 3;
 	constant DEVICE_UART_IDX    : natural := 4;
-	-- constant DEVICE_I2C_IDX     : natural := 5;
-	-- constant DEVICE_SPI_IDX     : natural := 6;
-	-- constant DEVICE_AXI_DMA_IDX : natural := 7;
+	constant DEVICE_AXI_DMA_IDX : natural := 5;
+	-- constant DEVICE_I2C_IDX     : natural := 6;
+	-- constant DEVICE_SPI_IDX     : natural := 7;
 
 	constant BASE_ADDRESS_VERSION : AXIAddressType := 32x"8000_0000";
 	constant BASE_ADDRESS_SETTING : AXIAddressType := 32x"8001_0000";
 	constant BASE_ADDRESS_HRC     : AXIAddressType := 32x"8002_0000";
 	constant BASE_ADDRESS_GPIO    : AXIAddressType := 32x"8008_0000";
 	constant BASE_ADDRESS_UART    : AXIAddressType := 32x"8009_0000";
-	-- constant BASE_ADDRESS_I2C     : AXIAddressType := 40x"800A_0000";
-	-- constant BASE_ADDRESS_SPI     : AXIAddressType := 40x"800B_0000";
-	-- constant BASE_ADDRESS_AXI_DMA : AXIAddressType := 40x"8100_0000";
+	-- constant BASE_ADDRESS_I2C     : AXIAddressType := 32x"800A_0000";
+	-- constant BASE_ADDRESS_SPI     : AXIAddressType := 32x"800B_0000";
+	constant BASE_ADDRESS_AXI_DMA : AXIAddressType := 32x"8100_0000";
 
 	constant BASE_ADDRESSES : T_SLUV := (
 		DEVICE_VERSION_IDX => unsigned(BASE_ADDRESS_VERSION),
 		DEVICE_SETTING_IDX => unsigned(BASE_ADDRESS_SETTING),
 		DEVICE_HRC_IDX     => unsigned(BASE_ADDRESS_HRC),
 		DEVICE_GPIO_IDX    => unsigned(BASE_ADDRESS_GPIO),
-		DEVICE_UART_IDX    => unsigned(BASE_ADDRESS_UART)
+		DEVICE_UART_IDX    => unsigned(BASE_ADDRESS_UART),
+		DEVICE_AXI_DMA_IDX => unsigned(BASE_ADDRESS_AXI_DMA)
 	);
 	constant BASE_ADDRESSES_MASK : BASE_ADDRESSES'subtype := (BASE_ADDRESSES'range => 32x"8FFF_0000");
 end package;

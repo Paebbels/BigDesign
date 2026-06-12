@@ -45,10 +45,12 @@ entity BigDesign_TestController is
 		SCALING_FACTOR : natural := 100
 	);
 	port (
-		Clock            : in  std_logic;
-		Reset            : in  std_logic;
-		DataGen_Managers : inout AddressBusRecArrayType;
-		GPIO_Button      : out std_logic_vector(1 downto 0) := (others => '0')
+		Clock                : in  std_logic;
+		Reset                : in  std_logic;
+		DataGen_Managers     : inout AddressBusRecArrayType;
+		AXIStreamTransmitter : inout StreamRecType;
+		AXIStreamReceiver    : inout StreamRecType;
+		GPIO_Button          : out std_logic_vector(1 downto 0) := (others => '0')
 	);
 
 	-- Connect transaction interfaces using external names

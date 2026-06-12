@@ -46,7 +46,12 @@ entity Design is
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : out std_logic_vector(0 to NUM_SUBORDINATES - 1)
+		signal Subordinate_Clks : out std_logic_vector(0 to NUM_SUBORDINATES - 1);
+
+		signal DMA_StreamIn_m2s  : out T_AXI4_Bus_M2S_Vector;
+		signal DMA_StreamIn_s2m  : in T_AXI4_Bus_S2M_Vector;
+		signal DMA_StreamOut_m2s : out T_AXI4_Bus_M2S_Vector;
+		signal DMA_StreamOut_s2m : in T_AXI4_Bus_S2M_Vector
 	);
 end entity;
 
@@ -76,6 +81,12 @@ architecture rtl of Design is
 	signal BD_UART_TX_d : std_logic := '1';
 	signal UART_TX      : std_logic;
 	signal UART_TX_d    : std_logic := '1';
+
+	-- DMA
+	signal DMA_Config_m2s    : AXI4Lite_A32_D32.Sized_M2S;
+	signal DMA_Config_s2m    : AXI4Lite_A32_D32.Sized_S2M;
+	signal DMA_DeMux_Out_m2s : AXI4_A40_D128.Sized_M2S_Vector(0 to 1);
+	signal DMA_DeMux_Out_s2m : AXI4_A40_D128.Sized_S2M_Vector(0 to 1);
 
 begin
 
@@ -211,5 +222,75 @@ begin
 				UART_RTS      => open,
 				UART_CTS      => 'U'
 			);
+
+		DMA_Config_m2s <= DeMux_Out_m2s(DEVICE_AXI_DMA_IDX);
+		DMA_Config_s2m <= DeMux_Out_s2m(DEVICE_AXI_DMA_IDX);
 	end block;
+
+	Mux_blk : block
+		signal Mux_In_m2s : AXI4S_D32.Sized_M2S_vector(0 to 1);
+		signal Mux_In_s2m : AXI4S_D32.Sized_S2M_vector(0 to 1);
+
+		signal Mux_Out_m2s : AXI4S_D32.Sized_M2S;
+		signal Mux_Out_s2m : AXI4S_D32.Sized_S2M;
+	begin
+		-- DMA
+		DMA_wrapper: entity work.DMA_wrapper
+			port map (
+				Clock             => PS_Clock,
+				Reset             => PL_Reset,
+
+				-- Config
+				AXI4Lite_m2s      => DMA_Config_m2s,
+				AXI4Lite_s2m      => DMA_Config_s2m,
+				AXI4Lite_tx_irq   => open,
+				AXI4Lite_rx_irq   => open,
+
+				-- (S2MM, MM2S), SG
+				Data_m2s          => Mux_In_m2s(0),
+				Data_s2m          => Mux_In_s2m(0),
+				ScatterGather_m2s => Mux_In_m2s(1),
+				ScatterGather_s2m => Mux_In_s2m(1),
+
+				-- Transmitter / Receiver
+				StreamIn_m2s      => DMA_StreamIn_m2s,
+				StreamIn_s2m      => DMA_StreamIn_s2m,
+				StreamOut_m2s     => DMA_StreamOut_m2s,
+				StreamOut_s2m     => DMA_StreamOut_s2m
+			);
+
+		AXI4_Mux: entity PoC.AXI4_Mux
+			port map (
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+
+				In_M2S       => Mux_In_m2s,
+				In_S2M       => Mux_In_s2m,
+
+				Out_M2S      => Mux_Out_m2s,
+				Out_S2M      => Mux_Out_s2m
+			);
+
+		AXI4_DeMux: entity PoC.AXI4_DeMux
+			generic map (
+				BASE_ADDRESS      => BASE_ADDRESSES,
+				BASE_ADDRESS_MASK => BASE_ADDRESSES_MASK,
+				PIPELINE_IN       => 0,
+				PIPELINE_OUT      => (BASE_ADDRESSES'range => 0)
+			)
+			port map (
+				Clock        => PS_Clock,
+				Reset        => PL_Reset,
+
+				In_M2S       => Mux_Out_m2s,
+				In_S2M       => Mux_Out_s2m,
+
+				Out_M2S      => DMA_DeMux_Out_m2s,
+				Out_S2M      => DMA_DeMux_Out_s2m
+			);
+		-- output goes to
+		--   (1) Mux connected to PL-DDR
+		--   (2) PS8 block
+	end block;
+
 end architecture;

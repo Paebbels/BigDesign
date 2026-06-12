@@ -32,5 +32,7 @@ analyze ../tb/BlockDesign_wrapper_conf.vhdl
 analyze BigDesign/BlockDesign_top.2008.vhdl
 analyze BigDesign/design_SettingsRegister.vhdl
 analyze BigDesign/design_GPIORegister.vhdl
+analyze BigDesign/DMA_wrapper.vhdl
+# analyze BigDesign/PL_DDR4_wrapper.vhdl
 analyze BigDesign/Design.2008.vhdl
 analyze BigDesign/Toplevel_A0.2008.vhdl

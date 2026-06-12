@@ -65,6 +65,15 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataFromModel(DATA_BITS - 1 downto 0)
 	);
 
+	-- DMA
+	signal DMA_StreamIn_m2s  : T_AXI4_Bus_M2S_Vector;
+	signal DMA_StreamIn_s2m  : T_AXI4_Bus_S2M_Vector;
+	signal DMA_StreamOut_m2s : T_AXI4_Bus_M2S_Vector;
+	signal DMA_StreamOut_s2m : T_AXI4_Bus_S2M_Vector;
+
+	signal AXIStreamTransmitter : StreamRecType_constr;
+	signal AXIStreamReceiver    : StreamRecType_constr;
+
 	-- UART Interface
 	signal UART_TX : std_logic := 'H';  -- todo: check initial value
 	signal UART_RX : std_logic := 'H';  -- todo: check initial value
@@ -75,10 +84,12 @@ architecture TestHarness of BigDesign_TestHarness is
 			SCALING_FACTOR : natural
 		);
 		port (
-			Clock            : in  std_logic;
-			Reset            : in  std_logic;
-			DataGen_Managers : inout AddressBusRecArrayType;
-			GPIO_Button      : out std_logic_vector(1 downto 0) := (others => '0')
+			Clock                : in  std_logic;
+			Reset                : in  std_logic;
+			DataGen_Managers     : inout AddressBusRecArrayType;
+			AXIStreamTransmitter : inout StreamRecType;
+			AXIStreamReceiver    : inout StreamRecType;
+			GPIO_Button          : out std_logic_vector(1 downto 0) := (others => '0')
 		);
 	end component;
 begin
@@ -97,7 +108,12 @@ begin
 
 			Subordinate_m2s  => Subordinate_m2s,
 			Subordinate_s2m  => Subordinate_s2m,
-			Subordinate_Clks => Subordinate_Clks
+			Subordinate_Clks => Subordinate_Clks,
+
+			DMA_StreamIn_m2s  => DMA_StreamIn_m2s,
+			DMA_StreamIn_s2m  => DMA_StreamIn_s2m,
+			DMA_StreamOut_m2s => DMA_StreamOut_m2s,
+			DMA_StreamOut_s2m => DMA_StreamOut_s2m
 		);
 
 	gen_M: for i in Subordinate_m2s'range generate
@@ -153,16 +169,68 @@ begin
 		);
 	end generate;
 
+	DMA_blk : block
+	begin
+		Transmitter: entity OSVVM_AXI4.AxiStreamTransmitter
+			generic map (
+				INIT_USER      => ""
+				tperiod_Clk    => TPERIOD_CLOCK,
+				DEFAULT_DELAY  => 0 ns
+			)
+			port map (
+				-- Testbench Transaction Interface
+				TransRec => AXIStreamTransmitter,
+				-- Globals
+				Clk       => Clock_100,
+				nReset    => not Reset_100,
+				-- AXI Stream Interface
+				TValid    => DMA_StreamIn_m2s.Valid,
+				TReady    => DMA_StreamIn_s2m.Ready,
+				TID       => open,
+				TDest     => open,
+				TUser     => DMA_StreamIn_m2s.User,
+				TData     => DMA_StreamIn_m2s.Data,
+				TStrb     => open,
+				TKeep     => DMA_StreamIn_m2s.Keep,
+				TLast     => DMA_StreamIn_m2s.Last
+			);
+
+		Receiver: entity OSVVM_AXI4.AxiStreamReceiver
+			generic map (
+				tperiod_Clk    => TPERIOD_CLOCK,
+				tpd_Clk_TReady => 0 ns
+			)
+			port map (
+				-- Testbench Transaction Interface
+				TransRec => AXIStreamReceiver,
+				-- Globals
+				Clk      => Clock_100,
+				nReset   => not Reset_100,
+				-- AXI Master Functional Interface
+				TValid   => DMA_StreamOut_m2s.Valid,
+				TReady   => DMA_StreamOut_s2m.Ready,
+				TID      => "",
+				TDest    => "",
+				TUser    => DMA_StreamOut_m2s.User,
+				TData    => DMA_StreamOut_m2s.Data,
+				TStrb    => "1",
+				TKeep    => DMA_StreamOut_m2s.Keep,
+				TLast    => DMA_StreamOut_m2s.Last
+			);
+	end block;
+
 	TestCtrl : component BigDesign_TestController
 		generic map (
 			PATTERN        => PATTERN,
 			SCALING_FACTOR => integer'value(SCALING_FACTOR)
 		)
 		port map (
-			Clock            => Clock_100MHz,
-			Reset            => '0',
-			DataGen_Managers => DataGen_Managers,
-			GPIO_Button      => GPIO_Button
+			Clock                => Clock_100MHz,
+			Reset                => '0',
+			DataGen_Managers     => DataGen_Managers,
+			AXIStreamTransmitter => AXIStreamTransmitter,
+			AXIStreamReceiver    => AXIStreamReceiver,
+			GPIO_Button          => GPIO_Button
 		);
 
 end architecture;
