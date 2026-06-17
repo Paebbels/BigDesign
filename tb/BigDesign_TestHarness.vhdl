@@ -26,6 +26,7 @@ library PoC;
 use     PoC.AXI4_Full.all;
 use     PoC.AXI4_OSVVM.all;
 use     PoC.UART.all;
+use     PoC.physical.all;
 
 library OSVVM_Common ;
 context OSVVM_Common.OsvvmCommonContext ;
@@ -48,6 +49,9 @@ entity BigDesign_TestHarness is
 end entity;
 
 architecture TestHarness of BigDesign_TestHarness is
+	constant CLOCK_FREQ   : FREQ := 100 MHz;
+	constant CLOCK_PERIOD : time := to_time(CLOCK_FREQ);
+
 	signal Clock_100MHz : std_logic := '1';
 	signal GPIO_Button  : std_logic_vector(1 downto 0);
 	signal GPIO_LED     : std_logic_vector(1 downto 0);
@@ -55,9 +59,9 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal Config_Clk   : std_logic;
 	signal Manager_Clks : std_logic_vector(0 to NUM_MANAGERS - 1);
 
-	signal Subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
-	signal Subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
-	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 2);
+	signal Subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 2);
+	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 2);
 
 	signal DataGen_Managers : AddressBusRecArrayType(0 to NUM_SUBORDINATES - 1)(
 		Address(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
@@ -66,17 +70,29 @@ architecture TestHarness of BigDesign_TestHarness is
 	);
 
 	-- DMA
-	signal DMA_StreamIn_m2s  : T_AXI4_Bus_M2S_Vector;
-	signal DMA_StreamIn_s2m  : T_AXI4_Bus_S2M_Vector;
-	signal DMA_StreamOut_m2s : T_AXI4_Bus_M2S_Vector;
-	signal DMA_StreamOut_s2m : T_AXI4_Bus_S2M_Vector;
+	signal DMA_StreamIn_m2s  : AXI4S_D32.Sized_M2S;
+	signal DMA_StreamIn_s2m  : AXI4S_D32.Sized_S2M;
+	signal DMA_StreamOut_m2s : AXI4S_D32.Sized_M2S;
+	signal DMA_StreamOut_s2m : AXI4S_D32.Sized_S2M;
 
-	signal AXIStreamTransmitter : StreamRecType_constr;
-	signal AXIStreamReceiver    : StreamRecType_constr;
+	-- TX / RX
+	constant STREAM_BITS : natural  := AXI_STREAM_DATA_WIDTH + AXI_STREAM_DATA_WIDTH / 8;
+	signal AXIStreamReceiver : StreamRecType(
+		DataToModel   (STREAM_BITS - 1  downto 0),
+		ParamToModel  (4 - 1 downto 0),
+		DataFromModel (STREAM_BITS - 1  downto 0),
+		ParamFromModel(4 - 1 downto 0)
+	);
+	signal AXIStreamTransmitter : StreamRecType(
+		DataToModel   (STREAM_BITS - 1  downto 0),
+		ParamToModel  (4 - 1 downto 0),
+		DataFromModel (STREAM_BITS - 1  downto 0),
+		ParamFromModel(4 - 1 downto 0)
+	);
 
 	-- UART Interface
-	signal UART_TX : std_logic := 'H';  -- todo: check initial value
-	signal UART_RX : std_logic := 'H';  -- todo: check initial value
+	signal UART_TX : std_logic := 'H';
+	signal UART_RX : std_logic := 'H';
 
 	component BigDesign_TestController is
 		generic (
@@ -93,7 +109,7 @@ architecture TestHarness of BigDesign_TestHarness is
 		);
 	end component;
 begin
-	Clock_100MHz <= not Clock_100MHz after 5 ns;
+	Clock_100MHz <= not Clock_100MHz after CLOCK_PERIOD / 2;
 
 	DUT : entity lib_BigDesign.Design
 		port map (
@@ -151,7 +167,7 @@ begin
 		manager: entity OSVVM_AXI4.Axi4Manager
 			generic map (
 				MODEL_ID_NAME => "manager_" & to_string(i),
-				tperiod_Clk   => 10 ns,
+				tperiod_Clk   => CLOCK_PERIOD,
 				DEFAULT_DELAY => 0 ns
 			)
 			port map (
@@ -169,55 +185,56 @@ begin
 		);
 	end generate;
 
-	DMA_blk : block
+	TX_RX_blk : block
+		signal signal_open : std_logic_vector(0 downto 0);
 	begin
 		Transmitter: entity OSVVM_AXI4.AxiStreamTransmitter
 			generic map (
-				INIT_USER      => ""
-				tperiod_Clk    => TPERIOD_CLOCK,
-				DEFAULT_DELAY  => 0 ns
+				INIT_USER     => "",
+				tperiod_Clk   => CLOCK_PERIOD,
+				DEFAULT_DELAY => 0 ns
 			)
 			port map (
-				-- Testbench Transaction Interface
-				TransRec => AXIStreamTransmitter,
 				-- Globals
-				Clk       => Clock_100,
-				nReset    => not Reset_100,
+				Clk       => Clock_100MHz,
+				nReset    => '1',
 				-- AXI Stream Interface
 				TValid    => DMA_StreamIn_m2s.Valid,
 				TReady    => DMA_StreamIn_s2m.Ready,
-				TID       => open,
-				TDest     => open,
+				TID       => signal_open,
+				TDest     => signal_open,
 				TUser     => DMA_StreamIn_m2s.User,
 				TData     => DMA_StreamIn_m2s.Data,
-				TStrb     => open,
+				TStrb     => signal_open,
 				TKeep     => DMA_StreamIn_m2s.Keep,
-				TLast     => DMA_StreamIn_m2s.Last
+				TLast     => DMA_StreamIn_m2s.Last,
+				-- Testbench Transaction Interface
+				TransRec => AXIStreamTransmitter
 			);
 
 		Receiver: entity OSVVM_AXI4.AxiStreamReceiver
 			generic map (
-				tperiod_Clk    => TPERIOD_CLOCK,
+				tperiod_Clk    => CLOCK_PERIOD,
 				tpd_Clk_TReady => 0 ns
 			)
 			port map (
-				-- Testbench Transaction Interface
-				TransRec => AXIStreamReceiver,
 				-- Globals
-				Clk      => Clock_100,
-				nReset   => not Reset_100,
+				Clk      => Clock_100MHz,
+				nReset   => '1',
 				-- AXI Master Functional Interface
 				TValid   => DMA_StreamOut_m2s.Valid,
 				TReady   => DMA_StreamOut_s2m.Ready,
-				TID      => "",
-				TDest    => "",
+				TID      => "0",
+				TDest    => "0",
 				TUser    => DMA_StreamOut_m2s.User,
 				TData    => DMA_StreamOut_m2s.Data,
 				TStrb    => "1",
-				TKeep    => DMA_StreamOut_m2s.Keep,
-				TLast    => DMA_StreamOut_m2s.Last
+				TKeep    => "1",
+				TLast    => DMA_StreamOut_m2s.Last,
+				-- Testbench Transaction Interface
+				TransRec => AXIStreamReceiver
 			);
-	end block;
+		end block;
 
 	TestCtrl : component BigDesign_TestController
 		generic map (

@@ -64,11 +64,4 @@ package BigDesign_tb_pkg is
 	constant NUM_BYTES_PER_BLOCK : positive := 64 * 1024;  -- 64 kB
 	constant NUM_ITERATIONS      : positive := 60;  -- default SCALING_FACTOR is 100 which results in 60000 iterations
 
-	subtype StreamRecType_constr is StreamRecType (
-					DataToModel   (CONFIG_DATA_BITS - 1  downto 0),
-					DataFromModel (CONFIG_DATA_BITS - 1  downto 0),
-					ParamToModel  (1 downto 0),  -- todo: derive from generic
-					ParamFromModel(1 downto 0)   -- todo: derive from generic
-	);
-
 end package;

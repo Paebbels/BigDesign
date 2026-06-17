@@ -935,7 +935,7 @@ begin
 	begin
 		Memory : Axi4MemoryVti
 		generic map (
-			MODEL_ID_NAME => "HP3_FPD",
+			MODEL_ID_NAME => "HP3_FPD (DMA)",
 			MEMORY_NAME   => "PSDDR4"
 		)
 		port map (

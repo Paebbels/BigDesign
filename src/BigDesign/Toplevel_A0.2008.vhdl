@@ -25,6 +25,10 @@ use     IEEE.std_logic_1164.all;
 
 library PoC;
 use     PoC.AXI4_Full.all;
+use     PoC.axi4stream.all;
+
+library lib_BigDesign;
+use     lib_BigDesign.PS_settings_pkg.all;
 
 
 entity Toplevel is
@@ -37,27 +41,32 @@ entity Toplevel is
 end entity;
 
 architecture top of Toplevel is
-	package AXI4_A49_D128_I6 is new PoC.AXI4Full_Sized
-		generic map (
-			ADDRESS_BITS => 49,
-			DATA_BITS    => 128,
-			USER_BITS    => 16,
-			ID_BITS      => 6
-		);
 
-	signal Subordinate_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 3);
-	signal Subordinate_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to 3);
+	signal Subordinate_m2s   : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 2);
+	signal Subordinate_s2m   : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 2);
+	signal DMA_StreamIn_m2s  : AXI4S_D32.Sized_M2S := Initialize_axi4stream_M2S(32, Value => '0');
+	signal DMA_StreamOut_s2m : AXI4S_D32.Sized_S2M := Initialize_axi4stream_S2M(Value => '0');
 
 begin
 	InnerTop : entity work.Design
 		port map (
-			Clock   => Clock_100MHz,
+			Clock             => Clock_100MHz,
 
-			Button  => GPIO_Button,
-			LED     => GPIO_LED,
+			Button            => GPIO_Button,
+			LED               => GPIO_LED,
 
-			Subordinate_m2s => Subordinate_m2s,
-			Subordinate_s2m => Subordinate_s2m
+			Config_Clk        => open,
+
+			Manager_Clks      => open,
+
+			Subordinate_m2s   => Subordinate_m2s,
+			Subordinate_s2m   => Subordinate_s2m,
+			Subordinate_Clks  => open,
+
+			DMA_StreamIn_m2s  => DMA_StreamIn_m2s,
+			DMA_StreamIn_s2m  => open,
+			DMA_StreamOut_m2s => open,
+			DMA_StreamOut_s2m => DMA_StreamOut_s2m
 		);
 
 end architecture;
