@@ -62,7 +62,6 @@ architecture wrapper of BlockDesign_top is
 	signal IRQs         : std_logic_vector(7 downto 0);
 
 begin
-
 	-- BD: entity work.BlockDesign_wrapper
 	BD: configuration work.BlockDesign_wrapper_conf
 		port map (
@@ -362,7 +361,7 @@ begin
 			UART_1_rxd => UART_RX
 		);
 
-	ConvConfig : entity PoC.AXI4_to_AXI4Lite
+	ConvConfig : entity PoC.axi4_AXI4Lite_Converter
 		port map (
 			Clock       => Clock,
 			Reset       => PL_Reset,
