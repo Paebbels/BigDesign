@@ -5,31 +5,31 @@
 #
 # Description:
 #   This file is structured in a way that it can run in different modes locally
-#   and on the CI server. Parameters can be set through arguments (1) if used
-#   interactively and through environment variables (2).
+#   and on the CI server. Parameters can be set through arguments (a) if used
+#   interactively and through environment variables (b).
 #
-#   (1) When in interactive mode arguments can be set as shown below
-#       set argv {<build_step>}; set argc 1
-#       (it has been tested with Riviera-PRO, NVC and GHDL)
+#   (a) When in interactive mode, arguments can be set as shown below:
+#       set ::argv <build_step>; set ::argc 1
+#       (it has been tested with Riviera-PRO interactive, NVC interactive and tclsh with GHDL)
 #
-#   (2) The following environment variables can be set:
-#       REGRESSION_START_STEP  : <build_step> (similar to (1))
-#       REGRESSION_SINGLE_STEP : Execute only the selected step in
-#                                REGRESSION_START_STEP (can be "1" or "0")
+#   (b) One of the following environment variables can be set - REGRESSION_STEP has priority:
+#       REGRESSION_FROM : <build_step> (similar to variant a)
+#       REGRESSION_STEP : <build_step> - Execute only the selected step
 #
 #   Afterwards the file can be sourced as usual.
-#   Note that (1) always has priority over (2). If none are specified all steps
+#   Note that (a) always has priority over (b). If none are specified all steps
 #   are executed and everything is built.
 #
 #   Examples:
 #     Riviera-PRO:
-#       'set argv {poc}; set argc 1; source ../regression.tcl'
-#       This will built everything starting with the PoC. If only the PoC should
-#       be build REGRESSION_SINGLE_STEP has to be set to "1" previously
+#       'set ::argv {poc}; set ::argc 1; source ../regression.tcl'
+#       This will built everything starting with the PoC.
 #     exec-NVC:
-#       'export REGRESSION_START_STEP="test"; export REGRESSION_SINGLE_STEP="1"'
-#       'exec-NVC.sh -n --tcl-file=regression.tcl'
-#       This will only run the tests.
+#       - 'REGRESSION_FROM="poc" exec-NVC.sh -n --tcl-file=regression.tcl'
+#            This will build everything starting from the poc
+#       - 'REGRESSION_STEP="test" exec-NVC.sh -n --tcl-file=regression.tcl'
+#         'REGRESSION_FROM="poc" REGRESSION_STEP="test" exec-NVC.sh -n --tcl-file=regression.tcl'
+#           This will only run the tests.
 #
 # License:
 # =============================================================================
@@ -52,75 +52,65 @@ set root [file dirname [info script]]
 # noqa: W300
 source ${root}/lib/OSVVM-Scripts/StartUp.tcl
 # noqa: W300
-source ${root}/lib/PoC/tools/OSVVM/poc.tcl
+source ${root}/lib/PoC/tools/poc.tcl
 
 namespace import ::poc::*
+namespace import ::regression::*
 
-set executeSingleStep 0
-if {[info exists ::env(REGRESSION_SINGLE_STEP)]} {
-	set executeSingleStep [expr {$::env(REGRESSION_SINGLE_STEP) == 1}] ; # Only build selected step
-}
+#---------------------#
+# Configuration space #
+#---------------------#
+set RivieraVersion "2026.04"
+set VivadoVersion  "2025.2"
 
-proc map_level {step} {
-	switch -nocase -- $step {
-		"all"   { return 0 }
-		"osvvm" { return 0 }
-		"poc"   { return 1 }
-		"dut"   { return 2 }
-		"test"  { return 3 }
-		default {
-			puts "\[WARNING\] Unknown build level '$step', using 'all'"
-			return 0
-		}
-	}
-}
+# FIXME: this is a hardcoded path
+set precompiledLibPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
 
-# 1. argv (when used interactively)
-#    example for only compiling poc and running the tests: 'set argv {poc}; set argc 1; clear; source ../regression.tcl'
-if {[info exists argv] && [llength $argv] > 0} {
-	set buildConfigSource "interactive"
-	set level [map_level [lindex $argv 0]]
+set defaultStep "all"
+set regressionLevels [createRegressionLevels osvvm poc dut test] ; # clean, all
 
-# 2. Check for environment variables
-#    can i.e. set by 'export REGRESSION_START_STEP="test"'
-} elseif {[info exists ::env(REGRESSION_START_STEP)]} {
-	set buildConfigSource "environment variable"
-	set level [map_level $::env(REGRESSION_START_STEP)]
-} else {
-	set buildConfigSource "default"
-	set level 0
-}
-
-# 3. output result
-puts "=================================="
-puts "Build configuration"
-puts "  Level: $level (set by $buildConfigSource)"
-puts "  Executing [expr {$executeSingleStep ? "single step" : "multiple steps"}]"
-puts "=================================="
-
-namespace eval ::BigDesign {
-	variable scalingFactor 100;  # scale length of simulation
-}
+# -P -projectRoot set project folder root for poc scripting
 # -g -gui         disables system exit (i.e. on errors)
 # -v -vendor      Vendor name
 # -b -board       Board name
-# -p -projectFile Path to the my_project file
-# -c -configFile  Path to the my_config file
+# -p -projectFile Path to the local_configuration file
+# -c -configFile  Path to the project_configuration file
 configurePoC \
+	-P ${root} \
 	-g \
 	-v Xilinx \
 	-b XCZU3EG \
-	-p "../../../src/PoC/my_project.vhdl" \
-	-c "../../../src/PoC/my_config_XCZU3EG.vhdl"
+	-p "../../../src/PoC/local_configuration.vhdl" \
+	-c "../../../src/PoC/project_configuration_XCZU3EG.vhdl"
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
 # -w -waves       save waveforms
-configureOSVVM -stop 1
+configureOSVVM -stop 1 ;
 
-if {$level <= 0} {
+#---------------------#
+
+evaluateRegressionLevel $defaultStep $regressionLevels
+
+# Currently not working because of paths being relative to project and submodule poc
+# if {![file exists $::poc::localConfigurationPath] || $::regression::level == -1} {
+# 	WriteLocalConfiguration
+# } else {
+# 	puts "${::poc::putsPrefix}Skipping local configuration file generation."
+# }
+
+puts "========================================"
+puts "End of PoC configuration, start of build"
+puts "========================================"
+puts ""
+
+namespace eval ::BigDesign {
+	variable scalingFactor 100;  # scale length of simulation
+}
+
+if {$::regression::level <= 0} {
 	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
-	if {[checkForBuildErrors] || $executeSingleStep} {
+	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
@@ -136,34 +126,38 @@ if {$::osvvm::ToolName eq "GHDL"} {
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
 	set ::BigDesign::scalingFactor 1
 
-	# FIXME: this is a hardcoded path
-	LinkLibrary unisim {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/unisim}
-	LinkLibrary axi_dma_v7_1_37 {C:/Tools/precompiled/Riviera-PRO/2025.10/Vivado/2025.2/axi_dma_v7_1_37}
+	LinkLibrary xpm                   "$precompiledLibPath/xpm"
+	LinkLibrary unisim                "$precompiledLibPath/unisim"
+	LinkLibrary axi_sg_v4_1_21        "$precompiledLibPath/axi_sg_v4_1_21"
+	LinkLibrary axi_datamover_v5_1_37 "$precompiledLibPath/axi_datamover_v5_1_37"
+	LinkLibrary axi_dma_v7_1_37       "$precompiledLibPath/axi_dma_v7_1_37"
+
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	# Precompile Vivado for NVC:
 	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
 	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
+	LinkLibrary xpm {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
 }
 
-if {$level <= 1} {
-	build "${root}/lib/PoC/src/PoC.pro" [BuildName "${::poc::buildNamePrefix}PoC"]
-	if {[checkForBuildErrors] || $executeSingleStep} {
+if {$::regression::level <= 1} {
+	build "${root}/lib/PoC/src/build.pro" [BuildName "${::poc::buildNamePrefix}PoC"]
+	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
-if {$level <= 2} {
+if {$::regression::level <= 2} {
 	build "${root}/src/BigDesign.pro" [BuildName "${::poc::buildNamePrefix}BigDesign"]
-	if {[checkForBuildErrors] || $executeSingleStep} {
+	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
-if {$level <= 3} {
+if {$::regression::level <= 3} {
 	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::buildNamePrefix}RunAllTests"]
-	if {[checkForRunErrors] || $executeSingleStep} {
+	if {[checkForRunErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
