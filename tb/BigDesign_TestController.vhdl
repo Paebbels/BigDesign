@@ -55,12 +55,38 @@ entity BigDesign_TestController is
 
 	-- Connect transaction interfaces using external names
 	-- Managers
-	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>>;
-	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>>;
-	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>>;
+
+	signal HPM0_FPD_Rec : AddressBusRecType (
+          Address      (31 downto 0),
+          DataToModel  (31 downto 0),
+          DataFromModel(31 downto 0)
+        ) ;
+
+	signal HPM1_FPD_Rec : AddressBusRecType (
+          Address      (31 downto 0),
+          DataToModel  (31 downto 0),
+          DataFromModel(31 downto 0)
+        ) ;
+	
+	signal HPM0_LPD_Rec : AddressBusRecType (
+          Address      (31 downto 0),
+          DataToModel  (31 downto 0),
+          DataFromModel(31 downto 0)
+        ) ;
+	
+		signal HP0_FPD_Rec : AddressBusRecType (
+          Address      (31 downto 0),
+          DataToModel  (31 downto 0),
+          DataFromModel(31 downto 0)
+        ) ;
+
+	alias MODEL_NAME is <<constant ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.MODEL_NAME : string>>;
+	-- alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecType>>;
+	-- alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecType>>;
+	-- alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecType>>;
 
 	-- Subordinates
-	alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecType>>;
+	-- alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecType>>;
 	-- alias HP1_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP1_FPD.Memory.TransRec : AddressBusRecType>>;
 	-- alias HP2_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP2_FPD.Memory.TransRec : AddressBusRecType>>;
 	-- alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecType>>;
@@ -127,8 +153,8 @@ entity BigDesign_TestController is
 
 	signal MemoryID : MemoryIDType := NewID (
 		Name      => "PSDDR4",
-		AddrWidth => MEMORY_MODEL_ADDRESS_BITS,
-		DataWidth => 8,  -- Memory is byte-oriented
+		AddrWidth => MEMORY_MODEL_ADDRESS_BITS - 4,
+		DataWidth => 128,  -- Memory is byte-oriented (?)
 		ParentID  => SharedID,
 		SEARCH    => NAME
 	);

@@ -50,7 +50,7 @@ package PS_settings_pkg is
 	constant SUBORDINATE_ADDRESS_BITS  : positive := 49;  -- do not change
 	constant SUBORDINATE_ID_BITS       : positive := 6;
 
-	constant MEMORY_MODEL_ADDRESS_BITS : positive := 32;  -- fails for i.e. 40 ("bad pointer ...")
+	constant MEMORY_MODEL_ADDRESS_BITS : positive := 32 + 4;  -- fails for i.e. 40 ("bad pointer ...")
 
 	constant CONFIG_ADDRESS_BITS       : positive := 32;
 	constant CONFIG_DATA_BITS          : positive := 32;
