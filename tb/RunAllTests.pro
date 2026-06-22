@@ -19,6 +19,12 @@
 # limitations under the License.
 # =============================================================================
 
+if {$::osvvm::ToolName eq "RivieraPRO"} {
+    library lib_Global
+    analyze glbl.v
+    SetSecondSimulationTopLevel lib_Global.glbl
+}
+
 TestSuite BigDesign
 library lib_test
 
