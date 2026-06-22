@@ -92,6 +92,7 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 6);
+		WaitForClock(AXIStreamTransmitter, 2);
 		ReadCheck(HPM0_LPD_Rec, REG_GPIO_BUTTONS, 32x"0");  -- initial GPIO value
 		WaitForClock(HPM0_LPD_Rec);
 		GPIO_Button <= "10";
@@ -139,17 +140,6 @@ begin
 		-- Currently not doing anything
 
 		WaitForClock(DataGen_Managers(2), 2);
-		WaitForBarrier(TestDone);
-		wait;
-	end process;
-
-	ManagerProc_3 : process
-	begin
-		WaitForClock(DataGen_Managers(3), 2);
-
-		-- Currently not doing anything
-
-		WaitForClock(DataGen_Managers(3), 2);
 		WaitForBarrier(TestDone);
 		wait;
 	end process;

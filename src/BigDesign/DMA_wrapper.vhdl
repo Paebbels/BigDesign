@@ -52,10 +52,10 @@ entity DMA_wrapper is
 		signal ScatterGather_s2m : in  AXI4_A40_D32.Sized_S2M;
 
 		-- Transmitter / Receiver
-		signal StreamIn_s2m      : out AXI4S_D32.Sized_S2M;
 		signal StreamIn_m2s      : in  AXI4S_D32.Sized_M2S;
-		signal StreamOut_s2m     : in  AXI4S_D32.Sized_S2M;
-		signal StreamOut_m2s     : out AXI4S_D32.Sized_M2S
+		signal StreamIn_s2m      : out AXI4S_D32.Sized_S2M;
+		signal StreamOut_m2s     : out AXI4S_D32.Sized_M2S;
+		signal StreamOut_s2m     : in  AXI4S_D32.Sized_S2M
 	);
 end entity;
 

@@ -42,11 +42,11 @@ entity Design is
 
 		signal Config_Clk : out std_logic;
 
-		signal Manager_Clks  : out std_logic_vector(0 to NUM_MANAGERS - 1);
+		signal Manager_Clks  : out std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : out std_logic_vector(0 to NUM_SUBORDINATES - 2);
+		signal Subordinate_Clks : out std_logic_vector(0 to NUM_SUBORDINATES - 1);
 
 		signal DMA_StreamIn_m2s  : in  AXI4S_D32.Sized_M2S;
 		signal DMA_StreamIn_s2m  : out AXI4S_D32.Sized_S2M;
@@ -74,12 +74,12 @@ architecture rtl of Design is
 	signal Config_m2s  : AXI4Lite_A32_D32.Sized_M2S;
 	signal Config_s2m  : AXI4Lite_A32_D32.Sized_S2M;
 
-	signal Manager_m2s : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MANAGERS - 1);
-	signal Manager_s2m : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MANAGERS - 1);
+	signal MPSoC_Manager_m2s : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MPSOC_MANAGERS - 1);
+	signal MPSoC_Manager_s2m : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MPSOC_MANAGERS - 1);
 
-	signal MPSoC_subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
-	signal MPSoC_subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
-	signal MPSoC_Subordinate_clks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
+	signal MPSoC_subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+	signal MPSoC_subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+	signal MPSoC_Subordinate_clks : std_logic_vector(0 to NUM_MPSOC_SUBORDINATES - 1);
 
 	signal BD_UART_TX   : std_logic;
 	signal BD_UART_TX_d : std_logic := '1';
@@ -89,8 +89,8 @@ architecture rtl of Design is
 	-- DMA
 	signal DMA_Config_m2s    : AXI4Lite_A32_D32.Sized_M2S;
 	signal DMA_Config_s2m    : AXI4Lite_A32_D32.Sized_S2M;
-	signal DMA_DeMux_Out_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(BASE_ADDRESSES_DMA'range);
-	signal DMA_DeMux_Out_s2m : AXI4_A49_D128_I6.Sized_S2M_Vector(BASE_ADDRESSES_DMA'range);
+	signal DMA_DeMux_Out_m2s : AXI4_A40_D128.Sized_M2S_Vector(BASE_ADDRESSES_DMA'range);
+	signal DMA_DeMux_Out_s2m : AXI4_A40_D128.Sized_S2M_Vector(BASE_ADDRESSES_DMA'range);
 
 	-- PL-DDR4
 	signal PL_DDR4_In_m2s : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to 1);
@@ -109,13 +109,13 @@ begin
 	Subordinate_Clks       <= (others => Clock_300);
 	MPSoC_Subordinate_clks <= (others => Clock_300);
 
-	-- Manager_m2s(0)    <= resize(PL_DDR4_In_m2s(0));
-	-- PL_DDR4_In_s2m(0) <= resize(Manager_s2m(0));
+	PL_DDR4_In_m2s(0)    <= resize(MPSoC_Manager_m2s(0));
+	MPSoC_Manager_s2m(0) <= resize(PL_DDR4_In_s2m(0));
 
-	MPSoC_Subordinate_m2s(0 to NUM_SUBORDINATES - 2) <= Subordinate_m2s;
-	MPSoC_Subordinate_s2m(0 to NUM_SUBORDINATES - 2) <= Subordinate_s2m;
-	MPSoC_Subordinate_m2s(NUM_SUBORDINATES - 1)      <= DMA_DeMux_Out_m2s(DEVICE_DMA_PS8_IDX);
-	MPSoC_Subordinate_s2m(NUM_SUBORDINATES - 1)      <= DMA_DeMux_Out_s2m(DEVICE_DMA_PS8_IDX);
+	MPSoC_Subordinate_m2s(0 to NUM_SUBORDINATES - 1)  <= Subordinate_m2s;
+	Subordinate_s2m                                   <= MPSoC_Subordinate_s2m(0 to NUM_SUBORDINATES - 1);
+	MPSoC_Subordinate_m2s(NUM_MPSOC_SUBORDINATES - 1) <= resize(DMA_DeMux_Out_m2s(DEVICE_DMA_PS8_IDX));
+	DMA_DeMux_Out_s2m(DEVICE_DMA_PS8_IDX)             <= resize(MPSoC_Subordinate_s2m(NUM_MPSOC_SUBORDINATES - 1));
 
 	--UART_TX_d <= UART_TX'delayed(UART_WIRE_DELAY);  -- todo: Create Riviera bug report
 	UART_TX_d <= transport UART_TX after UART_WIRE_DELAY;
@@ -127,8 +127,8 @@ begin
 			Config_s2m       => Config_s2m,
 			Config_Clk       => Config_Clk,
 
-			Manager_m2s      => Manager_m2s,
-			Manager_s2m      => Manager_s2m,
+			Manager_m2s      => MPSoC_Manager_m2s,
+			Manager_s2m      => MPSoC_Manager_s2m,
 			Manager_Clks     => Manager_Clks,
 
 			Subordinate_m2s  => MPSoC_Subordinate_m2s,
@@ -151,7 +151,7 @@ begin
 				PIPELINE_OUT      => (BASE_ADDRESSES'range => 0)
 			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 
 				In_M2S       => Config_m2s,
@@ -172,7 +172,7 @@ begin
 				USER_ID           => (others => '0')
 			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_VERSION_IDX),
 				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_VERSION_IDX),
@@ -184,7 +184,7 @@ begin
 				UART_BAUDRATE => UART_BAUDRATE
 			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_SETTING_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_SETTING_IDX)
@@ -196,9 +196,9 @@ begin
 				USE_CDC         => FALSE
 			)
 			port map (
-				Clock           => PS_Clock,
+				Clock           => Clock_300,
 				Reset           => PL_Reset,
-				AXI4Lite_Clock  => PS_Clock,
+				AXI4Lite_Clock  => Clock_100,
 				AXI4Lite_Reset  => PL_Reset,
 
 				AXI4Lite_m2s    => DeMux_Out_m2s(DEVICE_HRC_IDX),
@@ -210,7 +210,7 @@ begin
 
 		GPIO : entity work.design_GPIORegister
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_GPIO_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_GPIO_IDX),
@@ -227,7 +227,7 @@ begin
 				BAUDRATE      => UART_BAUDRATE
 			)
 			port map (
-				Clock         => PS_Clock,
+				Clock         => Clock_300,
 				Reset         => PL_Reset,
 
 				AXI4Lite_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
@@ -257,7 +257,7 @@ begin
 		-- DMA
 		DMA_wrapper: entity work.DMA_wrapper
 			port map (
-				Clock             => PS_Clock,
+				Clock             => Clock_300,
 				Reset             => PL_Reset,
 
 				-- Config
@@ -283,8 +283,12 @@ begin
 		DMA_SG_s2m    <= resize(Mux_In_s2m(1));
 			
 		AXI4_Mux: entity PoC.AXI4_Mux
+			generic map (
+					PIPELINE_IN => (Mux_In_m2s'range => 0),
+					PIPELINE_OUT => 0
+			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 
 				In_M2S       => Mux_In_m2s,
@@ -302,7 +306,7 @@ begin
 				PIPELINE_OUT      => (BASE_ADDRESSES_DMA'range => 0)
 			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 
 				In_M2S       => Mux_Out_m2s,
@@ -311,20 +315,28 @@ begin
 				Out_M2S      => DMA_DeMux_Out_m2s,
 				Out_S2M      => DMA_DeMux_Out_s2m
 			);
+
 		-- output goes to
 		--   (1) Mux connected to PL-DDR
-		PL_DDR4_In_m2s(1) <= DMA_DeMux_Out_m2s(DEVICE_DMA_PL_DDR4_IDX);
-		PL_DDR4_In_s2m(1) <= DMA_DeMux_Out_s2m(DEVICE_DMA_PL_DDR4_IDX);
+		PL_DDR4_In_m2s(1)                         <= resize(DMA_DeMux_Out_m2s(DEVICE_DMA_PL_DDR4_IDX));
+		DMA_DeMux_Out_s2m(DEVICE_DMA_PL_DDR4_IDX) <= resize(PL_DDR4_In_s2m(1));
 		--   (2) PS8 block
 	end block;
 
 	PL_DDR4_blk : block
-		signal Mux_Out_m2s : AXI4_A40_D128.Sized_M2S;
-		signal Mux_Out_s2m : AXI4_A40_D128.Sized_S2M;
+		signal Mux_Out_m2s : AXI4_A49_D128_I6.Sized_M2S;
+		signal Mux_Out_s2m : AXI4_A49_D128_I6.Sized_S2M;
+
+		signal Data_m2s    : AXI4_A40_D128.Sized_M2S;
+		signal Data_s2m    : AXI4_A40_D128.Sized_S2M;
 	begin
 		AXI4_Mux: entity PoC.AXI4_Mux
+			generic map (
+				PIPELINE_IN => (PL_DDR4_In_m2s'range => 0),
+				PIPELINE_OUT => 0
+			)
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 
 				In_M2S       => PL_DDR4_In_m2s,
@@ -334,13 +346,16 @@ begin
 				Out_S2M      => Mux_Out_s2m
 			);
 
+		Data_m2s    <= resize(Mux_Out_m2s);
+		Mux_Out_s2m <= resize(Data_s2m);
+
 		PL_DDR4: entity work.PL_DDR4_wrapper
 			port map (
-				Clock        => PS_Clock,
+				Clock        => Clock_300,
 				Reset        => PL_Reset,
 
-				Data_m2s     => Mux_Out_m2s,
-				Data_s2m     => Mux_Out_s2m
+				Data_m2s     => Data_m2s,
+				Data_s2m     => Data_s2m
 			);
 	end block;
 

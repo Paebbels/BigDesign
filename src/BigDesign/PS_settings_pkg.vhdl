@@ -34,8 +34,9 @@ package PS_settings_pkg is
 	----------------------
 	------- General ------
 	----------------------
-	constant NUM_MANAGERS         : positive := 2;
-	constant NUM_SUBORDINATES     : positive := 4;  -- 1 out of 4 available Subordinates is used for DMA input
+	constant NUM_MPSOC_MANAGERS     : positive := 2;
+	constant NUM_MPSOC_SUBORDINATES : positive := 4;  -- 1 out of 4 available Subordinates is used for DMA input
+	constant NUM_SUBORDINATES       : positive := 3;
 
 	constant UART_BAUDRATE   : BAUD         := 921.600 kBd;  -- set in Design and PS_Stub
 	constant UART_WIRE_DELAY : delay_length := 9 ns;
@@ -60,12 +61,16 @@ package PS_settings_pkg is
 	constant AXI_DATA_WIDTH : positive := 32;
 	constant AXI_STRB_WIDTH : positive := AXI_DATA_WIDTH / 8;
 
+	constant DMA_AXI_ADDR_WIDTH : positive := 40;
+
 	constant AXI_STREAM_DATA_WIDTH : positive := 32;
 	----------------------
 	------- Types --------
 	----------------------
-	subtype AXIAddressType is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
-	subtype AXIDataType    is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
+	subtype AXIAddressType     is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
+	subtype AXIDataType        is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
+
+	subtype DMA_AXIAddressType is std_logic_vector(DMA_AXI_ADDR_WIDTH - 1 downto 0);
 
 	----------------------
 	------ Packages ------
@@ -112,7 +117,7 @@ package PS_settings_pkg is
 			USER_BITS     => 1,
 			DEST_BITS     => 1,
 			ID_BITS       => 1,
-			KEEP_BITS     => AXI_STREAM_DATA_WIDTH / 8,
+			KEEP_BITS     => 4,  -- AXI_STREAM_DATA_WIDTH / 8 (failing for NVC)
 			REV_USER_BITS => 1
 		);
 
@@ -151,15 +156,15 @@ package PS_settings_pkg is
 	constant DEVICE_DMA_PS8_IDX     : natural := 0;
 	constant DEVICE_DMA_PL_DDR4_IDX : natural := 1;
 
-	constant BASE_ADDRESS_PS8     : AXIAddressType := 32x"0000_0000";
-	constant BASE_ADDRESS_PL_DDR4 : AXIAddressType := 32x"A000_0000";
+	constant BASE_ADDRESS_PS8     : DMA_AXIAddressType := 40x"0000_0000";
+	constant BASE_ADDRESS_PL_DDR4 : DMA_AXIAddressType := 40x"A000_0000";
 	constant BASE_ADDRESSES_DMA   : T_SLUV := (
 		DEVICE_DMA_PS8_IDX     => unsigned(BASE_ADDRESS_PS8),
 		DEVICE_DMA_PL_DDR4_IDX => unsigned(BASE_ADDRESS_PL_DDR4)
 	);
 	constant BASE_ADDRESSES_DMA_MASK : T_SLUV := (
-		DEVICE_DMA_PS8_IDX     => 32x"7FFF_FFFF",  -- 2G
-		DEVICE_DMA_PL_DDR4_IDX => 32x"0FFF_FFFF"   -- 256M
+		DEVICE_DMA_PS8_IDX     => 40x"00_7FFF_FFFF",  -- 2G
+		DEVICE_DMA_PL_DDR4_IDX => 40x"00_0FFF_FFFF"   -- 256M
 	);
 
 	function resize(input : T_AXI4_Bus_M2S) return target of T_AXI4_Bus_M2S;
@@ -186,13 +191,13 @@ package body PS_settings_pkg is
 		res.WLast    := input.WLast   ;
 		res.WUser    := input.WUser   ;
 		res.WData    := resize(input.WData,  res.WData'length);
-		res.WStrb    := input.WStrb   ;
+		res.WStrb    := resize(input.WStrb,  res.WStrb'length);
 		res.BReady   := input.BReady  ;
 		res.ARValid  := input.ARValid ;
 		res.ARAddr   := resize(input.ARAddr, res.ARAddr'length);
 		res.ARCache  := input.ARCache ;
 		res.ARProt   := input.ARProt  ;
-		res.ARID     := input.ARID    ;
+		res.ARID     := resize(input.ARID,  res.ARID'length);
 		res.ARLen    := input.ARLen   ;
 		res.ARSize   := input.ARSize  ;
 		res.ARBurst  := input.ARBurst ;
@@ -211,13 +216,13 @@ package body PS_settings_pkg is
 		res.WReady  := input.WReady ;
 		res.BValid  := input.BValid ;
 		res.BResp   := input.BResp  ;
-		res.BID     := input.BID    ;
+		res.BID     := resize(input.BID,  res.BID'length);
 		res.BUser   := input.BUser  ;
 		res.ARReady := input.ARReady;
 		res.RValid  := input.RValid ;
-		res.RData   := resize(res.RData, DATA_BITS);
+		res.RData   := resize(input.RData, res.RData'length);
 		res.RResp   := input.RResp  ;
-		res.RID     := input.RID    ;
+		res.RID     := resize(input.RID, res.RID'length);
 		res.RLast   := input.RLast  ;
 		res.RUser   := input.RUser  ;
 		return res;

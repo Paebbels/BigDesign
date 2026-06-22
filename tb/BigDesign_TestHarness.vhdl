@@ -57,11 +57,11 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal GPIO_LED     : std_logic_vector(1 downto 0);
 
 	signal Config_Clk   : std_logic;
-	signal Manager_Clks : std_logic_vector(0 to NUM_MANAGERS - 1);
+	signal Manager_Clks : std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
-	signal Subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 2);
-	signal Subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 2);
-	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 2);
+	signal Subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
 
 	signal DataGen_Managers : AddressBusRecArrayType(0 to NUM_SUBORDINATES - 1)(
 		Address(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
@@ -229,7 +229,7 @@ begin
 				TUser    => DMA_StreamOut_m2s.User,
 				TData    => DMA_StreamOut_m2s.Data,
 				TStrb    => "1",
-				TKeep    => "1",
+				TKeep    => DMA_StreamOut_m2s.Keep,
 				TLast    => DMA_StreamOut_m2s.Last,
 				-- Testbench Transaction Interface
 				TransRec => AXIStreamReceiver

@@ -1,6 +1,5 @@
 -- =============================================================================
 -- Authors:
---   Patrick Lehmann
 --   Adrian Weiland
 --
 -- License:
@@ -35,8 +34,8 @@ entity PL_DDR4_wrapper is
 		Clock    : in std_logic;
 		Reset    : in std_logic;
 
-        Data_m2s : in AXI4_A40_D32.Sized_M2S;
-        Data_s2m : out AXI4_A40_D32.Sized_S2M
+        Data_m2s : in  AXI4_A40_D128.Sized_M2S;
+        Data_s2m : out AXI4_A40_D128.Sized_S2M
     );
 end entity;
 

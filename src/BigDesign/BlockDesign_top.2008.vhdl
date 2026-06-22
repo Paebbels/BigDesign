@@ -42,11 +42,11 @@ entity BlockDesign_top is
 
 		signal Manager_m2s      : out T_AXI4_Bus_M2S_Vector;
 		signal Manager_s2m      : in  T_AXI4_Bus_S2M_Vector;
-		signal Manager_Clks     : in  std_logic_vector(0 to NUM_MANAGERS - 1);
+		signal Manager_Clks     : in  std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_SUBORDINATES - 1);
+		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_MPSOC_SUBORDINATES - 1);
 
 		signal UART_TX          : out std_logic;
 		signal UART_RX          : in  std_logic

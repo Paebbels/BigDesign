@@ -135,17 +135,6 @@ begin
 		wait;
 	end process;
 
-	ManagerProc_3 : process
-	begin
-		WaitForClock(DataGen_Managers(3), 2);
-
-		-- Currently not doing anything
-
-		WaitForClock(DataGen_Managers(3), 2);
-		WaitForBarrier(TestDone);
-		wait;
-	end process;
-
 	-----------------------------------------------
 	-------------- Memory instances ---------------
 	-----------------------------------------------
