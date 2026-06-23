@@ -42,9 +42,12 @@ end entity;
 
 architecture top of Toplevel is
 
-	signal Subordinate_m2s   : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 2);
-	signal Subordinate_s2m   : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 2);
+	signal Subordinate_m2s   : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_s2m   : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
+
 	signal DMA_StreamIn_m2s  : AXI4S_D32.Sized_M2S := Initialize_axi4stream_M2S(32, Value => '0');
+	signal DMA_StreamIn_s2m  : AXI4S_D32.Sized_S2M := Initialize_axi4stream_S2M(Value => '0');
+	signal DMA_StreamOut_m2s : AXI4S_D32.Sized_M2S := Initialize_axi4stream_M2S(32, Value => '0');
 	signal DMA_StreamOut_s2m : AXI4S_D32.Sized_S2M := Initialize_axi4stream_S2M(Value => '0');
 
 begin
@@ -64,9 +67,20 @@ begin
 			Subordinate_Clks  => open,
 
 			DMA_StreamIn_m2s  => DMA_StreamIn_m2s,
-			DMA_StreamIn_s2m  => open,
-			DMA_StreamOut_m2s => open,
+			DMA_StreamIn_s2m  => DMA_StreamIn_s2m,
+			DMA_StreamOut_m2s => DMA_StreamOut_m2s,
 			DMA_StreamOut_s2m => DMA_StreamOut_s2m
 		);
 
+	Termination_Transmitter : entity PoC.axi4stream_Termination_Transmitter
+		port map(
+			Out_M2S => DMA_StreamIn_m2s,
+			Out_S2M => DMA_StreamIn_s2m
+		);
+
+	Termination_Receiver : entity PoC.axi4stream_Termination_Receiver
+		port map(
+			In_M2S => DMA_StreamOut_m2s,
+			In_S2M => DMA_StreamOut_s2m
+		);
 end architecture;
