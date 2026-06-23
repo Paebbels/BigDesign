@@ -40,10 +40,10 @@ analyze BigDesign_GPIO.vhdl
 analyze BigDesign_UART.vhdl
 
 simulate BigDesign_Simple [generic PATTERN RepeatedSequentialBlockWrite]    [generic SCALING_FACTOR $::BigDesign::scalingFactor]
-# simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
-# simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
-# simulate BigDesign_Version
-# simulate BigDesign_Settings
-# simulate BigDesign_HRC
-# simulate BigDesign_GPIO
-# simulate BigDesign_UART
+simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
+simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
+simulate BigDesign_Version
+simulate BigDesign_Settings
+simulate BigDesign_HRC
+simulate BigDesign_GPIO
+simulate BigDesign_UART

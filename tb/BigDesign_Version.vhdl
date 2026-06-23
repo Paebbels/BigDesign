@@ -94,7 +94,7 @@ begin
 		WaitForClock(HPM0_LPD_Rec, 2);
 		-- All register are read-only and dynamic / change over time.
 		-- But it can be checked for the project name
-		-- todo: Read and check data from mem-file
+		-- TODO: Read and check data from mem-file
 		ReadCheck(HPM0_LPD_Rec, REG_VERSION_PROJECT_0, 32x"6A6F7250");
 		ReadCheck(HPM0_LPD_Rec, REG_VERSION_PROJECT_1, 32x"00746365");
 		ReadCheck(HPM0_LPD_Rec, REG_VERSION_PROJECT_2, 32x"0");
@@ -149,8 +149,8 @@ begin
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i    : AXIAddressType;
-		variable Data_i   : AXIDataType := 32x"11";
+		variable Reg_i    : Config_AddressType;
+		variable Data_i   : Config_DataType := 32x"11";
 		variable DataRV   : RandomPType;
 	begin
 		-- Currently not doing anything

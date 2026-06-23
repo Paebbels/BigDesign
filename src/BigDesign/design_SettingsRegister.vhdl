@@ -22,14 +22,16 @@ entity design_SettingsRegister is
 end entity;
 
 architecture rtl of design_SettingsRegister is
-	constant UART_BAUDRATE_US : unsigned(AXI_DATA_BITS - 1 downto 0) := to_unsigned(BAUD'pos(UART_BAUDRATE), AXI_DATA_BITS);
+	constant ADDRESS_BITS     : positive                         := AXI4Lite_M2S.AWAddr'length;
+	constant DATA_BITS        : positive                         := AXI4Lite_M2S.WData'length;
+	constant UART_BAUDRATE_US : unsigned(DATA_BITS - 1 downto 0) := to_unsigned(BAUD'pos(UART_BAUDRATE), DATA_BITS);
 
 	function gen_config return T_AXI4_Register_Vector is
 		variable temp : T_AXI4_Register_Vector(0 to 0);
 		variable addr : natural := 0;
 		variable pos  : natural := 0;
 	begin
-		temp(pos) := to_AXI4_Register(Name => "UART_Baudrate", Address => to_unsigned(addr * 4, AXI_ADDRESS_BITS), RegisterMode => ConstantValue, Init_Value => std_logic_vector(UART_BAUDRATE_US));
+		temp(pos) := to_AXI4_Register(Name => "UART_Baudrate", Address => to_unsigned(addr * 4, ADDRESS_BITS), RegisterMode => ConstantValue, Init_Value => std_logic_vector(UART_BAUDRATE_US));
 		addr      := addr + 1; pos := pos + 1;
 		return temp(0 to pos - 1);
 	end function;

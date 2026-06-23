@@ -141,8 +141,8 @@ begin
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i    : AXIAddressType;
-		variable Data_i   : AXIDataType := 32x"11";
+		variable Reg_i    : Config_AddressType;
+		variable Data_i   : Config_DataType := 32x"11";
 		variable DataRV   : RandomPType;
 	begin
 		-- Currently not doing anything

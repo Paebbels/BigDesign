@@ -112,7 +112,8 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(0), 2);
 
-		Write(DataGen_Managers(0), REG_TEST, resize(MEMORY_DATA_TEST, DATA_BITS));
+		Write(DataGen_Managers(0), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
+		Write(DataGen_Managers(0), MEMORY_TEST_WORD_2, MEMORY_TEST_DATA_2);
 		Toggle(WriteDone);
 		-- Wait for outputs to propagate and signal TestDone
 		WaitForClock(DataGen_Managers(0), 2);
@@ -124,7 +125,8 @@ begin
 	begin
 		WaitForClock(DataGen_Managers(1), 2);
 		WaitForToggle(WriteDone);
-		ReadCheck(DataGen_Managers(1), REG_TEST, resize(MEMORY_DATA_TEST, DATA_BITS));
+		ReadCheck(DataGen_Managers(1), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
+		ReadCheck(DataGen_Managers(1), MEMORY_TEST_WORD_2, MEMORY_TEST_DATA_2);
 
 		WaitForClock(DataGen_Managers(1), 2);
 		WaitForBarrier(TestDone);
@@ -148,15 +150,31 @@ begin
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("MemoryBackdoor", TCID);
 		variable ReadData : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0);
-		variable Reg_i    : AXIAddressType;
+		variable Reg_i    : Config_AddressType;
 		variable Data_i   : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"11";
 		variable DataRV   : RandomPType;
+
+		function toWordAddress (addr : Config_AddressType) return BackdoorAddressType is
+			constant result : Config_AddressType := addr srl (Config_AddressType'length - BackdoorAddressType'length);
+		begin
+			return result(BackdoorAddressType'range);
+		end function;
+
+		function toWordAddress (wordAddr : natural) return BackdoorAddressType is
+		begin
+			return std_logic_vector(to_unsigned(wordAddr, BackdoorAddressType'length));
+		end function;
 	begin
 		WaitForToggle(WriteDone);
-		Read(PSDDR4_MemoryID, REG_TEST, ReadData);  -- alias for MemRead
-		AffirmIfEqual(ProcID, ReadData, MEMORY_DATA_TEST, "Reading memory through backdoor.");
+		Read(PSDDR4_MemoryID, toWordAddress(MEMORY_TEST_WORD_1), ReadData);  -- alias for MemRead
+		AffirmIfEqual(ProcID, ReadData, MEMORY_TEST_DATA_1, "Reading memory through backdoor (1).");
+
+		Read(PSDDR4_MemoryID, toWordAddress(MEMORY_TEST_WORD_2), ReadData);  -- alias for MemRead
+		AffirmIfEqual(ProcID, ReadData, MEMORY_TEST_DATA_2, "Reading memory through backdoor (2).");
+
 		wait for 100 ns;
 
+		-- TODO: check this because of changes in PSDDR instantiation
 		if PATTERN = "RepeatedSequentialBlockWrite" then
 			-- 1st pattern (sequentially fill memory)
 			-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
@@ -164,7 +182,7 @@ begin
 			-- 	-> loop n times so that n equals 1 min
 			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
 				for j in 0 to NUM_BYTES_PER_BLOCK - 1 loop
-					Write(PSDDR4_MemoryID, std_logic_vector(to_unsigned(j, AXI_ADDRESS_BITS)), Data_i);
+					Write(PSDDR4_MemoryID, toWordAddress(j), Data_i);
 				end loop;
 			end loop;
 

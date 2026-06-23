@@ -99,7 +99,6 @@ begin
 
 		WaitForToggle(ReadByteTrigger);
 		log("Reading received data byte from UART register ...");
-		-- todo: add line delay
 		ReadCheck(HPM0_LPD_Rec, REG_UART_RX, TestData);
 		WaitForClock(HPM0_LPD_Rec, 2);
 		WaitForBarrier(TestDone);
@@ -110,7 +109,6 @@ begin
 		constant ProcID : AlertLogIDType := NewID("UART_1_TX_Proc", TCID);
 	begin
 		wait for 1 us;
-		-- todo: add line delay
 		Send(UART_TX_Rec, TestData);
 		Toggle(ReadByteTrigger);
 
@@ -168,8 +166,8 @@ begin
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i    : AXIAddressType;
-		variable Data_i   : AXIDataType := 32x"11";
+		variable Reg_i    : Config_AddressType;
+		variable Data_i   : Config_DataType := 32x"11";
 		variable DataRV   : RandomPType;
 	begin
 		-- Currently not doing anything

@@ -55,55 +55,32 @@ entity BigDesign_TestController is
 
 	-- Connect transaction interfaces using external names
 	-- Managers
-
-	-- signal HPM0_FPD_Rec : AddressBusRecType (
-    --       Address      (31 downto 0),
-    --       DataToModel  (31 downto 0),
-    --       DataFromModel(31 downto 0)
-    --     ) ;
-
-	-- signal HPM1_FPD_Rec : AddressBusRecType (
-    --       Address      (31 downto 0),
-    --       DataToModel  (31 downto 0),
-    --       DataFromModel(31 downto 0)
-    --     ) ;
+	subtype AddressBusRecTypeFPD is AddressBusRecType (
+    	Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
+    	DataToModel   (MPSOC_MANAGER_DATA_BITS - 1 downto 0),
+    	DataFromModel (MPSOC_MANAGER_DATA_BITS - 1 downto 0)
+	);
+	subtype AddressBusRecTypeConstrainedLPD is AddressBusRecType (
+    	Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
+    	DataToModel   (CONFIG_DATA_BITS - 1 downto 0),
+    	DataFromModel (CONFIG_DATA_BITS - 1 downto 0)
+	);
 	
-	-- signal HPM0_LPD_Rec : AddressBusRecType (
-    --       Address      (31 downto 0),
-    --       DataToModel  (31 downto 0),
-    --       DataFromModel(31 downto 0)
-    --     ) ;
-	
-	-- 	signal HP0_FPD_Rec : AddressBusRecType (
-    --       Address      (31 downto 0),
-    --       DataToModel  (31 downto 0),
-    --       DataFromModel(31 downto 0)
-    --     ) ;
-	subtype AddressBusRecTypeConstrained is AddressBusRecType (
-    	Address       (40 - 1 downto 0),
-    	DataToModel   (128 - 1 downto 0),
-    	DataFromModel (128 - 1 downto 0)
-	);
-	subtype AddressBusRecTypeConstrained_x is AddressBusRecType (
-    	Address       (40 - 1 downto 0),
-    	DataToModel   (32 - 1 downto 0),
-    	DataFromModel (32 - 1 downto 0)
-	);
-	subtype AddressBusRecTypeConstrained_xx is AddressBusRecType (
-    	Address       (32 - 1 downto 0),
-    	DataToModel   (128 - 1 downto 0),
-    	DataFromModel (128 - 1 downto 0)
-	);
-	alias MODEL_NAME is <<constant ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.MODEL_NAME : string>>;
-	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecTypeConstrained>>;  -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
-	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecTypeConstrained>>;  -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
-	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecTypeConstrained_x>>;
+	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecTypeFPD>>;             -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
+	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecTypeFPD>>;             -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
+	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecTypeConstrainedLPD>>;  -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
 
 	-- Subordinates
-	-- alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecTypeConstrained_xx>>;
-	-- alias HP1_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP1_FPD.Memory.TransRec : AddressBusRecTypeConstrained_xx>>;
-	-- alias HP2_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP2_FPD.Memory.TransRec : AddressBusRecTypeConstrained_xx>>;
-	-- alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecTypeConstrained_xx>>;
+	-- subtype AddressBusRecTypeConstrainedSFPD is AddressBusRecType (
+    -- 	Address       (MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),
+    -- 	DataToModel   (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
+    -- 	DataFromModel (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
+	-- );
+
+	-- alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecTypeConstrainedSFPD>>;
+	-- alias HP1_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP1_FPD.Memory.TransRec : AddressBusRecTypeConstrainedSFPD>>;
+	-- alias HP2_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP2_FPD.Memory.TransRec : AddressBusRecTypeConstrainedSFPD>>;
+	-- alias HP3_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP3_FPD.Memory.TransRec : AddressBusRecTypeConstrainedSFPD>>;  -- DMA
 
 	-- UART
 	alias UART_TX_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_UART.TX.TransRec : UartRecType>>;
@@ -125,26 +102,6 @@ entity BigDesign_TestController is
 	constant HPM0_LPD_AXI_DATA_BYTE_WIDTH : integer := HPM0_LPD_AXI_DATA_WIDTH / 8 ;
 	constant HPM0_LPD_AXI_BYTE_ADDR_WIDTH : integer := log2ceil(HPM0_LPD_AXI_DATA_BYTE_WIDTH);
 
-	-- constant HP0_FPD_AXI_ADDR_WIDTH       : integer := HP0_FPD_Rec.Address'length ;
-	-- constant HP0_FPD_AXI_DATA_WIDTH       : integer := HP0_FPD_Rec.DataToModel'length ;
-	-- constant HP0_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP0_FPD_AXI_DATA_WIDTH / 8 ;
-	-- constant HP0_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP0_FPD_AXI_DATA_BYTE_WIDTH);
-
-	-- constant HP1_FPD_AXI_ADDR_WIDTH       : integer := HP1_FPD_Rec.Address'length ;
-	-- constant HP1_FPD_AXI_DATA_WIDTH       : integer := HP1_FPD_Rec.DataToModel'length ;
-	-- constant HP1_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP1_FPD_AXI_DATA_WIDTH / 8 ;
-	-- constant HP1_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP1_FPD_AXI_DATA_BYTE_WIDTH);
-
-	-- constant HP2_FPD_AXI_ADDR_WIDTH       : integer := HP2_FPD_Rec.Address'length ;
-	-- constant HP2_FPD_AXI_DATA_WIDTH       : integer := HP2_FPD_Rec.DataToModel'length ;
-	-- constant HP2_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP2_FPD_AXI_DATA_WIDTH / 8 ;
-	-- constant HP2_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP2_FPD_AXI_DATA_BYTE_WIDTH);
-
-	-- constant HP3_FPD_AXI_ADDR_WIDTH       : integer := HP3_FPD_Rec.Address'length ;
-	-- constant HP3_FPD_AXI_DATA_WIDTH       : integer := HP3_FPD_Rec.DataToModel'length ;
-	-- constant HP3_FPD_AXI_DATA_BYTE_WIDTH  : integer := HP3_FPD_AXI_DATA_WIDTH / 8 ;
-	-- constant HP3_FPD_AXI_BYTE_ADDR_WIDTH  : integer := log2ceil(HP3_FPD_AXI_DATA_BYTE_WIDTH);
-
 	-- Simplifying access to Burst FIFOs using aliases
 	alias HPM0_FPD_WriteBurstFifo : ScoreboardIdType is HPM0_FPD_Rec.WriteBurstFifo ;
 	alias HPM0_FPD_ReadBurstFifo  : ScoreboardIdType is HPM0_FPD_Rec.ReadBurstFifo ;
@@ -153,21 +110,14 @@ entity BigDesign_TestController is
 	alias HPM0_LPD_WriteBurstFifo : ScoreboardIdType is HPM0_LPD_Rec.WriteBurstFifo ;
 	alias HPM0_LPD_ReadBurstFifo  : ScoreboardIdType is HPM0_LPD_Rec.ReadBurstFifo ;
 
-	-- alias HP0_FPD_WriteBurstFifo  : ScoreboardIdType is HP0_FPD_Rec.WriteBurstFifo ;
-	-- alias HP0_FPD_ReadBurstFifo   : ScoreboardIdType is HP0_FPD_Rec.ReadBurstFifo ;
-	-- alias HP1_FPD_WriteBurstFifo  : ScoreboardIdType is HP1_FPD_Rec.WriteBurstFifo ;
-	-- alias HP1_FPD_ReadBurstFifo   : ScoreboardIdType is HP1_FPD_Rec.ReadBurstFifo ;
-	-- alias HP2_FPD_WriteBurstFifo  : ScoreboardIdType is HP2_FPD_Rec.WriteBurstFifo ;
-	-- alias HP2_FPD_ReadBurstFifo   : ScoreboardIdType is HP2_FPD_Rec.ReadBurstFifo ;
-	-- alias HP3_FPD_WriteBurstFifo  : ScoreboardIdType is HP3_FPD_Rec.WriteBurstFifo ;
-	-- alias HP3_FPD_ReadBurstFifo   : ScoreboardIdType is HP3_FPD_Rec.ReadBurstFifo ;
-
 	constant TCID     : AlertLogIDType :=  NewID("TestCtrl");
 	constant SharedID : AlertLogIDType :=  NewID("Shared");
 
+	subtype BackdoorAddressType is std_logic_vector(MEMORY_MODEL_ADDRESS_BITS - log2ceil(MEMORY_MODEL_DATA_BITS / 8) - 1 downto 0);
+
 	signal PSDDR4_MemoryID : MemoryIDType := NewID (
 		Name      => "PSDDR4",
-		AddrWidth => MEMORY_MODEL_ADDRESS_BITS - log2ceil(MEMORY_MODEL_DATA_BITS / 8),
+		AddrWidth => BackdoorAddressType'length,
 		DataWidth => MEMORY_MODEL_DATA_BITS,
 		ParentID  => SharedID,
 		SEARCH    => NAME

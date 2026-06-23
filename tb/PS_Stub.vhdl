@@ -346,8 +346,8 @@ begin
 	pl_clk0   <= pl_clock0;
 
 	blk_UART : block
-		signal UART_RX_Rec : UartRecType;  -- todo: constrain?
-		signal UART_TX_Rec : UartRecType;  -- todo: constrain?
+		signal UART_RX_Rec : UartRecType;  -- TODO: constrain?
+		signal UART_TX_Rec : UartRecType;  -- TODO: constrain?
 	begin
 		RX: entity OSVVM_UART.UartRx
 			generic map (
@@ -666,6 +666,7 @@ begin
 			)
 		);
 	begin
+		-- TODO: move Memory instance below assignment of AxiBus
 		Memory : Axi4MemoryVti
 		generic map (
 			MODEL_ID_NAME => "HP0_FPD",

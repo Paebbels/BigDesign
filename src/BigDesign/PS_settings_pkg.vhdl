@@ -44,81 +44,79 @@ package PS_settings_pkg is
 	----------------------
 	----- Bit widths -----
 	----------------------
-	constant MANAGER_ADDRESS_BITS      : positive := 40;
-	constant MANAGER_ID_BITS           : positive := 16;
-
-	constant SUBORDINATE_ADDRESS_BITS  : positive := 49;  -- do not change
-	constant SUBORDINATE_ID_BITS       : positive := 6;
+	constant MPSOC_MANAGER_ADDRESS_BITS     : positive := 40;
+	constant MPSOC_MANAGER_DATA_BITS        : positive := 128;
+	constant MPSOC_MANAGER_ID_BITS          : positive := 16;
+	constant MPSOC_MANAGER_USER_BITS        : positive := 16;
+	
+	constant MPSOC_SUBORDINATE_ADDRESS_BITS : positive := 49;  -- do not change
+	constant MPSOC_SUBORDINATE_DATA_BITS    : positive := 128;
+	constant MPSOC_SUBORDINATE_ID_BITS      : positive := 6;
+	constant MPSOC_SUBORDINATE_USER_BITS    : positive := 16;
 
 	constant MEMORY_MODEL_ADDRESS_BITS : positive := 32;  -- fails for i.e. 40 ("bad pointer ...")
 	constant MEMORY_MODEL_DATA_BITS    : positive := 128;
 
 	constant CONFIG_ADDRESS_BITS       : positive := 32;
 	constant CONFIG_DATA_BITS          : positive := 32;
-	constant DATA_BITS                 : positive := 128;
-	constant USER_BITS                 : positive := 16;
 
-	constant AXI_ADDRESS_BITS : positive := 32;
-	constant AXI_DATA_BITS    : positive := 32;
-	constant AXI_STRB_BITS    : positive := AXI_DATA_BITS / 8;
+	constant DMA_AXI_ADDRESS_BITS : positive := MPSOC_MANAGER_ADDRESS_BITS;
 
-	constant DMA_AXI_ADDRESS_BITS : positive := 40;
+	constant AXI_STREAM_DATA_BITS : positive := 32;  -- used for streaming data in and out of DMA
 
-	constant AXI_STREAM_DATA_BITS : positive := 32;
 	----------------------
 	------- Types --------
 	----------------------
-	subtype AXIAddressType     is std_logic_vector(AXI_ADDRESS_BITS - 1 downto 0);
-	subtype AXIDataType        is std_logic_vector(AXI_DATA_BITS - 1 downto 0);
-
-	subtype DMA_AXIAddressType is std_logic_vector(DMA_AXI_ADDRESS_BITS - 1 downto 0);
+	subtype Config_AddressType is std_logic_vector(CONFIG_ADDRESS_BITS - 1 downto 0);
+	subtype Config_DataType    is std_logic_vector(CONFIG_DATA_BITS - 1 downto 0);
+	subtype DMA_AddressType    is std_logic_vector(DMA_AXI_ADDRESS_BITS - 1 downto 0);
 
 	----------------------
 	------ Packages ------
 	----------------------
-	package AXI4_A40_D32 is new PoC.AXI4Full_Sized
+	package AXI4_A40_D128 is new PoC.AXI4Full_Sized  -- FPD Manager
 		generic map (
-			ADDRESS_BITS => MANAGER_ADDRESS_BITS,
+			ADDRESS_BITS => MPSOC_MANAGER_ADDRESS_BITS,
+			DATA_BITS    => MPSOC_MANAGER_DATA_BITS,
+			ID_BITS      => MPSOC_MANAGER_ID_BITS,
+			USER_BITS    => MPSOC_MANAGER_USER_BITS
+		);
+	
+	package AXI4_A40_D32 is new PoC.AXI4Full_Sized  -- LPD Manager (Config bus)
+		generic map (
+			ADDRESS_BITS => MPSOC_MANAGER_ADDRESS_BITS,
 			DATA_BITS    => CONFIG_DATA_BITS,
-			USER_BITS    => USER_BITS,
-			ID_BITS      => MANAGER_ID_BITS
+			ID_BITS      => MPSOC_MANAGER_ID_BITS,
+			USER_BITS    => MPSOC_MANAGER_USER_BITS
 		);
 
-	package AXI4_A40_D128 is new PoC.AXI4Full_Sized
+	package AXI4_A49_D128_I6 is new PoC.AXI4Full_Sized  -- FPD Subordinate
 		generic map (
-			ADDRESS_BITS => MANAGER_ADDRESS_BITS,
-			DATA_BITS    => DATA_BITS,
-			USER_BITS    => USER_BITS,
-			ID_BITS      => MANAGER_ID_BITS
+			ADDRESS_BITS => MPSOC_SUBORDINATE_ADDRESS_BITS,
+			DATA_BITS    => MPSOC_SUBORDINATE_DATA_BITS,
+			ID_BITS      => MPSOC_SUBORDINATE_ID_BITS,
+			USER_BITS    => MPSOC_SUBORDINATE_USER_BITS
 		);
 
-	package AXI4_A49_D128_I6 is new PoC.AXI4Full_Sized
+	package AXI4Lite_A40_D32 is new PoC.AXI4Lite_Sized  -- AXI4Lite Config bus (MPSoC to Converter)
 		generic map (
-			ADDRESS_BITS => SUBORDINATE_ADDRESS_BITS,
-			DATA_BITS    => DATA_BITS,
-			USER_BITS    => USER_BITS,
-			ID_BITS      => SUBORDINATE_ID_BITS
-		);
-
-	package AXI4Lite_A40_D32 is new PoC.AXI4Lite_Sized
-		generic map (
-			ADDRESS_BITS => MANAGER_ADDRESS_BITS,
+			ADDRESS_BITS => MPSOC_MANAGER_ADDRESS_BITS,
 			DATA_BITS    => CONFIG_DATA_BITS
 		);
 
-	package AXI4Lite_A32_D32 is new PoC.AXI4Lite_Sized
+	package AXI4Lite_A32_D32 is new PoC.AXI4Lite_Sized  -- AXI4Lite Config bus
 		generic map (
 			ADDRESS_BITS => CONFIG_ADDRESS_BITS,
 			DATA_BITS    => CONFIG_DATA_BITS
 		);
 
-	package AXI4S_D32 is new PoC.AXI4Stream_Sized
+	package AXI4S_D32 is new PoC.AXI4Stream_Sized  -- Input/Output stream to/from DMA
 		generic map (
 			DATA_BITS     => AXI_STREAM_DATA_BITS,
 			USER_BITS     => 1,
 			DEST_BITS     => 1,
 			ID_BITS       => 1,
-			KEEP_BITS     => 4,  -- AXI_STREAM_DATA_BITS / 8 (failing for NVC)
+			KEEP_BITS     => 4,  -- TODO: AXI_STREAM_DATA_BITS / 8 (failing for NVC)
 			REV_USER_BITS => 1
 		);
 
@@ -134,14 +132,14 @@ package PS_settings_pkg is
 	-- constant DEVICE_I2C_IDX     : natural := 6;
 	-- constant DEVICE_SPI_IDX     : natural := 7;
 
-	constant BASE_ADDRESS_VERSION : AXIAddressType := 32x"8000_0000";
-	constant BASE_ADDRESS_SETTING : AXIAddressType := 32x"8001_0000";
-	constant BASE_ADDRESS_HRC     : AXIAddressType := 32x"8002_0000";
-	constant BASE_ADDRESS_GPIO    : AXIAddressType := 32x"8008_0000";
-	constant BASE_ADDRESS_UART    : AXIAddressType := 32x"8009_0000";
+	constant BASE_ADDRESS_VERSION : Config_AddressType := 32x"8000_0000";
+	constant BASE_ADDRESS_SETTING : Config_AddressType := 32x"8001_0000";
+	constant BASE_ADDRESS_HRC     : Config_AddressType := 32x"8002_0000";
+	constant BASE_ADDRESS_GPIO    : Config_AddressType := 32x"8008_0000";
+	constant BASE_ADDRESS_UART    : Config_AddressType := 32x"8009_0000";
 	-- constant BASE_ADDRESS_I2C     : AXIAddressType := 32x"800A_0000";
 	-- constant BASE_ADDRESS_SPI     : AXIAddressType := 32x"800B_0000";
-	constant BASE_ADDRESS_AXI_DMA : AXIAddressType := 32x"8100_0000";
+	constant BASE_ADDRESS_AXI_DMA : Config_AddressType := 32x"8100_0000";
 
 	constant BASE_ADDRESSES : T_SLUV := (
 		DEVICE_VERSION_IDX => unsigned(BASE_ADDRESS_VERSION),
@@ -157,8 +155,8 @@ package PS_settings_pkg is
 	constant DEVICE_DMA_PS8_IDX     : natural := 0;
 	constant DEVICE_DMA_PL_DDR4_IDX : natural := 1;
 
-	constant BASE_ADDRESS_PS8     : DMA_AXIAddressType := 40x"0000_0000";
-	constant BASE_ADDRESS_PL_DDR4 : DMA_AXIAddressType := 40x"A000_0000";
+	constant BASE_ADDRESS_PS8     : DMA_AddressType := 40x"0000_0000";
+	constant BASE_ADDRESS_PL_DDR4 : DMA_AddressType := 40x"A000_0000";
 	constant BASE_ADDRESSES_DMA   : T_SLUV := (
 		DEVICE_DMA_PS8_IDX     => unsigned(BASE_ADDRESS_PS8),
 		DEVICE_DMA_PL_DDR4_IDX => unsigned(BASE_ADDRESS_PL_DDR4)

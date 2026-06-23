@@ -32,35 +32,37 @@ package BigDesign_tb_pkg is
 	------------------------
   -- Register addresses --
 	------------------------
-	constant REG_TEST  : AXIAddressType := 32x"10";
-	constant MEMORY_DATA_TEST : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"01";
+	constant MEMORY_TEST_WORD_1 : Config_AddressType := 32x"10";  -- random address for memory test
+	constant MEMORY_TEST_WORD_2 : Config_AddressType := 32x"20";  -- random address for memory test
+	constant MEMORY_TEST_DATA_1 : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"01";
+	constant MEMORY_TEST_DATA_2 : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"0C";
 
-	constant REG_VERSION_PROJECT_0 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"0C";
-	constant REG_VERSION_PROJECT_1 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"10";
-	constant REG_VERSION_PROJECT_2 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"14";
-	constant REG_VERSION_PROJECT_3 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"18";
-	constant REG_VERSION_PROJECT_4 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"1C";
+	constant REG_VERSION_PROJECT_0 : Config_AddressType := BASE_ADDRESS_VERSION or 32x"0C";
+	constant REG_VERSION_PROJECT_1 : Config_AddressType := BASE_ADDRESS_VERSION or 32x"10";
+	constant REG_VERSION_PROJECT_2 : Config_AddressType := BASE_ADDRESS_VERSION or 32x"14";
+	constant REG_VERSION_PROJECT_3 : Config_AddressType := BASE_ADDRESS_VERSION or 32x"18";
+	constant REG_VERSION_PROJECT_4 : Config_AddressType := BASE_ADDRESS_VERSION or 32x"1C";
 
-	constant REG_SETTINGS_BAUDRATE : AXIAddressType := BASE_ADDRESS_SETTING or 32x"00";
+	constant REG_SETTINGS_BAUDRATE : Config_AddressType := BASE_ADDRESS_SETTING or 32x"00";
 
-	constant REG_GPIO_BUTTONS      : AXIAddressType := BASE_ADDRESS_GPIO or 32x"00";
-	constant REG_GPIO_LED          : AXIAddressType := BASE_ADDRESS_GPIO or 32x"04";
+	constant REG_GPIO_BUTTONS      : Config_AddressType := BASE_ADDRESS_GPIO or 32x"00";
+	constant REG_GPIO_LED          : Config_AddressType := BASE_ADDRESS_GPIO or 32x"04";
 
-	constant REG_HRC_NANOSECONDS_L         : AXIAddressType := BASE_ADDRESS_HRC or 32x"08";
-	constant REG_HRC_NANOSECONDS_H         : AXIAddressType := BASE_ADDRESS_HRC or 32x"0C";
-	constant REG_HRC_TIME_HMS              : AXIAddressType := BASE_ADDRESS_HRC or 32x"10";
-	constant REG_HRC_DATE_YMD              : AXIAddressType := BASE_ADDRESS_HRC or 32x"14";
-	constant REG_HRC_NANOSECONDS_TO_LOAD_L : AXIAddressType := BASE_ADDRESS_HRC or 32x"20";
-	constant REG_HRC_NANOSECONDS_TO_LOAD_H : AXIAddressType := BASE_ADDRESS_HRC or 32x"24";
-	constant REG_HRC_DATETME_TO_LOAD_HMS   : AXIAddressType := BASE_ADDRESS_HRC or 32x"28";
-	constant REG_HRC_DATETME_TO_LOAD_YMD   : AXIAddressType := BASE_ADDRESS_HRC or 32x"2C";
+	constant REG_HRC_NANOSECONDS_L         : Config_AddressType := BASE_ADDRESS_HRC or 32x"08";
+	constant REG_HRC_NANOSECONDS_H         : Config_AddressType := BASE_ADDRESS_HRC or 32x"0C";
+	constant REG_HRC_TIME_HMS              : Config_AddressType := BASE_ADDRESS_HRC or 32x"10";
+	constant REG_HRC_DATE_YMD              : Config_AddressType := BASE_ADDRESS_HRC or 32x"14";
+	constant REG_HRC_NANOSECONDS_TO_LOAD_L : Config_AddressType := BASE_ADDRESS_HRC or 32x"20";
+	constant REG_HRC_NANOSECONDS_TO_LOAD_H : Config_AddressType := BASE_ADDRESS_HRC or 32x"24";
+	constant REG_HRC_DATETME_TO_LOAD_HMS   : Config_AddressType := BASE_ADDRESS_HRC or 32x"28";
+	constant REG_HRC_DATETME_TO_LOAD_YMD   : Config_AddressType := BASE_ADDRESS_HRC or 32x"2C";
 
-	constant REG_UART_RX      : AXIAddressType := BASE_ADDRESS_UART or 32x"00";
-	constant REG_UART_TX      : AXIAddressType := BASE_ADDRESS_UART or 32x"04";  -- not used
-	constant REG_UART_STATUS  : AXIAddressType := BASE_ADDRESS_UART or 32x"08";  -- not used
-	constant REG_UART_CONTROL : AXIAddressType := BASE_ADDRESS_UART or 32x"0C";  -- not used
+	constant REG_UART_RX      : Config_AddressType := BASE_ADDRESS_UART or 32x"00";
+	constant REG_UART_TX      : Config_AddressType := BASE_ADDRESS_UART or 32x"04";  -- not used
+	constant REG_UART_STATUS  : Config_AddressType := BASE_ADDRESS_UART or 32x"08";  -- not used
+	constant REG_UART_CONTROL : Config_AddressType := BASE_ADDRESS_UART or 32x"0C";  -- not used
 
-	constant BLOCK_SIZE : unsigned(AXI_ADDRESS_BITS - 1 downto 0) := to_unsigned(16, AXI_ADDRESS_BITS);
+	constant BLOCK_SIZE : unsigned(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0) := to_unsigned(16, MEMORY_MODEL_ADDRESS_BITS);
 	constant NUM_BYTES_PER_BLOCK : positive := 64 * 1024;  -- 64 kB
 	constant NUM_ITERATIONS      : positive := 60;  -- default SCALING_FACTOR is 100 which results in 60000 iterations
 

@@ -64,9 +64,9 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
 
 	signal DataGen_Managers : AddressBusRecArrayType(0 to NUM_SUBORDINATES - 1)(
-		Address(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
-		DataToModel(DATA_BITS - 1 downto 0),
-		DataFromModel(DATA_BITS - 1 downto 0)
+		Address(MPSOC_SUBORDINATE_ADDRESS_BITS - 1 downto 0),
+		DataToModel(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
+		DataFromModel(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
 	);
 
 	-- DMA
@@ -89,10 +89,6 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataFromModel (STREAM_BITS - 1  downto 0),
 		ParamFromModel(4 - 1 downto 0)
 	);
-
-	-- UART Interface
-	signal UART_TX : std_logic := 'H';
-	signal UART_RX : std_logic := 'H';
 
 	component BigDesign_TestController is
 		generic (
@@ -135,29 +131,29 @@ begin
 	gen_M: for i in Subordinate_m2s'range generate
 		subtype T_Axi4Rec is Axi4RecType(
 			WriteAddress (
-				Addr(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
-				ID(SUBORDINATE_ID_BITS - 1 downto 0),
-				User(USER_BITS - 1 downto 0)
+				Addr(MPSOC_SUBORDINATE_ADDRESS_BITS - 1 downto 0),
+				ID(MPSOC_SUBORDINATE_ID_BITS - 1 downto 0),
+				User(MPSOC_SUBORDINATE_USER_BITS - 1 downto 0)
 			),
 			WriteData (
-				Data(DATA_BITS - 1 downto 0),
-				Strb(DATA_BITS / 8 - 1 downto 0),
-				User(USER_BITS - 1 downto 0),
-				ID(SUBORDINATE_ID_BITS - 1 downto 0)
+				Data(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
+				Strb(MPSOC_SUBORDINATE_DATA_BITS / 8 - 1 downto 0),
+				User(MPSOC_SUBORDINATE_USER_BITS - 1 downto 0),
+				ID(MPSOC_SUBORDINATE_ID_BITS - 1 downto 0)
 			),
 			WriteResponse (
-				ID(SUBORDINATE_ID_BITS - 1 downto 0),
-				User(USER_BITS - 1 downto 0)
+				ID(MPSOC_SUBORDINATE_ID_BITS - 1 downto 0),
+				User(MPSOC_SUBORDINATE_USER_BITS - 1 downto 0)
 			),
 			ReadAddress (
-				Addr(SUBORDINATE_ADDRESS_BITS - 1 downto 0),
-				ID(SUBORDINATE_ID_BITS - 1 downto 0),
-				User(USER_BITS - 1 downto 0)
+				Addr(MPSOC_SUBORDINATE_ADDRESS_BITS - 1 downto 0),
+				ID(MPSOC_SUBORDINATE_ID_BITS - 1 downto 0),
+				User(MPSOC_SUBORDINATE_USER_BITS - 1 downto 0)
 			),
 			ReadData (
-				Data(DATA_BITS - 1 downto 0),
-				User(USER_BITS - 1 downto 0),
-				ID(SUBORDINATE_ID_BITS - 1 downto 0)
+				Data(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
+				User(MPSOC_SUBORDINATE_USER_BITS - 1 downto 0),
+				ID(MPSOC_SUBORDINATE_ID_BITS - 1 downto 0)
 			)
 		);
 

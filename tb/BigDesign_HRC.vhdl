@@ -97,7 +97,7 @@ begin
 			constant Nanoseconds_to_load : natural;
 			constant waitTime            : time
 		) is
-			variable ReadData : AXIDataType;
+			variable ReadData : Config_DataType;
 			variable ns_value_slv : std_logic_vector(63 downto 0) := to_slv(Nanoseconds_to_load, 64);
 			variable time_now_a     : time;
 			variable time_now_b     : time;
@@ -139,7 +139,7 @@ begin
 			constant y        : natural;  -- year
 			constant waitTime : time
 		) is
-			variable ReadData : AXIDataType;
+			variable ReadData : Config_DataType;
 			variable Datetime_to_load : T_CLOCK_DATETIME := (
 														secondsResolution => to_unsigned(0, 32),  -- gets written to different register
 														seconds           => to_unsigned(s, 6),
@@ -215,8 +215,8 @@ begin
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
 		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i    : AXIAddressType;
-		variable Data_i   : AXIDataType := 32x"11";
+		variable Reg_i    : Config_AddressType;
+		variable Data_i   : Config_DataType := 32x"11";
 		variable DataRV   : RandomPType;
 	begin
 		-- Currently not doing anything
