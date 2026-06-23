@@ -284,8 +284,10 @@ begin
 			
 		AXI4_Mux: entity PoC.AXI4_Mux
 			generic map (
-					PIPELINE_IN => (Mux_In_m2s'range => 0),
-					PIPELINE_OUT => 0
+				PIPELINE_IN            => (Mux_In_m2s'range => 1),
+				PIPELINE_OUT           => 1,
+				NUM_OUTSTANDING_READS  => 16, -- if zero, use full ID width (2**ID)
+				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
 				Clock        => Clock_300,
@@ -300,10 +302,12 @@ begin
 
 		AXI4_DeMux: entity PoC.AXI4_DeMux
 			generic map (
-				BASE_ADDRESS      => BASE_ADDRESSES_DMA,
-				BASE_ADDRESS_MASK => BASE_ADDRESSES_DMA_MASK,
-				PIPELINE_IN       => 0,
-				PIPELINE_OUT      => (BASE_ADDRESSES_DMA'range => 0)
+				BASE_ADDRESS           => BASE_ADDRESSES_DMA,
+				BASE_ADDRESS_MASK      => BASE_ADDRESSES_DMA_MASK,
+				PIPELINE_IN            =>  1,
+				PIPELINE_OUT           => (BASE_ADDRESSES_DMA'range => 1),
+				NUM_OUTSTANDING_READS  => 16, -- if zero, use full ID width (2**ID)
+				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
 				Clock        => Clock_300,
