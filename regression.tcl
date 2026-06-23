@@ -81,7 +81,7 @@ configurePoC \
 	-v Xilinx \
 	-b XCZU3EG \
 	-p "../../../src/PoC/local_configuration.vhdl" \
-	-c "../../../src/PoC/project_configuration_XCZU3EG.vhdl"
+	-c "../../../src/PoC/project_configuration_TE0802_ZU1EG.vhdl"
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
