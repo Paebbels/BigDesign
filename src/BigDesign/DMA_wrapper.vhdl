@@ -32,6 +32,7 @@ library lib_BigDesign;
 use     lib_BigDesign.PS_settings_pkg.all;
 
 library lib_IP;
+use     lib_IP.IPComponents.all;
 
 
 entity DMA_wrapper is
@@ -61,7 +62,7 @@ end entity;
 
 architecture wrapper of DMA_wrapper is
 begin
-	DMA_inst : entity lib_IP.DMA
+	DMA_inst : component DMA
 		port map (
 			s_axi_lite_aclk        => Clock,
 			m_axi_sg_aclk          => Clock,

@@ -37,6 +37,7 @@ if {$::osvvm::ToolName eq "NVC"} {
 }
 library lib_IP
 analyze ../project/BigDesign.2008.gen/sources_1/ip/DMA/synth/DMA.vhd
+analyze BigDesign/IPComponents.comp.vhdl
 
 
 library lib_BigDesign
