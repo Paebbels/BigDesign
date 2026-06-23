@@ -153,8 +153,8 @@ entity BigDesign_TestController is
 
 	signal MemoryID : MemoryIDType := NewID (
 		Name      => "PSDDR4",
-		AddrWidth => MEMORY_MODEL_ADDRESS_BITS - 4,
-		DataWidth => 128,  -- Memory is byte-oriented (?)
+		AddrWidth => MEMORY_MODEL_ADDRESS_BITS - log2ceil(MEMORY_MODEL_DATA_BITS / 8),
+		DataWidth => MEMORY_MODEL_DATA_BITS,
 		ParentID  => SharedID,
 		SEARCH    => NAME
 	);
