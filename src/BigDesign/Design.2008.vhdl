@@ -240,8 +240,8 @@ begin
 				UART_CTS      => 'U'
 			);
 
-		DMA_Config_m2s <= DeMux_Out_m2s(DEVICE_AXI_DMA_IDX);
-		DMA_Config_s2m <= DeMux_Out_s2m(DEVICE_AXI_DMA_IDX);
+		DMA_Config_m2s                    <= DeMux_Out_m2s(DEVICE_AXI_DMA_IDX);
+		DeMux_Out_s2m(DEVICE_AXI_DMA_IDX) <= DMA_Config_s2m;
 	end block;
 
 	Mux_blk : block

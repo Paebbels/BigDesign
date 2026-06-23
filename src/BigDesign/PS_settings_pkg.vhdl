@@ -58,21 +58,20 @@ package PS_settings_pkg is
 	constant DATA_BITS                 : positive := 128;
 	constant USER_BITS                 : positive := 16;
 
-	-- todo: raname width to bits & write out addr
-	constant AXI_ADDR_WIDTH : positive := 32;
-	constant AXI_DATA_WIDTH : positive := 32;
-	constant AXI_STRB_WIDTH : positive := AXI_DATA_WIDTH / 8;
+	constant AXI_ADDRESS_BITS : positive := 32;
+	constant AXI_DATA_BITS    : positive := 32;
+	constant AXI_STRB_BITS    : positive := AXI_DATA_BITS / 8;
 
-	constant DMA_AXI_ADDR_WIDTH : positive := 40;
+	constant DMA_AXI_ADDRESS_BITS : positive := 40;
 
-	constant AXI_STREAM_DATA_WIDTH : positive := 32;
+	constant AXI_STREAM_DATA_BITS : positive := 32;
 	----------------------
 	------- Types --------
 	----------------------
-	subtype AXIAddressType     is std_logic_vector(AXI_ADDR_WIDTH - 1 downto 0);
-	subtype AXIDataType        is std_logic_vector(AXI_DATA_WIDTH - 1 downto 0);
+	subtype AXIAddressType     is std_logic_vector(AXI_ADDRESS_BITS - 1 downto 0);
+	subtype AXIDataType        is std_logic_vector(AXI_DATA_BITS - 1 downto 0);
 
-	subtype DMA_AXIAddressType is std_logic_vector(DMA_AXI_ADDR_WIDTH - 1 downto 0);
+	subtype DMA_AXIAddressType is std_logic_vector(DMA_AXI_ADDRESS_BITS - 1 downto 0);
 
 	----------------------
 	------ Packages ------
@@ -115,11 +114,11 @@ package PS_settings_pkg is
 
 	package AXI4S_D32 is new PoC.AXI4Stream_Sized
 		generic map (
-			DATA_BITS     => AXI_STREAM_DATA_WIDTH,
+			DATA_BITS     => AXI_STREAM_DATA_BITS,
 			USER_BITS     => 1,
 			DEST_BITS     => 1,
 			ID_BITS       => 1,
-			KEEP_BITS     => 4,  -- AXI_STREAM_DATA_WIDTH / 8 (failing for NVC)
+			KEEP_BITS     => 4,  -- AXI_STREAM_DATA_BITS / 8 (failing for NVC)
 			REV_USER_BITS => 1
 		);
 
@@ -152,7 +151,7 @@ package PS_settings_pkg is
 		DEVICE_UART_IDX    => unsigned(BASE_ADDRESS_UART),
 		DEVICE_AXI_DMA_IDX => unsigned(BASE_ADDRESS_AXI_DMA)
 	);
-	constant BASE_ADDRESSES_MASK : BASE_ADDRESSES'subtype := (BASE_ADDRESSES'range => 32x"8FFF_0000");
+	constant BASE_ADDRESSES_MASK : BASE_ADDRESSES'subtype := (BASE_ADDRESSES'range => 32x"0000_FFFF");
 
 	-- DMA Demux
 	constant DEVICE_DMA_PS8_IDX     : natural := 0;

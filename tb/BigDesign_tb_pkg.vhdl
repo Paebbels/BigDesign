@@ -33,7 +33,7 @@ package BigDesign_tb_pkg is
   -- Register addresses --
 	------------------------
 	constant REG_TEST  : AXIAddressType := 32x"10";
-	constant DATA_TEST : AXIDataType    := 32x"01";
+	constant MEMORY_DATA_TEST : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"01";
 
 	constant REG_VERSION_PROJECT_0 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"0C";
 	constant REG_VERSION_PROJECT_1 : AXIAddressType := BASE_ADDRESS_VERSION or 32x"10";
@@ -60,7 +60,7 @@ package BigDesign_tb_pkg is
 	constant REG_UART_STATUS  : AXIAddressType := BASE_ADDRESS_UART or 32x"08";  -- not used
 	constant REG_UART_CONTROL : AXIAddressType := BASE_ADDRESS_UART or 32x"0C";  -- not used
 
-	constant BLOCK_SIZE : unsigned(AXI_ADDR_WIDTH - 1 downto 0) := to_unsigned(16, AXI_ADDR_WIDTH);
+	constant BLOCK_SIZE : unsigned(AXI_ADDRESS_BITS - 1 downto 0) := to_unsigned(16, AXI_ADDRESS_BITS);
 	constant NUM_BYTES_PER_BLOCK : positive := 64 * 1024;  -- 64 kB
 	constant NUM_ITERATIONS      : positive := 60;  -- default SCALING_FACTOR is 100 which results in 60000 iterations
 

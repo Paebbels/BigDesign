@@ -76,7 +76,7 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal DMA_StreamOut_s2m : AXI4S_D32.Sized_S2M;
 
 	-- TX / RX
-	constant STREAM_BITS : natural  := AXI_STREAM_DATA_WIDTH + AXI_STREAM_DATA_WIDTH / 8;
+	constant STREAM_BITS : natural  := AXI_STREAM_DATA_BITS + AXI_STREAM_DATA_BITS / 8;
 	signal AXIStreamReceiver : StreamRecType(
 		DataToModel   (STREAM_BITS - 1  downto 0),
 		ParamToModel  (4 - 1 downto 0),

@@ -92,7 +92,6 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 6);
-		WaitForClock(AXIStreamTransmitter, 2);
 		ReadCheck(HPM0_LPD_Rec, REG_GPIO_BUTTONS, 32x"0");  -- initial GPIO value
 		WaitForClock(HPM0_LPD_Rec);
 		GPIO_Button <= "10";
@@ -163,54 +162,53 @@ begin
 	-----------------------------------------------
 	---------------- Subordinates -----------------
 	-----------------------------------------------
-	--HP0_FPD_Proc : process
-	--	constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
-	--	variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	--begin
-	--	WaitForClock(HP0_FPD_Rec, 2);
---
-	--	WaitForToggle(WriteDone);
-	--	ReadCheck(HP0_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
---
-	--	WaitForClock(HP0_FPD_Rec, 2);
-	--	WaitForBarrier(TestDone);
-	--	wait;
-	--end process;
+	-- HP0_FPD_Proc : process
+	-- 	constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
+	-- 	variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- begin
+	-- 	WaitForClock(HP0_FPD_Rec, 2);
+
+	-- 	ReadCheck(HP0_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
+
+	-- 	WaitForClock(HP0_FPD_Rec, 2);
+	-- 	WaitForBarrier(TestDone);
+	-- 	wait;
+	-- end process;
 
 	-- HP1_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- 	constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
+	-- 	variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	-- begin
-		-- WaitForClock(HP1_FPD_Rec, 2);
+	-- 	WaitForClock(HP1_FPD_Rec, 2);
 
-		-- WaitForToggle(WriteDone);
-		-- ReadCheck(HP1_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
+	-- 	WaitForToggle(WriteDone);
+	-- 	ReadCheck(HP1_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
 
-		-- WaitForClock(HP1_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
+	-- 	WaitForClock(HP1_FPD_Rec, 2);
+	-- 	WaitForBarrier(TestDone);
+	-- 	wait;
 	-- end process;
 
 	-- HP2_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP2_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- 	constant ProcID : AlertLogIDType := NewID("HP2_FPD_Proc", TCID);
+	-- 	variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	-- begin
-		-- WaitForClock(HP2_FPD_Rec, 2);
+	-- 	WaitForClock(HP2_FPD_Rec, 2);
 
-		-- WaitForClock(HP2_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
+	-- 	WaitForClock(HP2_FPD_Rec, 2);
+	-- 	WaitForBarrier(TestDone);
+	-- 	wait;
 	-- end process;
 
 	-- HP3_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
+	-- 	constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
+	-- 	variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	-- begin
-		-- WaitForClock(HP3_FPD_Rec, 2);
+	-- 	WaitForClock(HP3_FPD_Rec, 2);
 
-		-- WaitForClock(HP3_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
+	-- 	WaitForClock(HP3_FPD_Rec, 2);
+	-- 	WaitForBarrier(TestDone);
+	-- 	wait;
 	-- end process;
 
 end architecture;
