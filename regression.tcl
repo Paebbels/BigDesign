@@ -105,7 +105,7 @@ puts "========================================"
 puts ""
 
 namespace eval ::BigDesign {
-	variable memoryScalingFactor 100;  # scale length of simulation for memory testcase
+	variable memoryScalingFactor 1;  # scale length of simulation for memory testcase
 }
 
 if {$::regression::level <= 0} {
@@ -124,8 +124,6 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	LinkLibrary unisim {C:/Tools/precompiled/GHDL/7.0.0-dev/Vivado/2025.2}
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
-	set ::BigDesign::memoryScalingFactor 1
-
 	LinkLibrary xpm                   "$precompiledLibPath/xpm"
 	LinkLibrary unisim                "$precompiledLibPath/unisim"
 	LinkLibrary axi_sg_v4_1_21        "$precompiledLibPath/axi_sg_v4_1_21"
@@ -139,6 +137,7 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	#   ls -l ~/.nvc/lib
 	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
 	LinkLibrary xpm {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
+	set ::osvvm::SimulatorMemory "-H 4096m"
 }
 
 if {$::regression::level <= 1} {
