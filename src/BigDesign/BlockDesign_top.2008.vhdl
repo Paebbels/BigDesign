@@ -1,6 +1,7 @@
 -- =============================================================================
 -- Authors:
 --   Patrick Lehmann
+--   Adrian Weiland
 --
 -- License:
 -- =============================================================================
@@ -41,24 +42,26 @@ entity BlockDesign_top is
 
 		signal Manager_m2s      : out T_AXI4_Bus_M2S_Vector;
 		signal Manager_s2m      : in  T_AXI4_Bus_S2M_Vector;
-		signal Manager_Clks     : in  std_logic_vector(0 to NUM_MANAGERS - 1);
+		signal Manager_Clks     : in  std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_SUBORDINATES - 1)
+		signal Subordinate_Clks : in  std_logic_vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+
+		signal UART_TX          : out std_logic;
+		signal UART_RX          : in  std_logic
 	);
 end entity;
 
 
 architecture wrapper of BlockDesign_top is
 
-	signal ConfigMM_m2s : AXI4_A40_D32.Sized_M2S;
-	signal ConfigMM_s2m : AXI4_A40_D32.Sized_S2M;
+	signal MPSoC_Config_m2s : AXI4_A40_D32.Sized_M2S;
+	signal MPSoC_Config_s2m : AXI4_A40_D32.Sized_S2M;
 
 	signal IRQs         : std_logic_vector(7 downto 0);
 
 begin
-
 	-- BD: entity work.BlockDesign_wrapper
 	BD: configuration work.BlockDesign_wrapper_conf
 		port map (
@@ -74,45 +77,45 @@ begin
 			Subordinate_2_Clk  => Subordinate_Clks(2),
 			Subordinate_3_Clk  => Subordinate_Clks(3),
 
-			Config_0_araddr  => ConfigMM_m2s.ARAddr,
-			Config_0_arburst => ConfigMM_m2s.ARBurst,
-			Config_0_arcache => ConfigMM_m2s.ARCache,
-			Config_0_arid    => ConfigMM_m2s.ARID,
-			Config_0_arlen   => ConfigMM_m2s.ARLen,
-			Config_0_arlock  => ConfigMM_m2s.ARLock(0),
-			Config_0_arprot  => ConfigMM_m2s.ARProt,
-			Config_0_arqos   => ConfigMM_m2s.ARQoS,
-			Config_0_arready => ConfigMM_s2m.ARReady,
-			Config_0_arsize  => ConfigMM_m2s.ARSize,
-			Config_0_aruser  => ConfigMM_m2s.ARUser,
-			Config_0_arvalid => ConfigMM_m2s.ARValid,
-			Config_0_awaddr  => ConfigMM_m2s.AWAddr,
-			Config_0_awburst => ConfigMM_m2s.AWBurst,
-			Config_0_awcache => ConfigMM_m2s.AWCache,
-			Config_0_awid    => ConfigMM_m2s.AWID,
-			Config_0_awlen   => ConfigMM_m2s.AWLen,
-			Config_0_awlock  => ConfigMM_m2s.AWLock(0),
-			Config_0_awprot  => ConfigMM_m2s.AWProt,
-			Config_0_awqos   => ConfigMM_m2s.AWQoS,
-			Config_0_awready => ConfigMM_s2m.AWReady,
-			Config_0_awsize  => ConfigMM_m2s.AWSize,
-			Config_0_awuser  => ConfigMM_m2s.AWUser,
-			Config_0_awvalid => ConfigMM_m2s.AWValid,
-			Config_0_bid     => ConfigMM_s2m.BID,
-			Config_0_bready  => ConfigMM_m2s.BReady,
-			Config_0_bresp   => ConfigMM_s2m.BResp,
-			Config_0_bvalid  => ConfigMM_s2m.BValid,
-			Config_0_rdata   => ConfigMM_s2m.RData,
-			Config_0_rid     => ConfigMM_s2m.RID,
-			Config_0_rlast   => ConfigMM_s2m.RLast,
-			Config_0_rready  => ConfigMM_m2s.RReady,
-			Config_0_rresp   => ConfigMM_s2m.RResp,
-			Config_0_rvalid  => ConfigMM_s2m.RValid,
-			Config_0_wdata   => ConfigMM_m2s.WData,
-			Config_0_wlast   => ConfigMM_m2s.WLast,
-			Config_0_wready  => ConfigMM_s2m.WReady,
-			Config_0_wstrb   => ConfigMM_m2s.WStrb,
-			Config_0_wvalid  => ConfigMM_m2s.WValid,
+			Config_0_araddr  => MPSoC_Config_m2s.ARAddr,
+			Config_0_arburst => MPSoC_Config_m2s.ARBurst,
+			Config_0_arcache => MPSoC_Config_m2s.ARCache,
+			Config_0_arid    => MPSoC_Config_m2s.ARID,
+			Config_0_arlen   => MPSoC_Config_m2s.ARLen,
+			Config_0_arlock  => MPSoC_Config_m2s.ARLock(0),
+			Config_0_arprot  => MPSoC_Config_m2s.ARProt,
+			Config_0_arqos   => MPSoC_Config_m2s.ARQoS,
+			Config_0_arready => MPSoC_Config_s2m.ARReady,
+			Config_0_arsize  => MPSoC_Config_m2s.ARSize,
+			Config_0_aruser  => MPSoC_Config_m2s.ARUser,
+			Config_0_arvalid => MPSoC_Config_m2s.ARValid,
+			Config_0_awaddr  => MPSoC_Config_m2s.AWAddr,
+			Config_0_awburst => MPSoC_Config_m2s.AWBurst,
+			Config_0_awcache => MPSoC_Config_m2s.AWCache,
+			Config_0_awid    => MPSoC_Config_m2s.AWID,
+			Config_0_awlen   => MPSoC_Config_m2s.AWLen,
+			Config_0_awlock  => MPSoC_Config_m2s.AWLock(0),
+			Config_0_awprot  => MPSoC_Config_m2s.AWProt,
+			Config_0_awqos   => MPSoC_Config_m2s.AWQoS,
+			Config_0_awready => MPSoC_Config_s2m.AWReady,
+			Config_0_awsize  => MPSoC_Config_m2s.AWSize,
+			Config_0_awuser  => MPSoC_Config_m2s.AWUser,
+			Config_0_awvalid => MPSoC_Config_m2s.AWValid,
+			Config_0_bid     => MPSoC_Config_s2m.BID,
+			Config_0_bready  => MPSoC_Config_m2s.BReady,
+			Config_0_bresp   => MPSoC_Config_s2m.BResp,
+			Config_0_bvalid  => MPSoC_Config_s2m.BValid,
+			Config_0_rdata   => MPSoC_Config_s2m.RData,
+			Config_0_rid     => MPSoC_Config_s2m.RID,
+			Config_0_rlast   => MPSoC_Config_s2m.RLast,
+			Config_0_rready  => MPSoC_Config_m2s.RReady,
+			Config_0_rresp   => MPSoC_Config_s2m.RResp,
+			Config_0_rvalid  => MPSoC_Config_s2m.RValid,
+			Config_0_wdata   => MPSoC_Config_m2s.WData,
+			Config_0_wlast   => MPSoC_Config_m2s.WLast,
+			Config_0_wready  => MPSoC_Config_s2m.WReady,
+			Config_0_wstrb   => MPSoC_Config_m2s.WStrb,
+			Config_0_wvalid  => MPSoC_Config_m2s.WValid,
 
 			Manager_0_araddr  => Manager_m2s(0).ARAddr,
 			Manager_0_arburst => Manager_m2s(0).ARBurst,
@@ -354,17 +357,17 @@ begin
 			Subordinate_3_wstrb   => Subordinate_m2s(3).WStrb,
 			Subordinate_3_wvalid  => Subordinate_m2s(3).WValid,
 
-			UART_1_rxd => '1',  -- todo: Connect to PoC library AXI UART
-			UART_1_txd => open  -- todo: Connect to PoC library AXI UART
+			UART_1_txd => UART_TX,
+			UART_1_rxd => UART_RX
 		);
 
-	ConvConfig : entity PoC.AXI4_to_AXI4Lite
+	ConvConfig : entity PoC.axi4_AXI4Lite_Converter
 		port map (
 			Clock       => Clock,
 			Reset       => PL_Reset,
 			-- IN Port
-			In_M2S      => ConfigMM_m2s,
-			In_S2M      => ConfigMM_s2m,
+			In_M2S      => MPSoC_Config_m2s,
+			In_S2M      => MPSoC_Config_s2m,
 			-- OUT Port
 			Out_M2S     => Config_m2s,
 			Out_S2M     => Config_s2m

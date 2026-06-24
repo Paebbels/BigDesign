@@ -25,10 +25,29 @@ analyze BigDesign/PS_settings_pkg.vhdl
 library lib_test
 analyze ../tb/PS_Stub.vhdl
 
+if {$::osvvm::ToolName eq "NVC"} {
+    set xilinx_ip_dir "C:/Xilinx/Vivado/2025.2/data/ip/xilinx"
+
+    library axi_sg_v4_1_21
+    analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
+    library axi_datamover_v5_1_37
+    analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_vh_rfs.vhd"
+    library axi_dma_v7_1_37
+    analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_vh_rfs.vhd"
+}
+library lib_IP
+analyze ../project/BigDesign.2008.gen/sources_1/ip/DMA/synth/DMA.vhd
+analyze BigDesign/IPComponents.comp.vhdl
+
+
 library lib_BigDesign
 analyze ../bd/BlockDesign/synth/BlockDesign.vhd
 analyze ../bd/BlockDesign/hdl/BlockDesign_wrapper.vhd
 analyze ../tb/BlockDesign_wrapper_conf.vhdl
 analyze BigDesign/BlockDesign_top.2008.vhdl
+analyze BigDesign/design_SettingsRegister.vhdl
+analyze BigDesign/design_GPIORegister.vhdl
+analyze BigDesign/DMA_wrapper.vhdl
+analyze BigDesign/PL_DDR4_wrapper.vhdl
 analyze BigDesign/Design.2008.vhdl
 analyze BigDesign/Toplevel_A0.2008.vhdl

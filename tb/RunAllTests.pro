@@ -19,6 +19,12 @@
 # limitations under the License.
 # =============================================================================
 
+if {$::osvvm::ToolName eq "RivieraPRO"} {
+    library lib_Global
+    analyze glbl.v
+    SetSecondSimulationTopLevel lib_Global.glbl
+}
+
 TestSuite BigDesign
 library lib_test
 
@@ -26,7 +32,18 @@ analyze BigDesign_TestController.vhdl
 analyze BigDesign_TestHarness.vhdl
 analyze BigDesign_tb_pkg.vhdl
 
-analyze BigDesign_Simple.vhdl
-simulate BigDesign_Simple [generic PATTERN RepeatedSequentialBlockWrite]    [generic SCALING_FACTOR $::BigDesign::scalingFactor]
-simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_4MB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
-simulate BigDesign_Simple [generic PATTERN RandomSequentialWrite_1TB_Range] [generic SCALING_FACTOR $::BigDesign::scalingFactor]
+analyze BigDesign_Memory.vhdl
+analyze BigDesign_Version.vhdl
+analyze BigDesign_Settings.vhdl
+analyze BigDesign_HRC.vhdl
+analyze BigDesign_GPIO.vhdl
+analyze BigDesign_UART.vhdl
+
+simulate BigDesign_Memory [generic MEMORY_PATTERN RepeatedSequentialBlockWrite]    [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
+simulate BigDesign_Memory [generic MEMORY_PATTERN RandomSequentialWrite_4MB_Range] [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
+simulate BigDesign_Memory [generic MEMORY_PATTERN RandomSequentialWrite_1TB_Range] [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
+simulate BigDesign_Version
+simulate BigDesign_Settings
+simulate BigDesign_HRC
+simulate BigDesign_GPIO
+simulate BigDesign_UART
