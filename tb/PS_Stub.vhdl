@@ -352,7 +352,7 @@ begin
 		RX: entity OSVVM_UART.UartRx
 			generic map (
 				DEFAULT_BAUD        => to_time(to_freq(UART_BAUDRATE)),
-				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE --UARTTB_PARITY_EVEN,UARTTB_PARITY_NONE,UARTTB_PARITY_ODD
+				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE  --UARTTB_PARITY_EVEN,UARTTB_PARITY_NONE,UARTTB_PARITY_ODD
 			)
 			port map (
 				TransRec            => UART_RX_Rec,
@@ -399,19 +399,6 @@ begin
 			)
 		);
 	begin
-		Manager : Axi4ManagerVti
-		generic map (
-			MODEL_ID_NAME => "HPM0_FPD"
-		)
-		port map (
-			-- Globals
-			Clk         => maxihpm0_fpd_aclk,
-			nReset      => '1',
-
-			-- AXI Manager Functional Interface
-			AxiBus      => AxiBus
-		) ;
-
 		maxigp0_awid               <= AxiBus.WriteAddress.ID;
 		maxigp0_awaddr             <= AxiBus.WriteAddress.Addr;
 		maxigp0_awlen              <= AxiBus.WriteAddress.Len;
@@ -424,19 +411,19 @@ begin
 		maxigp0_awuser             <= AxiBus.WriteAddress.User;
 		maxigp0_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp0_awready;
-
+		
 		maxigp0_wdata              <= AxiBus.WriteData.Data;
 		maxigp0_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp0_wlast              <= AxiBus.WriteData.Last;
 		maxigp0_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp0_wready;
-
+		
 		AxiBus.WriteResponse.ID    <= maxigp0_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp0_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp0_bvalid;
 		maxigp0_bready             <= AxiBus.WriteResponse.Ready;
-
+		
 		maxigp0_arid               <= AxiBus.ReadAddress.ID;
 		maxigp0_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp0_arlen              <= AxiBus.ReadAddress.Len;
@@ -449,7 +436,7 @@ begin
 		maxigp0_aruser             <= AxiBus.ReadAddress.User;
 		maxigp0_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp0_arready;
-
+		
 		AxiBus.ReadData.ID         <= maxigp0_rid;
 		AxiBus.ReadData.Data       <= maxigp0_rdata;
 		AxiBus.ReadData.Resp       <= maxigp0_rresp;
@@ -457,8 +444,21 @@ begin
 		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp0_rvalid;
 		maxigp0_rready             <= AxiBus.ReadData.Ready;
-	end block;
 
+		Manager : Axi4ManagerVti
+		generic map (
+			MODEL_ID_NAME => "HPM0_FPD"
+		)
+		port map (
+			-- Globals
+			Clk         => maxihpm0_fpd_aclk,
+			nReset      => '1',
+	
+			-- AXI Manager Functional Interface
+			AxiBus      => AxiBus
+		) ;
+	end block;
+	
 	blk_HPM1_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
@@ -488,19 +488,6 @@ begin
 			)
 		);
 	begin
-		Manager : Axi4ManagerVti
-		generic map (
-			MODEL_ID_NAME => "HPM1_FPD"
-		)
-		port map (
-			-- Globals
-			Clk         => maxihpm1_fpd_aclk,
-			nReset      => '1',
-
-			-- AXI Manager Functional Interface
-			AxiBus      => AxiBus
-		);
-
 		maxigp1_awid               <= AxiBus.WriteAddress.ID;
 		maxigp1_awaddr             <= AxiBus.WriteAddress.Addr;
 		maxigp1_awlen              <= AxiBus.WriteAddress.Len;
@@ -513,19 +500,19 @@ begin
 		maxigp1_awuser             <= AxiBus.WriteAddress.User;
 		maxigp1_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp1_awready;
-
+		
 		maxigp1_wdata              <= AxiBus.WriteData.Data;
 		maxigp1_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp1_wlast              <= AxiBus.WriteData.Last;
 		maxigp1_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp1_wready;
-
+		
 		AxiBus.WriteResponse.ID    <= maxigp1_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp1_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp1_bvalid;
 		maxigp1_bready             <= AxiBus.WriteResponse.Ready;
-
+		
 		maxigp1_arid               <= AxiBus.ReadAddress.ID;
 		maxigp1_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp1_arlen              <= AxiBus.ReadAddress.Len;
@@ -538,7 +525,7 @@ begin
 		maxigp1_aruser             <= AxiBus.ReadAddress.User;
 		maxigp1_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp1_arready;
-
+		
 		AxiBus.ReadData.ID         <= maxigp1_rid;
 		AxiBus.ReadData.Data       <= maxigp1_rdata;
 		AxiBus.ReadData.Resp       <= maxigp1_rresp;
@@ -546,6 +533,19 @@ begin
 		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp1_rvalid;
 		maxigp1_rready             <= AxiBus.ReadData.Ready;
+
+		Manager : Axi4ManagerVti
+		generic map (
+			MODEL_ID_NAME => "HPM1_FPD"
+		)
+		port map (
+			-- Globals
+			Clk         => maxihpm1_fpd_aclk,
+			nReset      => '1',
+	
+			-- AXI Manager Functional Interface
+			AxiBus      => AxiBus
+		);
 	end block;
 
 	blk_HPM0_LPD : block
@@ -577,19 +577,6 @@ begin
 			)
 		);
 	begin
-		Manager : Axi4ManagerVti
-		generic map (
-			MODEL_ID_NAME => "HPM0_LPD (Config)"
-		)
-		port map (
-			-- Globals
-			Clk         => maxihpm0_lpd_aclk,
-			nReset      => '1',
-
-			-- AXI Manager Functional Interface
-			AxiBus      => AxiBus
-		);
-
 		maxigp2_awid               <= AxiBus.WriteAddress.ID;
 		maxigp2_awaddr             <= AxiBus.WriteAddress.Addr;
 		maxigp2_awlen              <= AxiBus.WriteAddress.Len;
@@ -602,19 +589,19 @@ begin
 		maxigp2_awuser             <= AxiBus.WriteAddress.User;
 		maxigp2_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp2_awready;
-
+		
 		maxigp2_wdata              <= AxiBus.WriteData.Data;
 		maxigp2_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp2_wlast              <= AxiBus.WriteData.Last;
 		maxigp2_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp2_wready;
-
+		
 		AxiBus.WriteResponse.ID    <= maxigp2_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp2_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp2_bvalid;
 		maxigp2_bready             <= AxiBus.WriteResponse.Ready;
-
+		
 		maxigp2_arid               <= AxiBus.ReadAddress.ID;
 		maxigp2_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp2_arlen              <= AxiBus.ReadAddress.Len;
@@ -627,7 +614,7 @@ begin
 		maxigp2_aruser             <= AxiBus.ReadAddress.User;
 		maxigp2_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp2_arready;
-
+		
 		AxiBus.ReadData.ID         <= maxigp2_rid;
 		AxiBus.ReadData.Data       <= maxigp2_rdata;
 		AxiBus.ReadData.Resp       <= maxigp2_rresp;
@@ -635,12 +622,25 @@ begin
 		AxiBus.ReadData.User       <= (others => 'X');
 		AxiBus.ReadData.Valid      <= maxigp2_rvalid;
 		maxigp2_rready             <= AxiBus.ReadData.Ready;
+
+		Manager : Axi4ManagerVti
+		generic map (
+			MODEL_ID_NAME => "HPM0_LPD (Config)"
+		)
+		port map (
+			-- Globals
+			Clk         => maxihpm0_lpd_aclk,
+			nReset      => '1',
+
+			-- AXI Manager Functional Interface
+			AxiBus      => AxiBus
+		);
 	end block;
 
 	blk_HP0_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp2_awaddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp2_awaddr'range),
 				ID(saxigp2_awid'range),
 				User(0 downto 0)
 			),
@@ -655,7 +655,7 @@ begin
 				User(0 downto 0)
 			),
 			ReadAddress (
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp2_araddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp2_araddr'range),
 				ID(saxigp2_arid'range),
 				User(0 downto 0)
 			),
@@ -666,21 +666,6 @@ begin
 			)
 		);
 	begin
-		-- TODO: move Memory instance below assignment of AxiBus
-		Memory : Axi4MemoryVti
-		generic map (
-			MODEL_ID_NAME => "HP0_FPD",
-			MEMORY_NAME   => "PSDDR4"
-		)
-		port map (
-			-- Globals
-			Clk         => saxihp0_fpd_aclk,
-			nReset      => '1',
-
-			-- AXI Manager Functional Interface
-			AxiBus      => AxiBus
-		);
-
 		AxiBus.WriteAddress.ID      <= saxigp2_awid;
 		AxiBus.WriteAddress.Addr    <= saxigp2_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp2_awlen;
@@ -718,22 +703,36 @@ begin
 		AxiBus.ReadAddress.User(0)  <= saxigp2_aruser;
 		AxiBus.ReadAddress.QOS      <= saxigp2_arqos;
 		saxigp2_arready             <= AxiBus.ReadAddress.Ready;
-
+		
 		saxigp2_rid                 <= AxiBus.ReadData.ID;
 		saxigp2_rdata               <= AxiBus.ReadData.Data;
 		saxigp2_rresp               <= AxiBus.ReadData.Resp;
 		saxigp2_rlast               <= AxiBus.ReadData.Last;
 		saxigp2_rvalid              <= AxiBus.ReadData.Valid;
 		AxiBus.ReadData.Ready       <= saxigp2_rready;
+
+		Memory : Axi4MemoryVti
+		generic map (
+			MODEL_ID_NAME => "HP0_FPD",
+			MEMORY_NAME   => "PSDDR4"
+		)
+		port map (
+			-- Globals
+			Clk         => saxihp0_fpd_aclk,
+			nReset      => '1',
+	
+			-- AXI Manager Functional Interface
+			AxiBus      => AxiBus
+		);
 	end block;
 
 	blk_HP1_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--saxigp3_awaddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --saxigp3_awaddr'range),
 				ID(saxigp3_awid'range),
 				User(0 downto 0)
-			),
+				),
 			WriteData   (
 				Data(saxigp3_wdata'range),
 				Strb(saxigp3_wstrb'range),
@@ -745,7 +744,7 @@ begin
 				User(0 downto 0)
 			),
 			ReadAddress (
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp3_araddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp3_araddr'range),
 				ID(saxigp3_arid'range),
 				User(0 downto 0)
 			),
@@ -756,6 +755,51 @@ begin
 			)
 		);
 	begin
+		AxiBus.WriteAddress.ID      <= saxigp3_awid;
+		AxiBus.WriteAddress.Addr    <= saxigp3_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
+		AxiBus.WriteAddress.Len     <= saxigp3_awlen;
+		AxiBus.WriteAddress.Size    <= saxigp3_awsize;
+		AxiBus.WriteAddress.Burst   <= saxigp3_awburst;
+		AxiBus.WriteAddress.Lock    <= saxigp3_awlock;
+		AxiBus.WriteAddress.Cache   <= saxigp3_awcache;
+		AxiBus.WriteAddress.Prot    <= saxigp3_awprot;
+		AxiBus.WriteAddress.Valid   <= saxigp3_awvalid;
+		AxiBus.WriteAddress.User(0) <= saxigp3_awuser;
+		AxiBus.WriteAddress.QOS     <= saxigp3_awqos;
+		saxigp3_awready             <= AxiBus.WriteAddress.Ready;
+		
+		AxiBus.WriteData.Data       <= saxigp3_wdata;
+		AxiBus.WriteData.Strb       <= saxigp3_wstrb;
+		AxiBus.WriteData.Last       <= saxigp3_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
+		AxiBus.WriteData.Valid      <= saxigp3_wvalid;
+		saxigp3_wready              <= AxiBus.WriteData.Ready;
+
+		saxigp3_bid                 <= AxiBus.WriteResponse.ID;
+		saxigp3_bresp               <= AxiBus.WriteResponse.Resp;
+		saxigp3_bvalid              <= AxiBus.WriteResponse.Valid;
+		AxiBus.WriteResponse.Ready  <= saxigp3_bready;
+		
+		AxiBus.ReadAddress.ID       <= saxigp3_arid;
+		AxiBus.ReadAddress.Addr     <= saxigp3_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
+		AxiBus.ReadAddress.Len      <= saxigp3_arlen;
+		AxiBus.ReadAddress.Size     <= saxigp3_arsize;
+		AxiBus.ReadAddress.Burst    <= saxigp3_arburst;
+		AxiBus.ReadAddress.Lock     <= saxigp3_arlock;
+		AxiBus.ReadAddress.Cache    <= saxigp3_arcache;
+		AxiBus.ReadAddress.Prot     <= saxigp3_arprot;
+		AxiBus.ReadAddress.Valid    <= saxigp3_arvalid;
+		AxiBus.ReadAddress.User(0)  <= saxigp3_aruser;
+		AxiBus.ReadAddress.QOS      <= saxigp3_arqos;
+		saxigp3_arready             <= AxiBus.ReadAddress.Ready;
+		
+		saxigp3_rid                 <= AxiBus.ReadData.ID;
+		saxigp3_rdata               <= AxiBus.ReadData.Data;
+		saxigp3_rresp               <= AxiBus.ReadData.Resp;
+		saxigp3_rlast               <= AxiBus.ReadData.Last;
+		saxigp3_rvalid              <= AxiBus.ReadData.Valid;
+		AxiBus.ReadData.Ready       <= saxigp3_rready;
+
 		Memory : Axi4MemoryVti
 		generic map (
 			MODEL_ID_NAME => "HP1_FPD",
@@ -769,57 +813,12 @@ begin
 			-- AXI Manager Functional Interface
 			AxiBus      => AxiBus
 		);
-
-		AxiBus.WriteAddress.ID      <= saxigp3_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp3_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
-		AxiBus.WriteAddress.Len     <= saxigp3_awlen;
-		AxiBus.WriteAddress.Size    <= saxigp3_awsize;
-		AxiBus.WriteAddress.Burst   <= saxigp3_awburst;
-		AxiBus.WriteAddress.Lock    <= saxigp3_awlock;
-		AxiBus.WriteAddress.Cache   <= saxigp3_awcache;
-		AxiBus.WriteAddress.Prot    <= saxigp3_awprot;
-		AxiBus.WriteAddress.Valid   <= saxigp3_awvalid;
-		AxiBus.WriteAddress.User(0) <= saxigp3_awuser;
-		AxiBus.WriteAddress.QOS     <= saxigp3_awqos;
-		saxigp3_awready             <= AxiBus.WriteAddress.Ready;
-
-		AxiBus.WriteData.Data       <= saxigp3_wdata;
-		AxiBus.WriteData.Strb       <= saxigp3_wstrb;
-		AxiBus.WriteData.Last       <= saxigp3_wlast;
-		AxiBus.WriteData.User(0)    <= 'X';
-		AxiBus.WriteData.Valid      <= saxigp3_wvalid;
-		saxigp3_wready              <= AxiBus.WriteData.Ready;
-
-		saxigp3_bid                 <= AxiBus.WriteResponse.ID;
-		saxigp3_bresp               <= AxiBus.WriteResponse.Resp;
-		saxigp3_bvalid              <= AxiBus.WriteResponse.Valid;
-		AxiBus.WriteResponse.Ready  <= saxigp3_bready;
-
-		AxiBus.ReadAddress.ID       <= saxigp3_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp3_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
-		AxiBus.ReadAddress.Len      <= saxigp3_arlen;
-		AxiBus.ReadAddress.Size     <= saxigp3_arsize;
-		AxiBus.ReadAddress.Burst    <= saxigp3_arburst;
-		AxiBus.ReadAddress.Lock     <= saxigp3_arlock;
-		AxiBus.ReadAddress.Cache    <= saxigp3_arcache;
-		AxiBus.ReadAddress.Prot     <= saxigp3_arprot;
-		AxiBus.ReadAddress.Valid    <= saxigp3_arvalid;
-		AxiBus.ReadAddress.User(0)  <= saxigp3_aruser;
-		AxiBus.ReadAddress.QOS      <= saxigp3_arqos;
-		saxigp3_arready             <= AxiBus.ReadAddress.Ready;
-
-		saxigp3_rid                 <= AxiBus.ReadData.ID;
-		saxigp3_rdata               <= AxiBus.ReadData.Data;
-		saxigp3_rresp               <= AxiBus.ReadData.Resp;
-		saxigp3_rlast               <= AxiBus.ReadData.Last;
-		saxigp3_rvalid              <= AxiBus.ReadData.Valid;
-		AxiBus.ReadData.Ready       <= saxigp3_rready;
 	end block;
 
 	blk_HP2_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp3_awaddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp3_awaddr'range),
 				ID(saxigp3_awid'range),
 				User(0 downto 0)
 			),
@@ -834,7 +833,7 @@ begin
 				User(0 downto 0)
 			),
 			ReadAddress (
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp3_araddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp3_araddr'range),
 				ID(saxigp3_arid'range),
 				User(0 downto 0)
 			),
@@ -845,20 +844,6 @@ begin
 			)
 		);
 	begin
-		Memory : Axi4MemoryVti
-		generic map (
-			MODEL_ID_NAME => "HP2_FPD",
-			MEMORY_NAME   => "PSDDR4"
-		)
-		port map (
-			-- Globals
-			Clk         => saxihp2_fpd_aclk,
-			nReset      => '1',
-
-			-- AXI Manager Functional Interface
-			AxiBus      => AxiBus
-		);
-
 		AxiBus.WriteAddress.ID      <= saxigp4_awid;
 		AxiBus.WriteAddress.Addr    <= saxigp4_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.WriteAddress.Len     <= saxigp4_awlen;
@@ -871,19 +856,19 @@ begin
 		AxiBus.WriteAddress.User(0) <= saxigp4_awuser;
 		AxiBus.WriteAddress.QOS     <= saxigp4_awqos;
 		saxigp4_awready             <= AxiBus.WriteAddress.Ready;
-
+		
 		AxiBus.WriteData.Data       <= saxigp4_wdata;
 		AxiBus.WriteData.Strb       <= saxigp4_wstrb;
 		AxiBus.WriteData.Last       <= saxigp4_wlast;
 		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp4_wvalid;
 		saxigp4_wready              <= AxiBus.WriteData.Ready;
-
+		
 		saxigp4_bid                 <= AxiBus.WriteResponse.ID;
 		saxigp4_bresp               <= AxiBus.WriteResponse.Resp;
 		saxigp4_bvalid              <= AxiBus.WriteResponse.Valid;
 		AxiBus.WriteResponse.Ready  <= saxigp4_bready;
-
+		
 		AxiBus.ReadAddress.ID       <= saxigp4_arid;
 		AxiBus.ReadAddress.Addr     <= saxigp4_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp4_arlen;
@@ -903,12 +888,26 @@ begin
 		saxigp4_rlast               <= AxiBus.ReadData.Last;
 		saxigp4_rvalid              <= AxiBus.ReadData.Valid;
 		AxiBus.ReadData.Ready       <= saxigp4_rready;
+
+		Memory : Axi4MemoryVti
+		generic map (
+			MODEL_ID_NAME => "HP2_FPD",
+			MEMORY_NAME   => "PSDDR4"
+		)
+		port map (
+			-- Globals
+			Clk         => saxihp2_fpd_aclk,
+			nReset      => '1',
+
+			-- AXI Manager Functional Interface
+			AxiBus      => AxiBus
+		);
 	end block;
 
 	blk_HP3_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp5_awaddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp5_awaddr'range),
 				ID(saxigp5_awid'range),
 				User(0 downto 0)
 			),
@@ -923,7 +922,7 @@ begin
 				User(0 downto 0)
 			),
 			ReadAddress (
-				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),--(saxigp5_araddr'range),
+				Addr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),  --(saxigp5_araddr'range),
 				ID(saxigp5_arid'range),
 				User(0 downto 0)
 			),
@@ -934,6 +933,51 @@ begin
 			)
 		);
 	begin
+		AxiBus.WriteAddress.ID      <= saxigp5_awid;
+		AxiBus.WriteAddress.Addr    <= saxigp5_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
+		AxiBus.WriteAddress.Len     <= saxigp5_awlen;
+		AxiBus.WriteAddress.Size    <= saxigp5_awsize;
+		AxiBus.WriteAddress.Burst   <= saxigp5_awburst;
+		AxiBus.WriteAddress.Lock    <= saxigp5_awlock;
+		AxiBus.WriteAddress.Cache   <= saxigp5_awcache;
+		AxiBus.WriteAddress.Prot    <= saxigp5_awprot;
+		AxiBus.WriteAddress.Valid   <= saxigp5_awvalid;
+		AxiBus.WriteAddress.User(0) <= saxigp5_awuser;
+		AxiBus.WriteAddress.QOS     <= saxigp5_awqos;
+		saxigp5_awready             <= AxiBus.WriteAddress.Ready;
+		
+		AxiBus.WriteData.Data       <= saxigp5_wdata;
+		AxiBus.WriteData.Strb       <= saxigp5_wstrb;
+		AxiBus.WriteData.Last       <= saxigp5_wlast;
+		AxiBus.WriteData.User(0)    <= 'X';
+		AxiBus.WriteData.Valid      <= saxigp5_wvalid;
+		saxigp5_wready              <= AxiBus.WriteData.Ready;
+		
+		saxigp5_bid                 <= AxiBus.WriteResponse.ID;
+		saxigp5_bresp               <= AxiBus.WriteResponse.Resp;
+		saxigp5_bvalid              <= AxiBus.WriteResponse.Valid;
+		AxiBus.WriteResponse.Ready  <= saxigp5_bready;
+		
+		AxiBus.ReadAddress.ID       <= saxigp5_arid;
+		AxiBus.ReadAddress.Addr     <= saxigp5_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
+		AxiBus.ReadAddress.Len      <= saxigp5_arlen;
+		AxiBus.ReadAddress.Size     <= saxigp5_arsize;
+		AxiBus.ReadAddress.Burst    <= saxigp5_arburst;
+		AxiBus.ReadAddress.Lock     <= saxigp5_arlock;
+		AxiBus.ReadAddress.Cache    <= saxigp5_arcache;
+		AxiBus.ReadAddress.Prot     <= saxigp5_arprot;
+		AxiBus.ReadAddress.Valid    <= saxigp5_arvalid;
+		AxiBus.ReadAddress.User(0)  <= saxigp5_aruser;
+		AxiBus.ReadAddress.QOS      <= saxigp5_arqos;
+		saxigp5_arready             <= AxiBus.ReadAddress.Ready;
+		
+		saxigp5_rid                 <= AxiBus.ReadData.ID;
+		saxigp5_rdata               <= AxiBus.ReadData.Data;
+		saxigp5_rresp               <= AxiBus.ReadData.Resp;
+		saxigp5_rlast               <= AxiBus.ReadData.Last;
+		saxigp5_rvalid              <= AxiBus.ReadData.Valid;
+		AxiBus.ReadData.Ready       <= saxigp5_rready;
+
 		Memory : Axi4MemoryVti
 		generic map (
 			MODEL_ID_NAME => "HP3_FPD (DMA)",
@@ -947,50 +991,5 @@ begin
 			-- AXI Manager Functional Interface
 			AxiBus      => AxiBus
 		);
-
-		AxiBus.WriteAddress.ID      <= saxigp5_awid;
-		AxiBus.WriteAddress.Addr    <= saxigp5_awaddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
-		AxiBus.WriteAddress.Len     <= saxigp5_awlen;
-		AxiBus.WriteAddress.Size    <= saxigp5_awsize;
-		AxiBus.WriteAddress.Burst   <= saxigp5_awburst;
-		AxiBus.WriteAddress.Lock    <= saxigp5_awlock;
-		AxiBus.WriteAddress.Cache   <= saxigp5_awcache;
-		AxiBus.WriteAddress.Prot    <= saxigp5_awprot;
-		AxiBus.WriteAddress.Valid   <= saxigp5_awvalid;
-		AxiBus.WriteAddress.User(0) <= saxigp5_awuser;
-		AxiBus.WriteAddress.QOS     <= saxigp5_awqos;
-		saxigp5_awready             <= AxiBus.WriteAddress.Ready;
-
-		AxiBus.WriteData.Data       <= saxigp5_wdata;
-		AxiBus.WriteData.Strb       <= saxigp5_wstrb;
-		AxiBus.WriteData.Last       <= saxigp5_wlast;
-		AxiBus.WriteData.User(0)    <= 'X';
-		AxiBus.WriteData.Valid      <= saxigp5_wvalid;
-		saxigp5_wready              <= AxiBus.WriteData.Ready;
-
-		saxigp5_bid                 <= AxiBus.WriteResponse.ID;
-		saxigp5_bresp               <= AxiBus.WriteResponse.Resp;
-		saxigp5_bvalid              <= AxiBus.WriteResponse.Valid;
-		AxiBus.WriteResponse.Ready  <= saxigp5_bready;
-
-		AxiBus.ReadAddress.ID       <= saxigp5_arid;
-		AxiBus.ReadAddress.Addr     <= saxigp5_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
-		AxiBus.ReadAddress.Len      <= saxigp5_arlen;
-		AxiBus.ReadAddress.Size     <= saxigp5_arsize;
-		AxiBus.ReadAddress.Burst    <= saxigp5_arburst;
-		AxiBus.ReadAddress.Lock     <= saxigp5_arlock;
-		AxiBus.ReadAddress.Cache    <= saxigp5_arcache;
-		AxiBus.ReadAddress.Prot     <= saxigp5_arprot;
-		AxiBus.ReadAddress.Valid    <= saxigp5_arvalid;
-		AxiBus.ReadAddress.User(0)  <= saxigp5_aruser;
-		AxiBus.ReadAddress.QOS      <= saxigp5_arqos;
-		saxigp5_arready             <= AxiBus.ReadAddress.Ready;
-
-		saxigp5_rid                 <= AxiBus.ReadData.ID;
-		saxigp5_rdata               <= AxiBus.ReadData.Data;
-		saxigp5_rresp               <= AxiBus.ReadData.Resp;
-		saxigp5_rlast               <= AxiBus.ReadData.Last;
-		saxigp5_rvalid              <= AxiBus.ReadData.Valid;
-		AxiBus.ReadData.Ready       <= saxigp5_rready;
 	end block;
 end architecture;

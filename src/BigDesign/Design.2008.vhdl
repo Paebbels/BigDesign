@@ -117,7 +117,7 @@ begin
 	MPSoC_Subordinate_m2s(NUM_MPSOC_SUBORDINATES - 1) <= resize(DMA_DeMux_Out_m2s(DEVICE_DMA_PS8_IDX));
 	DMA_DeMux_Out_s2m(DEVICE_DMA_PS8_IDX)             <= resize(MPSoC_Subordinate_s2m(NUM_MPSOC_SUBORDINATES - 1));
 
-	--UART_TX_d <= UART_TX'delayed(UART_WIRE_DELAY);  -- todo: Create Riviera bug report
+--	UART_TX_d <= UART_TX'delayed(UART_WIRE_DELAY);  -- unsynthesizable
 	UART_TX_d <= transport UART_TX after UART_WIRE_DELAY;
 	BD: entity work.BlockDesign_top
 		port map (
@@ -219,7 +219,7 @@ begin
 				LED          => LED
 			);
 
-		--BD_UART_TX_d <= BD_UART_TX'delayed(UART_WIRE_DELAY);  -- todo: Create Riviera bug report
+--		BD_UART_TX_d <= BD_UART_TX'delayed(UART_WIRE_DELAY);  -- unsynthesizable
 		BD_UART_TX_d <= transport BD_UART_TX after UART_WIRE_DELAY;
 		UART: entity PoC.AXI4Lite_UART
 			generic map (

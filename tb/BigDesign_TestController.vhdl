@@ -41,16 +41,17 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity BigDesign_TestController is
 	generic (
-		PATTERN        : string;
-		SCALING_FACTOR : natural := 100
+		MEMORY_PATTERN        : string;
+		MEMORY_SCALING_FACTOR : natural := 100
 	);
 	port (
-		Clock                : in  std_logic;
-		Reset                : in  std_logic;
+		Clock                : in std_logic;
+		Reset                : in std_logic;
+
 		DataGen_Managers     : inout AddressBusRecArrayType;
 		AXIStreamTransmitter : inout StreamRecType;
 		AXIStreamReceiver    : inout StreamRecType;
-		GPIO_Button          : out std_logic_vector(1 downto 0) := (others => '0')
+		GPIO_Button          : out   std_logic_vector(1 downto 0) := (others => '0')
 	);
 
 	-- Connect transaction interfaces using external names

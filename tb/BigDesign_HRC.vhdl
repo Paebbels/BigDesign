@@ -66,7 +66,6 @@ begin
 	------------------------------------------------
 	HPM0_FPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HPM0_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_FPD_Rec, 2);
 
@@ -78,7 +77,6 @@ begin
 
 	HPM1_FPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM1_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HPM1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM1_FPD_Rec, 2);
 
@@ -97,7 +95,7 @@ begin
 			constant Nanoseconds_to_load : natural;
 			constant waitTime            : time
 		) is
-			variable ReadData : Config_DataType;
+			variable ReadData : Config_DataType := (others => '0');
 			variable ns_value_slv : std_logic_vector(63 downto 0) := to_slv(Nanoseconds_to_load, 64);
 			variable time_now_a     : time;
 			variable time_now_b     : time;
@@ -177,6 +175,7 @@ begin
 	------------------------------------------
 	-- Generate transaction for data generator managers
 	ManagerProc_0 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_0", TCID);
 	begin
 		WaitForClock(DataGen_Managers(0), 2);
 
@@ -188,6 +187,7 @@ begin
 	end process;
 
 	ManagerProc_1 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_1", TCID);
 	begin
 		WaitForClock(DataGen_Managers(1), 2);
 
@@ -199,6 +199,7 @@ begin
 	end process;
 
 	ManagerProc_2 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_2", TCID);
 	begin
 		WaitForClock(DataGen_Managers(2), 2);
 
@@ -214,69 +215,12 @@ begin
 	-----------------------------------------------
 	BackdoorProc : process
 		constant ProcID   : AlertLogIDType := NewID("Memory", TCID);
-		variable ReadData : std_logic_vector(7 downto 0);
-		variable Reg_i    : Config_AddressType;
-		variable Data_i   : Config_DataType := 32x"11";
-		variable DataRV   : RandomPType;
 	begin
 		-- Currently not doing anything
 
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
-
-	-----------------------------------------------
-	---------------- Subordinates -----------------
-	-----------------------------------------------
-	--HP0_FPD_Proc : process
-	--	constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
-	--	variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	--begin
-	--	WaitForClock(HP0_FPD_Rec, 2);
---
-	--	WaitForToggle(WriteDone);
-	--	ReadCheck(HP0_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
---
-	--	WaitForClock(HP0_FPD_Rec, 2);
-	--	WaitForBarrier(TestDone);
-	--	wait;
-	--end process;
-
-	-- HP1_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP1_FPD_Rec, 2);
-
-		-- WaitForToggle(WriteDone);
-		-- ReadCheck(HP1_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
-
-		-- WaitForClock(HP1_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
-
-	-- HP2_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP2_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP2_FPD_Rec, 2);
-
-		-- WaitForClock(HP2_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
-
-	-- HP3_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP3_FPD_Rec, 2);
-
-		-- WaitForClock(HP3_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
 
 end architecture;
 

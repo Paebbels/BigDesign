@@ -33,7 +33,7 @@ library lib_test;
 use     lib_test.BigDesign_tb_pkg.all;
 
 
-architecture Simple of BigDesign_TestController is
+architecture Memory of BigDesign_TestController is
 
 	signal WriteDone : std_logic := '0';
 
@@ -42,7 +42,7 @@ begin
 		constant ProcID  : AlertLogIDType := NewID("ControlProc", TCID);
 		constant TIMEOUT : time := 1 ms;
 	begin
-		SetTestName("BigDesign_Simple");
+		SetTestName("BigDesign_Memory");
 
 		SetLogEnable(PASSED, TRUE);
 		SetLogEnable(INFO,   TRUE);
@@ -68,7 +68,6 @@ begin
 	------------------------------------------------
 	HPM0_FPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HPM0_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_FPD_Rec, 2);
 
@@ -80,7 +79,6 @@ begin
 
 	HPM1_FPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM1_FPD_Proc", TCID);
-		variable Data   : std_logic_vector(HPM1_FPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM1_FPD_Rec, 2);
 
@@ -92,7 +90,6 @@ begin
 
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
-		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 2);
 		Write(HPM0_LPD_Rec, REG_GPIO_LED, 32x"01");  -- turn on LED
@@ -109,22 +106,25 @@ begin
 	------------------------------------------
 	-- Generate transaction for data generator managers
 	ManagerProc_0 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_0", TCID);
 	begin
 		WaitForClock(DataGen_Managers(0), 2);
 
 		Write(DataGen_Managers(0), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
 		Write(DataGen_Managers(0), MEMORY_TEST_WORD_2, MEMORY_TEST_DATA_2);
 		Toggle(WriteDone);
-		-- Wait for outputs to propagate and signal TestDone
+
 		WaitForClock(DataGen_Managers(0), 2);
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
 
 	ManagerProc_1 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_1", TCID);
 	begin
 		WaitForClock(DataGen_Managers(1), 2);
 		WaitForToggle(WriteDone);
+
 		ReadCheck(DataGen_Managers(1), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
 		ReadCheck(DataGen_Managers(1), MEMORY_TEST_WORD_2, MEMORY_TEST_DATA_2);
 
@@ -134,6 +134,7 @@ begin
 	end process;
 
 	ManagerProc_2 : process
+		constant ProcID : AlertLogIDType := NewID("ManagerProc_2", TCID);
 	begin
 		WaitForClock(DataGen_Managers(2), 2);
 
@@ -148,128 +149,74 @@ begin
 	-------------- Memory instances ---------------
 	-----------------------------------------------
 	BackdoorProc : process
-		constant ProcID   : AlertLogIDType := NewID("MemoryBackdoor", TCID);
-		variable ReadData : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0);
-		variable Reg_i    : Config_AddressType;
-		variable Data_i   : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"11";
-		variable DataRV   : RandomPType;
+		constant ProcID    : AlertLogIDType := NewID("MemoryBackdoor", TCID);
+		constant WriteData : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0) := 128x"00FFEEDD_CCBBAA99_88776655_44332211";
+		variable ReadData  : std_logic_vector(MEMORY_MODEL_DATA_BITS - 1 downto 0);
+		variable DataRV    : RandomPType;
 
-		function toWordAddress (addr : Config_AddressType) return BackdoorAddressType is
-			constant result : Config_AddressType := addr srl (Config_AddressType'length - BackdoorAddressType'length);
+		function toWordAddress (byteAddress : Config_AddressType) return BackdoorAddressType is
+			constant result : Config_AddressType := byteAddress srl (Config_AddressType'length - BackdoorAddressType'length);
 		begin
 			return result(BackdoorAddressType'range);
 		end function;
 
-		function toWordAddress (wordAddr : natural) return BackdoorAddressType is
+		function toWordAddress (wordAddress : natural) return BackdoorAddressType is
 		begin
-			return std_logic_vector(to_unsigned(wordAddr, BackdoorAddressType'length));
+			return std_logic_vector(to_unsigned(wordAddress, BackdoorAddressType'length));
 		end function;
 	begin
 		WaitForToggle(WriteDone);
-		Read(PSDDR4_MemoryID, toWordAddress(MEMORY_TEST_WORD_1), ReadData);  -- alias for MemRead
+		Read(PSDDR4_MemoryID, toWordAddress(byteAddress => MEMORY_TEST_WORD_1), ReadData);  -- alias for MemRead
 		AffirmIfEqual(ProcID, ReadData, MEMORY_TEST_DATA_1, "Reading memory through backdoor (1).");
 
-		Read(PSDDR4_MemoryID, toWordAddress(MEMORY_TEST_WORD_2), ReadData);  -- alias for MemRead
+		Read(PSDDR4_MemoryID, toWordAddress(byteAddress => MEMORY_TEST_WORD_2), ReadData);  -- alias for MemRead
 		AffirmIfEqual(ProcID, ReadData, MEMORY_TEST_DATA_2, "Reading memory through backdoor (2).");
 
 		wait for 100 ns;
-
-		-- TODO: check this because of changes in PSDDR instantiation
-		if PATTERN = "RepeatedSequentialBlockWrite" then
+		if MEMORY_PATTERN = "RepeatedSequentialBlockWrite" then
 			-- 1st pattern (sequentially fill memory)
-			-- 	1. sequential data write 64 kB using 128 words (i.e. inc by 1)
+			-- 	1. sequential data write 64 kB using 128 words
 			-- 	2. measure time from start to finish
 			-- 	-> loop n times so that n equals 1 min
-			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
-				for j in 0 to NUM_BYTES_PER_BLOCK - 1 loop
-					Write(PSDDR4_MemoryID, toWordAddress(j), Data_i);
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
+				for j in 0 to NUM_WORDS_PER_BLOCK - 1 loop
+					block
+						constant writeAddress : natural := j + i * NUM_WORDS_PER_BLOCK;
+					begin
+						Write(PSDDR4_MemoryID, toWordAddress(wordAddress => writeAddress), WriteData);
+					end block;
 				end loop;
 			end loop;
 
-		elsif PATTERN = "RandomSequentialWrite_4MB_Range" then
+		elsif MEMORY_PATTERN = "RandomSequentialWrite_4MB_Range" then
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
-			-- 	1. 4096 * 128b write operations with random addressing in range 22 bit (0 to 4 MB)
+			-- 	1. 4096 * 128b write operations with random addressing in range 18 bit (0 to 4 MB)
 			--  -> 4b Byte address + 18b word address
-			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~1:30 min
-				Reg_i := DataRV.RandSlv(0, 2**22 - 1, Reg_i'length);
-				Write(PSDDR4_MemoryID, Reg_i, Data_i);
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:10 min
+				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**18 - 1)), WriteData);
 			end loop;
 
-		elsif PATTERN = "RandomSequentialWrite_1TB_Range" then
+		elsif MEMORY_PATTERN = "RandomSequentialWrite_1TB_Range" then
 			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
-			-- 	1. 4096 * 128b write operations with random addressing in range 30 bit (0 to 1 TB)
+			-- 	1. 4096 * 128b write operations with random addressing in range 26 bit (0 to 1 TB)
 			--  -> 4b Byte address + 26b word address
-			for i in 0 to SCALING_FACTOR * NUM_ITERATIONS * NUM_BYTES_PER_BLOCK loop  -- ~4:10 min
-				Reg_i := DataRV.RandSlv(0, 2**30 - 1, Reg_i'length);
-				Write(PSDDR4_MemoryID, Reg_i, Data_i);
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:35 min
+				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**26 - 1)), WriteData);
 			end loop;
 		else
-			assert False report "Invalid test pattern " & PATTERN & "!" severity failure;
+			assert False report "Invalid memory test pattern " & MEMORY_PATTERN & "!" severity failure;
 		end if;
 
 		WaitForBarrier(TestDone);
 		wait;
 	end process;
 
-	-----------------------------------------------
-	---------------- Subordinates -----------------
-	-----------------------------------------------
-	-- HP0_FPD_Proc : process
-	-- 	constant ProcID : AlertLogIDType := NewID("HP0_FPD_Proc", TCID);
-	-- 	variable Data   : std_logic_vector(HP0_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-	-- 	WaitForClock(HP0_FPD_Rec, 2);
-
-	-- 	WaitForToggle(WriteDone);
-	-- 	ReadCheck(HP0_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
-
-	-- 	WaitForClock(HP0_FPD_Rec, 2);
-	-- 	WaitForBarrier(TestDone);
-	-- 	wait;
-	-- end process;
-
-	-- HP1_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP1_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP1_FPD_Rec, 2);
-
-		-- WaitForToggle(WriteDone);
-		-- ReadCheck(HP1_FPD_Rec, REG_TEST, resize(DATA_TEST, DATA_BITS));
-
-		-- WaitForClock(HP1_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
-
-	-- HP2_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP2_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP1_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP2_FPD_Rec, 2);
-
-		-- WaitForClock(HP2_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
-
-	-- HP3_FPD_Proc : process
-		-- constant ProcID : AlertLogIDType := NewID("HP3_FPD_Proc", TCID);
-		-- variable Data   : std_logic_vector(HP3_FPD_AXI_DATA_WIDTH - 1 downto 0);
-	-- begin
-		-- WaitForClock(HP3_FPD_Rec, 2);
-
-		-- WaitForClock(HP3_FPD_Rec, 2);
-		-- WaitForBarrier(TestDone);
-		-- wait;
-	-- end process;
-
 end architecture;
 
-configuration BigDesign_Simple of BigDesign_TestHarness is
+configuration BigDesign_Memory of BigDesign_TestHarness is
 	for TestHarness
 		for TestCtrl: BigDesign_TestController
-			use entity work.BigDesign_TestController(Simple);
+			use entity work.BigDesign_TestController(Memory);
 		end for;
 	end for;
 end configuration;

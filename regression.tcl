@@ -105,7 +105,7 @@ puts "========================================"
 puts ""
 
 namespace eval ::BigDesign {
-	variable scalingFactor 100;  # scale length of simulation
+	variable memoryScalingFactor 100;  # scale length of simulation for memory testcase
 }
 
 if {$::regression::level <= 0} {
@@ -117,14 +117,14 @@ if {$::regression::level <= 0} {
 
 # Load vendor specific precompiled libraries
 if {$::osvvm::ToolName eq "GHDL"} {
-	set ::BigDesign::scalingFactor 10
+	set ::BigDesign::memoryScalingFactor 10
 	# Precompile Vivado for GHDL
 	#   execute compile-Xilinx-vivado.sh (can be found i.e. msys64/ucrt64/lib/ghdl/vendors)
 	#   compile-Xilinx-vivado.sh --all --vhdl2008 --output /c/.../2025.2 -v
 	LinkLibrary unisim {C:/Tools/precompiled/GHDL/7.0.0-dev/Vivado/2025.2}
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
-	set ::BigDesign::scalingFactor 1
+	set ::BigDesign::memoryScalingFactor 1
 
 	LinkLibrary xpm                   "$precompiledLibPath/xpm"
 	LinkLibrary unisim                "$precompiledLibPath/unisim"

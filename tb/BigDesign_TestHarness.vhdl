@@ -43,8 +43,8 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity BigDesign_TestHarness is
 	generic (
-		PATTERN        : string := "1";
-		SCALING_FACTOR : string := "100"
+		MEMORY_PATTERN        : string := "1";
+		MEMORY_SCALING_FACTOR : string := "100"  -- Default value (get overwritten in .pro file)
 	);
 end entity;
 
@@ -92,16 +92,17 @@ architecture TestHarness of BigDesign_TestHarness is
 
 	component BigDesign_TestController is
 		generic (
-			PATTERN        : string;
-			SCALING_FACTOR : natural
+			MEMORY_PATTERN        : string;
+			MEMORY_SCALING_FACTOR : natural
 		);
 		port (
 			Clock                : in  std_logic;
 			Reset                : in  std_logic;
+
 			DataGen_Managers     : inout AddressBusRecArrayType;
 			AXIStreamTransmitter : inout StreamRecType;
 			AXIStreamReceiver    : inout StreamRecType;
-			GPIO_Button          : out std_logic_vector(1 downto 0) := (others => '0')
+			GPIO_Button          : out   std_logic_vector(1 downto 0) := (others => '0')
 		);
 	end component;
 begin
@@ -234,12 +235,13 @@ begin
 
 	TestCtrl : component BigDesign_TestController
 		generic map (
-			PATTERN        => PATTERN,
-			SCALING_FACTOR => integer'value(SCALING_FACTOR)
+			MEMORY_PATTERN        => MEMORY_PATTERN,
+			MEMORY_SCALING_FACTOR => integer'value(MEMORY_SCALING_FACTOR)
 		)
 		port map (
 			Clock                => Clock_100MHz,
 			Reset                => '0',
+
 			DataGen_Managers     => DataGen_Managers,
 			AXIStreamTransmitter => AXIStreamTransmitter,
 			AXIStreamReceiver    => AXIStreamReceiver,
