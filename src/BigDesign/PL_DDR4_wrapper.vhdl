@@ -41,7 +41,7 @@ end entity;
 
 architecture rtl of PL_DDR4_wrapper is
 begin
-	Sink_Slave : entity PoC.axi4_Sink
+	Sink : entity PoC.axi4_Sink
 		port map(
 			Clock    => Clock,
 			Reset    => Reset,
