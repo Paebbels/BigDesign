@@ -247,7 +247,7 @@ begin
 	Mux_blk : block
 		signal DMA_SG_m2s : AXI4_A40_D32.Sized_M2S;
 		signal DMA_SG_s2m : AXI4_A40_D32.Sized_S2M;
-		
+
 		signal Mux_In_m2s : AXI4_A40_D128.Sized_M2S_vector(0 to 1);
 		signal Mux_In_s2m : AXI4_A40_D128.Sized_S2M_vector(0 to 1);
 
@@ -281,7 +281,7 @@ begin
 
 		Mux_In_m2s(1) <= resize(DMA_SG_m2s);
 		DMA_SG_s2m    <= resize(Mux_In_s2m(1));
-			
+
 		AXI4_Mux: entity PoC.AXI4_Mux
 			generic map (
 				PIPELINE_IN            => (Mux_In_m2s'range => 1),
@@ -336,7 +336,7 @@ begin
 	begin
 		AXI4_Mux: entity PoC.AXI4_Mux
 			generic map (
-				PIPELINE_IN => (PL_DDR4_In_m2s'range => 0),
+				PIPELINE_IN  => (PL_DDR4_In_m2s'range => 0),
 				PIPELINE_OUT => 0
 			)
 			port map (

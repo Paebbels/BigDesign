@@ -37,7 +37,7 @@ entity BlockDesign_top is
 	port (
 		signal Clock           : out  std_logic;
 		signal PL_Reset        : out  std_logic;
-		
+
 		signal Config          : view Axi4Lite_ManagerView;
 		signal Managers        : view (Axi4_ManagerView)     of Axi4_Interface_Vector;
 		signal Subordinates    : view (Axi4_SubordinateView) of Axi4_Interface_Vector
@@ -53,7 +53,7 @@ architecture wrapper of BlockDesign_top is
 			USER_BITS    => 16,
 			ID_BITS      => 16
 		);
-		
+
 	signal ConfigMM : AXI4_A40_D32.Axi4_SizedInterface;
 
 	signal IRQs     : std_logic_vector(7 downto 0);
@@ -62,13 +62,13 @@ begin
 	BD: entity work.BlockDesign_wrapper
 		port map (
 			Clock_0    => Clock,
-			
+
 			FPD_Clock  => Clock,
 			LPD_Clock  => Clock,
-			
+
 			PL_IRQs    => IRQs,
 			PL_Reset_0 => PL_Reset,
-			
+
 			Address_Type( Config_0_araddr)  =>                  ConfigMM.ReadAddress.Address,
 			Burst_Type(   Config_0_arburst) =>                  ConfigMM.ReadAddress.Burst,
 			Cache_Type(   Config_0_arcache) =>                  ConfigMM.ReadAddress.Cache,
@@ -108,7 +108,7 @@ begin
 			              Config_0_wready   =>                  ConfigMM.WriteData.Ready,
 			Strobe_Type(  Config_0_wstrb)   =>                  ConfigMM.WriteData.Strobe,
 			              Config_0_wvalid   =>                  ConfigMM.WriteData.Valid,
-			
+
 			Address_Type( Manager_0_araddr)  =>                  Managers(0).ReadAddress.Address,
 			Burst_Type(   Manager_0_arburst) =>                  Managers(0).ReadAddress.Burst,
 			Cache_Type(   Manager_0_arcache) =>                  Managers(0).ReadAddress.Cache,
@@ -148,7 +148,7 @@ begin
 			              Manager_0_wready   =>                  Managers(0).WriteData.Ready,
 			Strobe_Type(  Manager_0_wstrb)   =>                  Managers(0).WriteData.Strobe,
 			              Manager_0_wvalid   =>                  Managers(0).WriteData.Valid,
-			
+
 			Address_Type( Manager_1_araddr)  =>                  Managers(1).ReadAddress.Address,
 			Burst_Type(   Manager_1_arburst) =>                  Managers(1).ReadAddress.Burst,
 			Cache_Type(   Manager_1_arcache) =>                  Managers(1).ReadAddress.Cache,
@@ -188,7 +188,7 @@ begin
 			              Manager_1_wready   =>                  Managers(1).WriteData.Ready,
 			Strobe_Type(  Manager_1_wstrb)   =>                  Managers(1).WriteData.Strobe,
 			              Manager_1_wvalid   =>                  Managers(1).WriteData.Valid,
-			
+
 			              Subordinate_0_araddr   => std_logic_vector(Subordinates(0).ReadAddress.Address),
 			              Subordinate_0_arburst  => std_logic_vector(Subordinates(0).ReadAddress.Burst),
 			              Subordinate_0_arcache  => std_logic_vector(Subordinates(0).ReadAddress.Cache),
@@ -228,7 +228,7 @@ begin
 			              Subordinate_0_wready   =>                  Subordinates(0).WriteData.Ready,
 			              Subordinate_0_wstrb    => std_logic_vector(Subordinates(0).WriteData.Strobe),
 			              Subordinate_0_wvalid   =>                  Subordinates(0).WriteData.Valid,
-										
+
 			              Subordinate_1_araddr   => std_logic_vector(Subordinates(1).ReadAddress.Address),
 			              Subordinate_1_arburst  => std_logic_vector(Subordinates(1).ReadAddress.Burst),
 			              Subordinate_1_arcache  => std_logic_vector(Subordinates(1).ReadAddress.Cache),
@@ -309,12 +309,12 @@ begin
 			              Subordinate_2_wstrb    => std_logic_vector(Subordinates(2).WriteData.Strobe),
 			              Subordinate_2_wvalid   =>                  Subordinates(2).WriteData.Valid
 		);
-	
+
 	ConvConfig : entity PoC.AXI4_to_AXI4Lite
 		port map (
 			Clock       => Clock,
 			Reset       => PL_Reset,
-			
+
 			Input       => ConfigMM,
 			Output      => Config
 		);

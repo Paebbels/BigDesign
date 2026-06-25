@@ -57,14 +57,14 @@ entity BigDesign_TestController is
 	-- Connect transaction interfaces using external names
 	-- Managers
 	subtype AddressBusRecTypeFPD is AddressBusRecType (
-    	Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
-    	DataToModel   (MPSOC_MANAGER_DATA_BITS - 1 downto 0),
-    	DataFromModel (MPSOC_MANAGER_DATA_BITS - 1 downto 0)
+		Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
+		DataToModel   (MPSOC_MANAGER_DATA_BITS - 1 downto 0),
+		DataFromModel (MPSOC_MANAGER_DATA_BITS - 1 downto 0)
 	);
 	subtype AddressBusRecTypeConstrainedLPD is AddressBusRecType (
-    	Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
-    	DataToModel   (CONFIG_DATA_BITS - 1 downto 0),
-    	DataFromModel (CONFIG_DATA_BITS - 1 downto 0)
+		Address       (MPSOC_MANAGER_ADDRESS_BITS - 1 downto 0),
+		DataToModel   (CONFIG_DATA_BITS - 1 downto 0),
+		DataFromModel (CONFIG_DATA_BITS - 1 downto 0)
 	);
 	
 	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecTypeFPD>>;             -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
@@ -73,9 +73,9 @@ entity BigDesign_TestController is
 
 	-- Subordinates
 	-- subtype AddressBusRecTypeConstrainedSFPD is AddressBusRecType (
-    -- 	Address       (MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),
-    -- 	DataToModel   (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
-    -- 	DataFromModel (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
+	-- 	Address       (MEMORY_MODEL_ADDRESS_BITS - 1 downto 0),
+	-- 	DataToModel   (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
+	-- 	DataFromModel (MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
 	-- );
 
 	-- alias HP0_FPD_Rec  is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HP0_FPD.Memory.TransRec : AddressBusRecTypeConstrainedSFPD>>;

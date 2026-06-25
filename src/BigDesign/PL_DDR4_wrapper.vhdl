@@ -34,18 +34,18 @@ entity PL_DDR4_wrapper is
 		Clock    : in std_logic;
 		Reset    : in std_logic;
 
-        Data_m2s : in  AXI4_A40_D128.Sized_M2S;
-        Data_s2m : out AXI4_A40_D128.Sized_S2M
-    );
+		Data_m2s : in  AXI4_A40_D128.Sized_M2S;
+		Data_s2m : out AXI4_A40_D128.Sized_S2M
+	);
 end entity;
 
 architecture rtl of PL_DDR4_wrapper is
 begin
-    Sink_Slave : entity PoC.axi4_Sink
-        port map(
-            Clock    => Clock,
-            Reset    => Reset,
-            AXI4_M2S => Data_m2s,
-            AXI4_S2M => Data_s2m
-        );
+	Sink_Slave : entity PoC.axi4_Sink
+		port map(
+			Clock    => Clock,
+			Reset    => Reset,
+			AXI4_M2S => Data_m2s,
+			AXI4_S2M => Data_s2m
+		);
 end architecture;
