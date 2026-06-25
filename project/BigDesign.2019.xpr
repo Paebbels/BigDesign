@@ -219,14 +219,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_Shift.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../src/PoC/AXI4_to_AXI4Lite.2019.vhdl">
+      <File Path="$PPRDIR/../src/PoC/axi4_AXI4Lite_Converter.2019.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>

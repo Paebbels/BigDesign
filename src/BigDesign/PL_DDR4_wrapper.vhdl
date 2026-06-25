@@ -1,6 +1,5 @@
 -- =============================================================================
 -- Authors:
---   Patrick Lehmann
 --   Adrian Weiland
 --
 -- License:
@@ -23,24 +22,30 @@
 library IEEE;
 use     IEEE.std_logic_1164.all;
 
-entity Toplevel is
+library PoC;
+use     PoC.AXI4.all;
+
+library lib_BigDesign;
+use     lib_BigDesign.PS_settings_pkg.all;
+
+
+entity PL_DDR4_wrapper is
 	port (
-		signal Clock_100MHz : in std_logic;
-		
-		signal GPIO_Button  : in  std_logic_vector(1 downto 0);
-		signal GPIO_LED     : out std_logic_vector(1 downto 0)
+		Clock    : in std_logic;
+		Reset    : in std_logic;
+
+		Data_m2s : in  AXI4_A40_D128.Sized_M2S;
+		Data_s2m : out AXI4_A40_D128.Sized_S2M
 	);
 end entity;
 
-architecture top of Toplevel is
-
+architecture rtl of PL_DDR4_wrapper is
 begin
-	InnerTop : entity work.Design
-		port map (
-			Clock  => Clock_100MHz,
-			
-			Button => GPIO_Button,
-			LED    => GPIO_LED
+	Sink : entity PoC.axi4_Sink
+		port map(
+			Clock    => Clock,
+			Reset    => Reset,
+			AXI4_M2S => Data_m2s,
+			AXI4_S2M => Data_s2m
 		);
-
 end architecture;

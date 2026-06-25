@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="71" Path="C:/git/GitHub/Paebbels/BigDesign/project/BigDesign.2008.xpr">
+<Project Product="Vivado" Version="7" Minor="71" Path="C:/Projects/GitHub/BigDesign/project/BigDesign.2008.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="e64a1fe2bf454ded826c9e97191b27cd"/>
@@ -66,13 +66,13 @@
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="3"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="3"/>
-    <Option Name="WTModelSimExportSim" Val="3"/>
-    <Option Name="WTQuestaExportSim" Val="3"/>
+    <Option Name="WTXSimExportSim" Val="15"/>
+    <Option Name="WTModelSimExportSim" Val="15"/>
+    <Option Name="WTQuestaExportSim" Val="15"/>
     <Option Name="WTIesExportSim" Val="0"/>
     <Option Name="WTVcsExportSim" Val="0"/>
-    <Option Name="WTRivieraExportSim" Val="3"/>
-    <Option Name="WTActivehdlExportSim" Val="3"/>
+    <Option Name="WTRivieraExportSim" Val="15"/>
+    <Option Name="WTActivehdlExportSim" Val="15"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -85,6 +85,7 @@
     <Option Name="MEMEnableMemoryMapGeneration" Val="TRUE"/>
     <Option Name="DcpsUptoDate" Val="TRUE"/>
     <Option Name="UseInlineHdlIP" Val="TRUE"/>
+    <Option Name="CustomizedDefaultIPLocation" Val="$PPRDIR/../ip"/>
     <Option Name="LocalIPRepoLeafDirName" Val="ip_repo"/>
   </Configuration>
   <FileSets Version="1" Minor="32">
@@ -106,90 +107,10 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/common.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/math.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/physical.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/debug.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Stream/AXI4Stream.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_stage.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_cc_got.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_ic_got.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Lite.generic.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="Interfaces"/>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -202,7 +123,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Lite.unconstrained.vhdl">
+      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Lite_Generic.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="Interfaces"/>
           <Attr Name="AutoDisabled" Val="1"/>
@@ -210,7 +131,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Stream.unconstrained.vhdl">
+      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4Stream_Generic.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="Interfaces"/>
           <Attr Name="AutoDisabled" Val="1"/>
@@ -218,7 +139,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4.unconstrained.vhdl">
+      <File Path="$PPRDIR/../lib/Interfaces/AMBA/AXI/v4/AXI4_Generic.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="Interfaces"/>
           <Attr Name="AutoDisabled" Val="1"/>
@@ -242,6 +163,22 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/common.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../bd/BlockDesign/BlockDesign.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -252,6 +189,13 @@
           <Proxy FileSetName="BlockDesign_PS_0"/>
         </CompFileExtendedInfo>
       </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../lib/PoC/src/common/utils.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -259,14 +203,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../src/PoC/my_config_GENERIC.vhdl">
+      <File Path="$PPRDIR/../src/PoC/project_configuration_TE0802_ZU1EG.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../src/PoC/my_project.vhdl">
+      <File Path="$PPRDIR/../src/PoC/local_configuration.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -287,34 +231,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/vectors.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite.pkg.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4Lite/AXI4Lite_Register.vhdl">
-        <FileInfo SFType="VHDL2019">
-          <Attr Name="Library" Val="PoC"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
@@ -322,21 +238,28 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/common/vectors.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_to_AXI4Lite.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/common/physical.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -361,7 +284,311 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/components.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_AXI4Lite_Converter.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../src/BigDesign/BlockDesign_top.2008.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/IPComponents.comp.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="lib_IP"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/DMA_wrapper.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/mem/mem.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/mem/ocram/ocram.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/arith/arith.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/arith/arith_CarryChain_inc.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_cc_got.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_stage.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_FIFO.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/dstruct/dstruct_OutOfOrderBuffer.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream_Mux.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream_Stage.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream_DeMux.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_DeMux.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_DeMux.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/xil/xil.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/mem/mem_GitVersionRegister.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_Register.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_GitVersionRegister.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/design_SettingsRegister.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/misc/clock/clock.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_FIFO_CDC.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/common/math.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/misc/clock/clock_Timer.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/misc/clock/clock_Counter.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/misc/clock/clock_HighResolution.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_HighResolutionClock.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/design_GPIORegister.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/io/uart/uart.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/sync/sync.pkg.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/sync/sync_Bits.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/io/uart/uart_BitClock.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/io/uart/uart_TX.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/io/uart/uart_RX.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/io/uart/uart_FIFO.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4lite/axi4lite_UART.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/bus_Arbiter.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Mux.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Sink.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../src/BigDesign/PL_DDR4_wrapper.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -370,6 +597,27 @@
       <File Path="$PPRDIR/../src/BigDesign/Design.2008.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="lib_BigDesign"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream_Termination_Transmitter.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4stream/axi4stream_Termination_Receiver.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../lib/PoC/src/sync/sync_Bits_Xilinx.vhdl">
+        <FileInfo SFType="VHDL2019">
+          <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -406,10 +654,8 @@
       <Filter Type="Srcs"/>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="BlockDesign_wrapper"/>
+        <Option Name="TopModule" Val="BlockDesign_sv"/>
         <Option Name="TopLib" Val="lib_BigDesign"/>
-        <Option Name="TopArchitecture" Val="STRUCTURE"/>
-        <Option Name="TopRTLFile" Val="$PPRDIR/../bd/BlockDesign/hdl/BlockDesign_wrapper.vhd"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
@@ -438,6 +684,14 @@
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
       <Filter Type="Utils"/>
+      <File Path="$PPRDIR/../lib/PoC/tools/Vivado/preSynth_GitVersionRegister_Vivado.tcl">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+          <Attr Name="UsedInSteps" Val="synth_1;SYNTH_DESIGN;TCL.PRE"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
@@ -445,6 +699,19 @@
     <FileSet Name="BlockDesign_PS_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/BlockDesign_PS_0" RelGenDir="$PGENDIR/BlockDesign_PS_0">
       <Config>
         <Option Name="TopModule" Val="BlockDesign_PS_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="DMA" Type="BlockSrcs" RelSrcDir="$PSRCDIR/DMA" RelGenDir="$PGENDIR/DMA">
+      <File Path="$PPRDIR/../ip/DMA/DMA.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <Config>
+        <Option Name="TopModule" Val="DMA"/>
         <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
@@ -470,10 +737,8 @@
   <Runs Version="1" Minor="22">
     <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xczu1eg-sbva484-1-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
-        <Step Id="synth_design">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
+        <Step Id="synth_design" PreStepTclHook="$PPRDIR/../lib/PoC/tools/Vivado/preSynth_GitVersionRegister_Vivado.tcl">
           <Option Id="Assert">1</Option>
         </Step>
       </Strategy>
@@ -484,9 +749,7 @@
     </Run>
     <Run Id="BlockDesign_PS_0_synth_1" Type="Ft3:Synth" SrcSet="BlockDesign_PS_0" Part="xczu1eg-sbva484-1-e" ConstrsSet="BlockDesign_PS_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/BlockDesign_PS_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/BlockDesign_PS_0_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/BlockDesign_PS_0_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -494,11 +757,19 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 10 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
+    <Run Id="DMA_synth_1" Type="Ft3:Synth" SrcSet="DMA" Part="xczu1eg-sbva484-1-e" ConstrsSet="DMA" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/DMA_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/DMA_synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/DMA_synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2025"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 8 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -509,16 +780,30 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2025"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
     <Run Id="BlockDesign_PS_0_impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="BlockDesign_PS_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="BlockDesign_PS_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/BlockDesign_PS_0_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/BlockDesign_PS_0_impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2025"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="DMA_impl_1" Type="Ft2:EntireDesign" Part="xczu1eg-sbva484-1-e" ConstrsSet="DMA" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="DMA_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/DMA_impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/DMA_impl_1" ParallelReportGen="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>

@@ -1,28 +1,26 @@
--- EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
--- vim: tabstop=2:shiftwidth=2:noexpandtab
--- kate: tab-width 2; replace-tabs off; indent-width 2;
---
 -- =============================================================================
 -- Authors:         Patrick Lehmann
 --
--- Package:					Project specific configuration.
+-- Package:         Project specific configuration.
 --
 -- Description:
 -- ------------------------------------
---		This is a template file.
+--    This is a template file for your local machine.
 --
---		TODO
+--    This file needs to be ignored by your version control system!
 --
---		USAGE:
---			1) Copy this file into your project's source directory and rename it to
---				 "my_project.vhdl".
---			2) Add file to library "poc" in your synthesis tool.
---			3) Change setup appropriately.
+--        TODO
+--
+--        USAGE:
+--            1) Copy this file into your project's source directory and rename it to
+--                 "local_configuration.vhdl".
+--            2) Add file to library "poc" in your synthesis tool.
+--            3) Change setup appropriately.
 --
 -- License:
 -- =============================================================================
 -- Copyright 2007-2015 Technische Universitaet Dresden - Germany,
---										 Chair for VLSI-Design, Diagnostics and Architecture
+--                                         Chair for VLSI-Design, Diagnostics and Architecture
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -38,8 +36,7 @@
 -- =============================================================================
 
 
-package my_project is
+package local_configuration is
 	-- Change these lines to setup configuration.
-	constant MY_PROJECT_DIR				: string	:= "CHANGE THIS";		-- e.g. "d:/vhdl/myproject/", "/home/me/projects/myproject/"
-	constant MY_OPERATING_SYSTEM	: string	:= "CHANGE THIS";		-- e.g. "WINDOWS", "LINUX"
+	constant LOCAL_PROJECT_DIR : string := "CHANGE THIS in local_configuration.vhdl";        -- e.g. "d:/vhdl/myproject/", "/home/me/projects/myproject/"
 end package;
