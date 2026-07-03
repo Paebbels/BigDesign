@@ -346,13 +346,13 @@ begin
 	pl_clk0   <= pl_clock0;
 
 	blk_UART : block
-		signal UART_RX_Rec : UartRecType;  -- TODO: constrain?
-		signal UART_TX_Rec : UartRecType;  -- TODO: constrain?
+		signal UART_RX_Rec : UartRecType;
+		signal UART_TX_Rec : UartRecType;
 	begin
 		RX: entity OSVVM_UART.UartRx
 			generic map (
 				DEFAULT_BAUD        => to_time(to_freq(UART_BAUDRATE)),
-				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE  --UARTTB_PARITY_EVEN,UARTTB_PARITY_NONE,UARTTB_PARITY_ODD
+				DEFAULT_PARITY_MODE => UARTTB_PARITY_NONE
 			)
 			port map (
 				TransRec            => UART_RX_Rec,
@@ -411,19 +411,19 @@ begin
 		maxigp0_awuser             <= AxiBus.WriteAddress.User;
 		maxigp0_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp0_awready;
-		
+
 		maxigp0_wdata              <= AxiBus.WriteData.Data;
 		maxigp0_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp0_wlast              <= AxiBus.WriteData.Last;
 		maxigp0_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp0_wready;
-		
+
 		AxiBus.WriteResponse.ID    <= maxigp0_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp0_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp0_bvalid;
 		maxigp0_bready             <= AxiBus.WriteResponse.Ready;
-		
+
 		maxigp0_arid               <= AxiBus.ReadAddress.ID;
 		maxigp0_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp0_arlen              <= AxiBus.ReadAddress.Len;
@@ -436,7 +436,7 @@ begin
 		maxigp0_aruser             <= AxiBus.ReadAddress.User;
 		maxigp0_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp0_arready;
-		
+
 		AxiBus.ReadData.ID         <= maxigp0_rid;
 		AxiBus.ReadData.Data       <= maxigp0_rdata;
 		AxiBus.ReadData.Resp       <= maxigp0_rresp;
@@ -453,12 +453,12 @@ begin
 			-- Globals
 			Clk         => maxihpm0_fpd_aclk,
 			nReset      => '1',
-	
+
 			-- AXI Manager Functional Interface
 			AxiBus      => AxiBus
 		) ;
 	end block;
-	
+
 	blk_HPM1_FPD : block
 		signal AxiBus : Axi4RecType(
 			WriteAddress(
@@ -500,19 +500,19 @@ begin
 		maxigp1_awuser             <= AxiBus.WriteAddress.User;
 		maxigp1_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp1_awready;
-		
+
 		maxigp1_wdata              <= AxiBus.WriteData.Data;
 		maxigp1_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp1_wlast              <= AxiBus.WriteData.Last;
 		maxigp1_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp1_wready;
-		
+
 		AxiBus.WriteResponse.ID    <= maxigp1_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp1_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp1_bvalid;
 		maxigp1_bready             <= AxiBus.WriteResponse.Ready;
-		
+
 		maxigp1_arid               <= AxiBus.ReadAddress.ID;
 		maxigp1_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp1_arlen              <= AxiBus.ReadAddress.Len;
@@ -525,7 +525,7 @@ begin
 		maxigp1_aruser             <= AxiBus.ReadAddress.User;
 		maxigp1_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp1_arready;
-		
+
 		AxiBus.ReadData.ID         <= maxigp1_rid;
 		AxiBus.ReadData.Data       <= maxigp1_rdata;
 		AxiBus.ReadData.Resp       <= maxigp1_rresp;
@@ -542,7 +542,7 @@ begin
 			-- Globals
 			Clk         => maxihpm1_fpd_aclk,
 			nReset      => '1',
-	
+
 			-- AXI Manager Functional Interface
 			AxiBus      => AxiBus
 		);
@@ -589,19 +589,19 @@ begin
 		maxigp2_awuser             <= AxiBus.WriteAddress.User;
 		maxigp2_awqos              <= AxiBus.WriteAddress.QOS;
 		AxiBus.WriteAddress.Ready  <= maxigp2_awready;
-		
+
 		maxigp2_wdata              <= AxiBus.WriteData.Data;
 		maxigp2_wstrb              <= AxiBus.WriteData.Strb;
 		maxigp2_wlast              <= AxiBus.WriteData.Last;
 		maxigp2_wvalid             <= AxiBus.WriteData.Valid;
 		AxiBus.WriteData.Ready     <= maxigp2_wready;
-		
+
 		AxiBus.WriteResponse.ID    <= maxigp2_bid;
 		AxiBus.WriteResponse.Resp  <= maxigp2_bresp;
 		AxiBus.WriteResponse.User  <= (others => 'X');
 		AxiBus.WriteResponse.Valid <= maxigp2_bvalid;
 		maxigp2_bready             <= AxiBus.WriteResponse.Ready;
-		
+
 		maxigp2_arid               <= AxiBus.ReadAddress.ID;
 		maxigp2_araddr             <= AxiBus.ReadAddress.Addr;
 		maxigp2_arlen              <= AxiBus.ReadAddress.Len;
@@ -614,7 +614,7 @@ begin
 		maxigp2_aruser             <= AxiBus.ReadAddress.User;
 		maxigp2_arqos              <= AxiBus.ReadAddress.QOS;
 		AxiBus.ReadAddress.Ready   <= maxigp2_arready;
-		
+
 		AxiBus.ReadData.ID         <= maxigp2_rid;
 		AxiBus.ReadData.Data       <= maxigp2_rdata;
 		AxiBus.ReadData.Resp       <= maxigp2_rresp;
@@ -703,7 +703,7 @@ begin
 		AxiBus.ReadAddress.User(0)  <= saxigp2_aruser;
 		AxiBus.ReadAddress.QOS      <= saxigp2_arqos;
 		saxigp2_arready             <= AxiBus.ReadAddress.Ready;
-		
+
 		saxigp2_rid                 <= AxiBus.ReadData.ID;
 		saxigp2_rdata               <= AxiBus.ReadData.Data;
 		saxigp2_rresp               <= AxiBus.ReadData.Resp;
@@ -720,7 +720,7 @@ begin
 			-- Globals
 			Clk         => saxihp0_fpd_aclk,
 			nReset      => '1',
-	
+
 			-- AXI Manager Functional Interface
 			AxiBus      => AxiBus
 		);
@@ -767,7 +767,7 @@ begin
 		AxiBus.WriteAddress.User(0) <= saxigp3_awuser;
 		AxiBus.WriteAddress.QOS     <= saxigp3_awqos;
 		saxigp3_awready             <= AxiBus.WriteAddress.Ready;
-		
+
 		AxiBus.WriteData.Data       <= saxigp3_wdata;
 		AxiBus.WriteData.Strb       <= saxigp3_wstrb;
 		AxiBus.WriteData.Last       <= saxigp3_wlast;
@@ -779,7 +779,7 @@ begin
 		saxigp3_bresp               <= AxiBus.WriteResponse.Resp;
 		saxigp3_bvalid              <= AxiBus.WriteResponse.Valid;
 		AxiBus.WriteResponse.Ready  <= saxigp3_bready;
-		
+
 		AxiBus.ReadAddress.ID       <= saxigp3_arid;
 		AxiBus.ReadAddress.Addr     <= saxigp3_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp3_arlen;
@@ -792,7 +792,7 @@ begin
 		AxiBus.ReadAddress.User(0)  <= saxigp3_aruser;
 		AxiBus.ReadAddress.QOS      <= saxigp3_arqos;
 		saxigp3_arready             <= AxiBus.ReadAddress.Ready;
-		
+
 		saxigp3_rid                 <= AxiBus.ReadData.ID;
 		saxigp3_rdata               <= AxiBus.ReadData.Data;
 		saxigp3_rresp               <= AxiBus.ReadData.Resp;
@@ -856,19 +856,19 @@ begin
 		AxiBus.WriteAddress.User(0) <= saxigp4_awuser;
 		AxiBus.WriteAddress.QOS     <= saxigp4_awqos;
 		saxigp4_awready             <= AxiBus.WriteAddress.Ready;
-		
+
 		AxiBus.WriteData.Data       <= saxigp4_wdata;
 		AxiBus.WriteData.Strb       <= saxigp4_wstrb;
 		AxiBus.WriteData.Last       <= saxigp4_wlast;
 		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp4_wvalid;
 		saxigp4_wready              <= AxiBus.WriteData.Ready;
-		
+
 		saxigp4_bid                 <= AxiBus.WriteResponse.ID;
 		saxigp4_bresp               <= AxiBus.WriteResponse.Resp;
 		saxigp4_bvalid              <= AxiBus.WriteResponse.Valid;
 		AxiBus.WriteResponse.Ready  <= saxigp4_bready;
-		
+
 		AxiBus.ReadAddress.ID       <= saxigp4_arid;
 		AxiBus.ReadAddress.Addr     <= saxigp4_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp4_arlen;
@@ -945,19 +945,19 @@ begin
 		AxiBus.WriteAddress.User(0) <= saxigp5_awuser;
 		AxiBus.WriteAddress.QOS     <= saxigp5_awqos;
 		saxigp5_awready             <= AxiBus.WriteAddress.Ready;
-		
+
 		AxiBus.WriteData.Data       <= saxigp5_wdata;
 		AxiBus.WriteData.Strb       <= saxigp5_wstrb;
 		AxiBus.WriteData.Last       <= saxigp5_wlast;
 		AxiBus.WriteData.User(0)    <= 'X';
 		AxiBus.WriteData.Valid      <= saxigp5_wvalid;
 		saxigp5_wready              <= AxiBus.WriteData.Ready;
-		
+
 		saxigp5_bid                 <= AxiBus.WriteResponse.ID;
 		saxigp5_bresp               <= AxiBus.WriteResponse.Resp;
 		saxigp5_bvalid              <= AxiBus.WriteResponse.Valid;
 		AxiBus.WriteResponse.Ready  <= saxigp5_bready;
-		
+
 		AxiBus.ReadAddress.ID       <= saxigp5_arid;
 		AxiBus.ReadAddress.Addr     <= saxigp5_araddr(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0);
 		AxiBus.ReadAddress.Len      <= saxigp5_arlen;
@@ -970,7 +970,7 @@ begin
 		AxiBus.ReadAddress.User(0)  <= saxigp5_aruser;
 		AxiBus.ReadAddress.QOS      <= saxigp5_arqos;
 		saxigp5_arready             <= AxiBus.ReadAddress.Ready;
-		
+
 		saxigp5_rid                 <= AxiBus.ReadData.ID;
 		saxigp5_rdata               <= AxiBus.ReadData.Data;
 		saxigp5_rresp               <= AxiBus.ReadData.Resp;

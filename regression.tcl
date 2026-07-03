@@ -135,8 +135,8 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
-	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
-	LinkLibrary xpm {C:/Tools/precompiled/NVC/1.21.0/Vivado/2025.2}
+	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.1/Vivado/2025.2}
+	LinkLibrary xpm {C:/Tools/precompiled/NVC/1.21.1/Vivado/2025.2}
 	set ::osvvm::SimulatorMemory "-H 4096m"
 }
 
