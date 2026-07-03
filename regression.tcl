@@ -61,10 +61,14 @@ namespace import ::regression::*
 # Configuration space #
 #---------------------#
 set RivieraVersion "2026.04"
+set NVCVersion     "1.21.1"
+set GHDLVersion    "7.0.0-dev"
 set VivadoVersion  "2025.2"
 
 # FIXME: this is a hardcoded path
-set precompiledLibPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
+set precompiledLibRivieraPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
+set precompiledLibNVCPath     "C:/Tools/precompiled/NVC/${NVCVersion}/Vivado/${VivadoVersion}"
+set precompiledLibGHDLPath    "C:/Tools/precompiled/GHDL/${GHDLVersion}/Vivado/${VivadoVersion}"
 
 set defaultStep "all"
 set regressionLevels [createRegressionLevels osvvm poc dut test] ; # clean, all
@@ -121,22 +125,26 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	# Precompile Vivado for GHDL
 	#   execute compile-Xilinx-vivado.sh (can be found i.e. msys64/ucrt64/lib/ghdl/vendors)
 	#   compile-Xilinx-vivado.sh --all --vhdl2008 --output /c/.../2025.2 -v
-	LinkLibrary unisim {C:/Tools/precompiled/GHDL/7.0.0-dev/Vivado/2025.2}
+	if {![info exists ::env(GITHUB_ACTIONS)] || $::env(GITHUB_ACTIONS) ne "true"} {
+		LinkLibrary unisim $precompiledLibGHDLPath
+	}
 
 } elseif {$::osvvm::ToolName eq "RivieraPRO"} {
-	LinkLibrary xpm                   "$precompiledLibPath/xpm"
-	LinkLibrary unisim                "$precompiledLibPath/unisim"
-	LinkLibrary axi_sg_v4_1_21        "$precompiledLibPath/axi_sg_v4_1_21"
-	LinkLibrary axi_datamover_v5_1_37 "$precompiledLibPath/axi_datamover_v5_1_37"
-	LinkLibrary axi_dma_v7_1_37       "$precompiledLibPath/axi_dma_v7_1_37"
+	LinkLibrary xpm                   "$precompiledLibRivieraPath/xpm"
+	LinkLibrary unisim                "$precompiledLibRivieraPath/unisim"
+	LinkLibrary axi_sg_v4_1_21        "$precompiledLibRivieraPath/axi_sg_v4_1_21"
+	LinkLibrary axi_datamover_v5_1_37 "$precompiledLibRivieraPath/axi_datamover_v5_1_37"
+	LinkLibrary axi_dma_v7_1_37       "$precompiledLibRivieraPath/axi_dma_v7_1_37"
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	# Precompile Vivado for NVC:
 	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
-	LinkLibrary unisim {C:/Tools/precompiled/NVC/1.21.1/Vivado/2025.2}
-	LinkLibrary xpm {C:/Tools/precompiled/NVC/1.21.1/Vivado/2025.2}
+	if {![info exists ::env(GITHUB_ACTIONS)] || $::env(GITHUB_ACTIONS) ne "true"} {
+		LinkLibrary unisim "$precompiledLibNVCPath/unisim"
+		LinkLibrary xpm    "$precompiledLibNVCPath"
+	}
 	set ::osvvm::SimulatorMemory "-H 4096m"
 }
 
