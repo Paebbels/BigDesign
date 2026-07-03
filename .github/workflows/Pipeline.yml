@@ -42,7 +42,7 @@ jobs:
 
       - name: Prepare
         run: |
-          mv src/PoC/my_project.vhdl.template src/PoC/my_project.vhdl
+          mv src/PoC/local_configuration.vhdl.template src/PoC/local_configuration.vhdl
 
       - name: 🚧 Run tests on Ubuntu
         if: matrix.name == 'Ubuntu'
@@ -120,7 +120,7 @@ jobs:
 
       - name: Prepare
         run: |
-          mv src/PoC/my_project.vhdl.template src/PoC/my_project.vhdl
+          mv src/PoC/local_configuration.vhdl.template src/PoC/local_configuration.vhdl
 
       - name: 🚧 Run tests on Ubuntu
         if: matrix.name == 'Ubuntu'
