@@ -50,10 +50,7 @@ begin
 		TranscriptOpen;
 		SetTranscriptMirror(TRUE);
 
-		-- wait for design reset
-		-- wait until Reset = '0';
 		ClearAlerts;
-		wait for 100 us;
 
 		WaitForBarrier(TestDone, TIMEOUT);
 		EndOfTestReports(ReportAll => TRUE, Timeout => now >= TIMEOUT);

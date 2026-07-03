@@ -52,10 +52,7 @@ begin
 		TranscriptOpen;
 		SetTranscriptMirror(TRUE);
 
-		-- wait for design reset
-		-- wait until Reset = '0';
 		ClearAlerts;
-		wait for 100 us;
 
 		WaitForBarrier(TestDone, TIMEOUT);
 		EndOfTestReports(ReportAll => TRUE, Timeout => now >= TIMEOUT);
@@ -188,17 +185,17 @@ begin
 				end loop;
 			end loop;
 
-		elsif MEMORY_PATTERN = "RandomSequentialWrite_4MB_Range" then
+		elsif MEMORY_PATTERN = "RandomSequentialWrite_4MiB_Range" then
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
-			-- 	1. 4096 * 128b write operations with random addressing in range 18 bit (0 to 4 MB)
+			-- 	1. 4096 * 128b write operations with random addressing in range 18 bit (0 to 4 MiB)
 			--  -> 4b Byte address + 18b word address
 			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:10 min
 				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**18 - 1)), WriteData);
 			end loop;
 
-		elsif MEMORY_PATTERN = "RandomSequentialWrite_1TB_Range" then
+		elsif MEMORY_PATTERN = "RandomSequentialWrite_1GiB_Range" then
 			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
-			-- 	1. 4096 * 128b write operations with random addressing in range 26 bit (0 to 1 TB)
+			-- 	1. 4096 * 128b write operations with random addressing in range 26 bit (0 to 1 GiB)
 			--  -> 4b Byte address + 26b word address
 			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:35 min
 				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**26 - 1)), WriteData);
