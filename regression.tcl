@@ -74,14 +74,12 @@ set defaultStep "all"
 set regressionLevels [createRegressionLevels osvvm poc dut test] ; # clean, all
 
 # -P -projectRoot set project folder root for poc scripting
-# -g -gui         disables system exit (i.e. on errors)
 # -v -vendor      Vendor name
 # -b -board       Board name
 # -p -projectFile Path to the local_configuration file
 # -c -configFile  Path to the project_configuration file
 configurePoC \
 	-P ${root} \
-	-g \
 	-v Xilinx \
 	-b XCZU3EG \
 	-p "../../../src/PoC/local_configuration.vhdl" \

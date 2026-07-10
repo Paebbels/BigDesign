@@ -15,7 +15,7 @@
 			"dependencies": [
 				{
 					"Vivado": {
-						"version": "Vivado2025.2",
+						"version": "Vivado2026.1",
 						"targets": [
 							"unisim"
 						]
