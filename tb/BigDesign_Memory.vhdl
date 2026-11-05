@@ -175,7 +175,7 @@ begin
 			-- 	1. sequential data write 64 kB using 128 words
 			-- 	2. measure time from start to finish
 			-- 	-> loop n times so that n equals 1 min
-			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS loop  -- ~1 min
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS - 1 loop  -- ~1 min
 				for j in 0 to NUM_WORDS_PER_BLOCK - 1 loop
 					block
 						constant writeAddress : natural := j + i * NUM_WORDS_PER_BLOCK;
@@ -189,16 +189,24 @@ begin
 			-- 2nd pattern (randomly fill memory with same data amount -> worst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 18 bit (0 to 4 MiB)
 			--  -> 4b Byte address + 18b word address
-			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:10 min
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK - 1 loop  -- ~1:01 min
 				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**18 - 1)), WriteData);
 			end loop;
 
 		elsif MEMORY_PATTERN = "RandomSequentialWrite_1GiB_Range" then
-			-- 3nd pattern (randomly fill memory with same data amount -> worstworst case)
+			-- 3rd pattern (randomly fill memory with same data amount -> worstworst case)
 			-- 	1. 4096 * 128b write operations with random addressing in range 26 bit (0 to 1 GiB)
 			--  -> 4b Byte address + 26b word address
-			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK loop  -- ~1:35 min
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK - 1 loop  -- ~1:21 min
 				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**26 - 1)), WriteData);
+			end loop;
+
+		elsif MEMORY_PATTERN = "RandomSequentialWrite_4GiB_Range" then
+			-- 4th pattern (randomly fill memory with same data amount -> worstworstworst case)
+			-- 	1. 4096 * 128b write operations with random addressing in range 28 bit (0 to 4 GiB)
+			--  -> 4b Byte address + 26b word address
+			for i in 0 to MEMORY_SCALING_FACTOR * NUM_ITERATIONS * NUM_WORDS_PER_BLOCK - 1 loop  -- ~1:41 min
+				Write(PSDDR4_MemoryID, toWordAddress(DataRV.RandInt(0, 2**28 - 1)), WriteData);
 			end loop;
 		else
 			assert False report "Invalid memory test pattern " & MEMORY_PATTERN & "!" severity failure;

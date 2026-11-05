@@ -173,7 +173,7 @@ if {$::osvvm::ToolName eq "GHDL"} {
 			analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_rfs.vhd"
 		}
 	}
-	set ::osvvm::SimulatorMemory "-H 4096m"
+	set ::osvvm::SimulatorMemory "-H 16384m"
 }
 
 if {$::regression::level <= 1} {
