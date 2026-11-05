@@ -60,10 +60,10 @@ namespace import ::regression::*
 #---------------------#
 # Configuration space #
 #---------------------#
-set RivieraVersion "2026.04"
+set RivieraVersion "2026.06"
 set NVCVersion     "1.21.1"
 set GHDLVersion    "7.0.0-dev"
-set VivadoVersion  "2025.2"
+set VivadoVersion  "2026.1"
 
 # FIXME: this is a hardcoded path
 set precompiledLibRivieraPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
@@ -131,8 +131,16 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	LinkLibrary xpm                   "$precompiledLibRivieraPath/xpm"
 	LinkLibrary unisim                "$precompiledLibRivieraPath/unisim"
 	LinkLibrary axi_sg_v4_1_21        "$precompiledLibRivieraPath/axi_sg_v4_1_21"
-	LinkLibrary axi_datamover_v5_1_37 "$precompiledLibRivieraPath/axi_datamover_v5_1_37"
-	LinkLibrary axi_dma_v7_1_37       "$precompiledLibRivieraPath/axi_dma_v7_1_37"
+
+	if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
+		# Vivado <= 2025.2
+		LinkLibrary axi_datamover_v5_1_37 "$precompiledLibRivieraPath/axi_datamover_v5_1_37"
+		LinkLibrary axi_dma_v7_1_37       "$precompiledLibRivieraPath/axi_dma_v7_1_37"
+	} else {
+		# Vivado >= 2026.1
+		LinkLibrary axi_datamover_v5_1_38 "$precompiledLibRivieraPath/axi_datamover_v5_1_38"
+		LinkLibrary axi_dma_v7_1_38       "$precompiledLibRivieraPath/axi_dma_v7_1_38"
+	}
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	# Precompile Vivado for NVC:
