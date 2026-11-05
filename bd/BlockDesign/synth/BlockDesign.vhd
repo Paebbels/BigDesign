@@ -1,9 +1,9 @@
 --Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
---Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
---Date        : Fri Apr 10 17:56:14 2026
---Host        : Paebbels-PLC2 running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2026.1 (win64) Build 6511674 Tue Jun 16 11:02:23 MDT 2026
+--Date        : Fri Jul 10 09:49:04 2026
+--Host        : ADRIAN-PLC2 running 64-bit major release  (build 9200)
 --Command     : generate_target BlockDesign.bd
 --Design      : BlockDesign
 --Purpose     : IP block netlist
@@ -301,7 +301,7 @@ entity BlockDesign is
     UART_1_txd : out STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of BlockDesign : entity is "BlockDesign,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=BlockDesign,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=1,numReposBlks=1,numNonXlnxBlks=0,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,synth_mode=Hierarchical}";
+  attribute CORE_GENERATION_INFO of BlockDesign : entity is "BlockDesign,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=BlockDesign,x_ipVersion=1.00.a,x_ipLanguage=VHDL}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of BlockDesign : entity is "BlockDesign.hwdef";
 end BlockDesign;

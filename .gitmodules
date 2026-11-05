@@ -1,21 +1,21 @@
 [submodule "lib/PoC"]
 	path = lib/PoC
-	url = ../../VHDL/PoC.git
+	url = ../../PLC2/PoC.git
 [submodule "lib/Interfaces"]
 	path = lib/Interfaces
-	url = ../../VHDL/Interfaces.git
+	url = https://github.com/VHDL/Interfaces.git
 [submodule "lib/OSVVM"]
 	path = lib/OSVVM
-	url = ../OSVVM.git
+	url = https://github.com/Paebbels/OSVVM.git
 [submodule "lib/OSVVM-AXI4"]
 	path = lib/OSVVM-AXI4
-	url = ../OSVVM-AXI4.git
+	url = https://github.com/Paebbels/OSVVM-AXI4.git
 [submodule "lib/OSVVM-Common"]
 	path = lib/OSVVM-Common
-	url = ../OSVVM-Common.git
+	url = https://github.com/Paebbels/OSVVM-Common.git
 [submodule "lib/OSVVM-Scripts"]
 	path = lib/OSVVM-Scripts
-	url = ../OSVVM-Scripts.git
+	url = https://github.com/Paebbels/OSVVM-Scripts.git
 [submodule "lib/OSVVM-UART"]
 	path = lib/OSVVM-UART
-	url = ../../OSVVM/UART.git
+	url = https://github.com/Paebbels/OSVVM-UART.git

@@ -151,7 +151,7 @@ begin
 				PIPELINE_OUT      => (BASE_ADDRESSES'range => 0)
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 
 				In_M2S       => Config_m2s,
@@ -172,7 +172,7 @@ begin
 				USER_ID           => (others => '0')
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_VERSION_IDX),
 				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_VERSION_IDX),
@@ -184,7 +184,7 @@ begin
 				UART_BAUDRATE => UART_BAUDRATE
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_SETTING_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_SETTING_IDX)
@@ -196,7 +196,7 @@ begin
 				USE_CDC         => FALSE
 			)
 			port map (
-				Clock           => Clock_300,
+				Clock           => Clock_100,
 				Reset           => PL_Reset,
 				AXI4Lite_Clock  => Clock_100,
 				AXI4Lite_Reset  => PL_Reset,
@@ -210,7 +210,7 @@ begin
 
 		GPIO : entity work.design_GPIORegister
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_GPIO_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_GPIO_IDX),
@@ -227,7 +227,7 @@ begin
 				BAUDRATE      => UART_BAUDRATE
 			)
 			port map (
-				Clock         => Clock_300,
+				Clock         => Clock_100,
 				Reset         => PL_Reset,
 
 				AXI4Lite_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
@@ -257,7 +257,7 @@ begin
 		-- DMA
 		DMA_wrapper: entity work.DMA_wrapper
 			port map (
-				Clock             => Clock_300,
+				Clock             => Clock_100,
 				Reset             => PL_Reset,
 
 				-- Config
@@ -290,7 +290,7 @@ begin
 				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 
 				In_M2S       => Mux_In_m2s,
@@ -310,7 +310,7 @@ begin
 				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 
 				In_M2S       => Mux_Out_m2s,
@@ -340,7 +340,7 @@ begin
 				PIPELINE_OUT => 0
 			)
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 
 				In_M2S       => PL_DDR4_In_m2s,
@@ -355,7 +355,7 @@ begin
 
 		PL_DDR4: entity work.PL_DDR4_wrapper
 			port map (
-				Clock        => Clock_300,
+				Clock        => Clock_100,
 				Reset        => PL_Reset,
 
 				Data_m2s     => Data_m2s,

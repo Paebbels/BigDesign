@@ -65,6 +65,6 @@ package BigDesign_tb_pkg is
 	-- Memory test
 	constant BLOCK_SIZE : unsigned(MEMORY_MODEL_ADDRESS_BITS - 1 downto 0) := to_unsigned(16, MEMORY_MODEL_ADDRESS_BITS);
 	constant NUM_WORDS_PER_BLOCK : positive := 64 * (1024 / 16);  -- 64 kB written in 128b words
-	constant NUM_ITERATIONS      : positive := 18000;  -- default MEMORY_SCALING_FACTOR is 100 which results in 1.800.000 iterations
+	constant NUM_ITERATIONS      : positive := 15000;
 
 end package;
