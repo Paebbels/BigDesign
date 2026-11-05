@@ -55,15 +55,16 @@ source ${root}/lib/OSVVM-Scripts/StartUp.tcl
 source ${root}/lib/PoC/tools/poc.tcl
 
 namespace import ::poc::*
+namespace import ::poc::OSVVM::*
 namespace import ::regression::*
 
 #---------------------#
 # Configuration space #
 #---------------------#
-set RivieraVersion "2026.04"
-set NVCVersion     "1.21.1"
+set RivieraVersion "2026.06"
+set NVCVersion     "1.23.1"
 set GHDLVersion    "7.0.0-dev"
-set VivadoVersion  "2025.2"
+set VivadoVersion  "2026.1"
 
 # FIXME: this is a hardcoded path
 set precompiledLibRivieraPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
@@ -82,8 +83,8 @@ configurePoC \
 	-P ${root} \
 	-v Xilinx \
 	-b XCZU3EG \
-	-p "../../../src/PoC/local_configuration.vhdl" \
-	-c "../../../src/PoC/project_configuration_TE0802_ZU1EG.vhdl"
+	-p "src/PoC/local_configuration.vhdl" \
+	-c "src/PoC/project_configuration_TE0802_ZU1EG.vhdl"
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
@@ -111,7 +112,7 @@ namespace eval ::BigDesign {
 }
 
 if {$::regression::level <= 0} {
-	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
+	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}OsvvmLibraries"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
@@ -131,37 +132,66 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	LinkLibrary xpm                   "$precompiledLibRivieraPath/xpm"
 	LinkLibrary unisim                "$precompiledLibRivieraPath/unisim"
 	LinkLibrary axi_sg_v4_1_21        "$precompiledLibRivieraPath/axi_sg_v4_1_21"
-	LinkLibrary axi_datamover_v5_1_37 "$precompiledLibRivieraPath/axi_datamover_v5_1_37"
-	LinkLibrary axi_dma_v7_1_37       "$precompiledLibRivieraPath/axi_dma_v7_1_37"
+
+	if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
+		# Vivado <= 2025.2
+		LinkLibrary axi_datamover_v5_1_37 "$precompiledLibRivieraPath/axi_datamover_v5_1_37"
+		LinkLibrary axi_dma_v7_1_37       "$precompiledLibRivieraPath/axi_dma_v7_1_37"
+	} else {
+		# Vivado >= 2026.1
+		LinkLibrary axi_datamover_v5_1_38 "$precompiledLibRivieraPath/axi_datamover_v5_1_38"
+		LinkLibrary axi_dma_v7_1_38       "$precompiledLibRivieraPath/axi_dma_v7_1_38"
+	}
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	# Precompile Vivado for NVC:
-	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
+	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2026.1
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
+	LinkLibrary unisim "$precompiledLibNVCPath/unisim"
+	LinkLibrary xpm    "$precompiledLibNVCPath"
+
 	if {![info exists ::env(GITHUB_ACTIONS)] || $::env(GITHUB_ACTIONS) ne "true"} {
-		LinkLibrary unisim "$precompiledLibNVCPath/unisim"
-		LinkLibrary xpm    "$precompiledLibNVCPath"
+		if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
+			# Vivado <= 2025.2
+			set xilinx_ip_dir "C:/Xilinx/Vivado/${VivadoVersion}/data/ip/xilinx"
+			library axi_sg_v4_1_21
+			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
+			library axi_datamover_v5_1_37
+			analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_vh_rfs.vhd"
+			library axi_dma_v7_1_37
+			analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_vh_rfs.vhd"
+
+		} else {
+			# Vivado >= 2026.1
+			set xilinx_ip_dir "C:/Xilinx/${VivadoVersion}/Vivado/data/ip/xilinx"
+			library axi_sg_v4_1_21
+			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
+			library axi_datamover_v5_1_38
+			analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_rfs.vhd"
+			library axi_dma_v7_1_38
+			analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_rfs.vhd"
+		}
 	}
-	set ::osvvm::SimulatorMemory "-H 4096m"
+	set ::osvvm::SimulatorMemory "-H 16384m"
 }
 
 if {$::regression::level <= 1} {
-	build "${root}/lib/PoC/src/build.pro" [BuildName "${::poc::buildNamePrefix}PoC"]
+	build "${root}/lib/PoC/src/build.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}PoC"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
 if {$::regression::level <= 2} {
-	build "${root}/src/BigDesign.pro" [BuildName "${::poc::buildNamePrefix}BigDesign"]
+	build "${root}/src/BigDesign.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}BigDesign"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
 if {$::regression::level <= 3} {
-	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::buildNamePrefix}RunAllTests"]
+	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}RunAllTests"]
 	if {[checkForRunErrors] || $::regression::executeSingleStep} {
 		return
 	}

@@ -42,6 +42,7 @@ analyze BigDesign_UART.vhdl
 simulate BigDesign_Memory [generic MEMORY_PATTERN RepeatedSequentialBlockWrite]     [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
 simulate BigDesign_Memory [generic MEMORY_PATTERN RandomSequentialWrite_4MiB_Range] [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
 simulate BigDesign_Memory [generic MEMORY_PATTERN RandomSequentialWrite_1GiB_Range] [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
+simulate BigDesign_Memory [generic MEMORY_PATTERN RandomSequentialWrite_4GiB_Range] [generic MEMORY_SCALING_FACTOR $::BigDesign::memoryScalingFactor]
 simulate BigDesign_Version
 simulate BigDesign_Settings
 simulate BigDesign_HRC
