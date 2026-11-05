@@ -25,16 +25,6 @@ analyze BigDesign/PS_settings_pkg.vhdl
 library lib_test
 analyze ../tb/PS_Stub.vhdl
 
-if {$::osvvm::ToolName eq "NVC"} {
-    set xilinx_ip_dir "C:/Xilinx/Vivado/2025.2/data/ip/xilinx"
-
-    library axi_sg_v4_1_21
-    analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
-    library axi_datamover_v5_1_37
-    analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_vh_rfs.vhd"
-    library axi_dma_v7_1_37
-    analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_vh_rfs.vhd"
-}
 library lib_IP
 analyze ../project/BigDesign.2008.gen/sources_1/ip/DMA/synth/DMA.vhd
 analyze BigDesign/IPComponents.comp.vhdl

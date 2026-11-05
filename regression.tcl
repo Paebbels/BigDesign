@@ -61,7 +61,7 @@ namespace import ::regression::*
 # Configuration space #
 #---------------------#
 set RivieraVersion "2026.06"
-set NVCVersion     "1.21.1"
+set NVCVersion     "1.23.1"
 set GHDLVersion    "7.0.0-dev"
 set VivadoVersion  "2026.1"
 
@@ -147,9 +147,30 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
+	LinkLibrary unisim "$precompiledLibNVCPath/unisim"
+	LinkLibrary xpm    "$precompiledLibNVCPath"
+
 	if {![info exists ::env(GITHUB_ACTIONS)] || $::env(GITHUB_ACTIONS) ne "true"} {
-		LinkLibrary unisim "$precompiledLibNVCPath/unisim"
-		LinkLibrary xpm    "$precompiledLibNVCPath"
+		if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
+			# Vivado <= 2025.2
+			set xilinx_ip_dir "C:/Xilinx/Vivado/${VivadoVersion}/data/ip/xilinx"
+			library axi_sg_v4_1_21
+			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
+			library axi_datamover_v5_1_37
+			analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_vh_rfs.vhd"
+			library axi_dma_v7_1_37
+			analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_vh_rfs.vhd"
+
+		} else {
+			# Vivado >= 2026.1
+			set xilinx_ip_dir "C:/Xilinx/${VivadoVersion}/Vivado/data/ip/xilinx"
+			library axi_sg_v4_1_21
+			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
+			library axi_datamover_v5_1_38
+			analyze "${xilinx_ip_dir}/axi_datamover_v5_1/hdl/axi_datamover_v5_1_rfs.vhd"
+			library axi_dma_v7_1_38
+			analyze "${xilinx_ip_dir}/axi_dma_v7_1/hdl/axi_dma_v7_1_rfs.vhd"
+		}
 	}
 	set ::osvvm::SimulatorMemory "-H 4096m"
 }
