@@ -18,4 +18,4 @@
 	url = https://github.com/Paebbels/OSVVM-Scripts.git
 [submodule "lib/OSVVM-UART"]
 	path = lib/OSVVM-UART
-	url = https://github.com/OSVVM/UART.git
+	url = https://github.com/Paebbels/OSVVM-UART.git
