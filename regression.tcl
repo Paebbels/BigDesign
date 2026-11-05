@@ -55,6 +55,7 @@ source ${root}/lib/OSVVM-Scripts/StartUp.tcl
 source ${root}/lib/PoC/tools/poc.tcl
 
 namespace import ::poc::*
+namespace import ::poc::OSVVM::*
 namespace import ::regression::*
 
 #---------------------#
@@ -82,8 +83,8 @@ configurePoC \
 	-P ${root} \
 	-v Xilinx \
 	-b XCZU3EG \
-	-p "../../../src/PoC/local_configuration.vhdl" \
-	-c "../../../src/PoC/project_configuration_TE0802_ZU1EG.vhdl"
+	-p "src/PoC/local_configuration.vhdl" \
+	-c "src/PoC/project_configuration_TE0802_ZU1EG.vhdl"
 
 # -s -stop <i>    set the stop counts to <i>
 # -d -debug       enable debugging
@@ -111,7 +112,7 @@ namespace eval ::BigDesign {
 }
 
 if {$::regression::level <= 0} {
-	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::buildNamePrefix}OsvvmLibraries"]
+	build "${root}/lib/OsvvmLibraries.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}OsvvmLibraries"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
@@ -144,7 +145,7 @@ if {$::osvvm::ToolName eq "GHDL"} {
 
 } elseif {$::osvvm::ToolName eq "NVC"} {
 	# Precompile Vivado for NVC:
-	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2025.2/
+	#   export XILINX_VIVADO=/c/Xilinx/Vivado/2026.1
 	#   nvc --install vivado
 	#   ls -l ~/.nvc/lib
 	LinkLibrary unisim "$precompiledLibNVCPath/unisim"
@@ -176,21 +177,21 @@ if {$::osvvm::ToolName eq "GHDL"} {
 }
 
 if {$::regression::level <= 1} {
-	build "${root}/lib/PoC/src/build.pro" [BuildName "${::poc::buildNamePrefix}PoC"]
+	build "${root}/lib/PoC/src/build.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}PoC"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
 if {$::regression::level <= 2} {
-	build "${root}/src/BigDesign.pro" [BuildName "${::poc::buildNamePrefix}BigDesign"]
+	build "${root}/src/BigDesign.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}BigDesign"]
 	if {[checkForBuildErrors] || $::regression::executeSingleStep} {
 		return
 	}
 }
 
 if {$::regression::level <= 3} {
-	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::buildNamePrefix}RunAllTests"]
+	build "${root}/tb/RunAllTests.pro" [BuildName "${::poc::OSVVM::buildNamePrefix}RunAllTests"]
 	if {[checkForRunErrors] || $::regression::executeSingleStep} {
 		return
 	}

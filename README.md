@@ -9,8 +9,8 @@
 ## Run simulation
 1. Open your preferred simulator
    * Has been tested with:
-     * Aldec Riviera-PRO 2025.10, 2026.04
-     * NVC 1.21.1: (does not support DMA testcases)
+     * Aldec Riviera-PRO 2025.10, 2026.04, 2026.06
+     * NVC 1.23.1: (does not support DMA testcases)
      * GHDL (mcode/llvm): TODO
 2. Navigate to the `temp` folder.
 3. Run the `regression.tcl` file.
