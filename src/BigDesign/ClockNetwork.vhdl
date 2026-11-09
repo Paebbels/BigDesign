@@ -144,8 +144,8 @@ begin
 		CLKFBOUT_PHASE          => 0.0,
 		CLKFBOUT_USE_FINE_PS    => "FALSE",
 
-		CLKIN1_PERIOD           => 1.0e9 / (CLOCK_IN_FREQ / Hz),
-		CLKIN2_PERIOD           => 1.0e9 / (CLOCK_IN_FREQ / Hz),
+		CLKIN1_PERIOD           => 1.0e9 / real(CLOCK_IN_FREQ / Hz),
+		CLKIN2_PERIOD           => 1.0e9 / real(CLOCK_IN_FREQ / Hz),
 
 		DIVCLK_DIVIDE           => 1,
 
