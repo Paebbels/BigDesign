@@ -87,6 +87,8 @@ begin
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 6);
+		wait until Reset_100 = '0';
+
 		ReadCheck(HPM0_LPD_Rec, REG_GPIO_BUTTONS, 32x"0");  -- initial GPIO value
 		WaitForClock(HPM0_LPD_Rec);
 		GPIO_Button <= "10";

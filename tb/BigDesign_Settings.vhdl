@@ -86,6 +86,8 @@ begin
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 	begin
 		WaitForClock(HPM0_LPD_Rec, 6);
+		wait until Reset_100 = '0';
+
 		ReadCheck(HPM0_LPD_Rec, REG_SETTINGS_BAUDRATE, 32x"E1000");  -- 921.600 kBd
 		WaitForClock(HPM0_LPD_Rec, 2);
 		WaitForBarrier(TestDone);
@@ -100,6 +102,8 @@ begin
 		constant ProcID : AlertLogIDType := NewID("ManagerProc_0", TCID);
 	begin
 		WaitForClock(DataGen_Managers(0), 2);
+		wait until Reset_100 = '0';
+
 
 		-- Currently not doing anything
 

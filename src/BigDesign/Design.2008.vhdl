@@ -57,18 +57,26 @@ end entity;
 
 
 architecture rtl of Design is
-	constant LED_COUNT     : positive := 2;
-	constant BUTTON_COUNT  : positive := 2;
-	constant AXI_FREQUENCY : FREQ     := 50 MHz;
+	--constant LED_COUNT     : positive := 2;  -- not used
+	--constant BUTTON_COUNT  : positive := 2;  -- not used
 
 	-- Clocks
 	signal PS_Clock  : std_logic;
 	signal PL_Reset  : std_logic := '0';
 
-	signal Clock_50  : std_logic;
+	signal ClockNetwork_Reset  : std_logic := '0';  -- nc
+
 	signal Clock_100 : std_logic;
+	signal Clock_125 : std_logic;
 	signal Clock_200 : std_logic;
-	signal Clock_300 : std_logic;
+	signal Clock_250 : std_logic;
+	signal Clock_500 : std_logic;
+
+	signal Reset_100 : std_logic;
+	signal Reset_125 : std_logic;
+	signal Reset_200 : std_logic;
+	signal Reset_250 : std_logic;
+	signal Reset_500 : std_logic;
 
 	-- Control signals
 	signal Config_m2s  : AXI4Lite_A32_D32.Sized_M2S;
@@ -98,16 +106,34 @@ architecture rtl of Design is
 
 begin
 
-	-- Create clocks (later replaced by MMCM)
-	Clock_50  <= PS_Clock;
-	Clock_100 <= PS_Clock;
-	Clock_200 <= PS_Clock;
-	Clock_300 <= PS_Clock;
+	Clock_network : entity PoC.ClockNetwork
+	generic map (
+		CLOCK_IN_FREQ        => PS_CLOCK_FREQUENCY
+	)
+	port map (
+		ClockIn              => PS_Clock,
+
+		ClockNetwork_Reset   => ClockNetwork_Reset,
+
+		Control_Clock_100    => open,
+
+		Clock_100            => Clock_100,
+		Clock_125            => Clock_125,
+		Clock_200            => Clock_200,
+		Clock_250            => Clock_250,
+		Clock_500            => Clock_500,
+
+		Reset_100            => Reset_100,
+		Reset_125            => Reset_125,
+		Reset_200            => Reset_200,
+		Reset_250            => Reset_250,
+		Reset_500            => Reset_500
+	);
 
 	Config_Clk             <= Clock_100;
-	Manager_Clks           <= (others => Clock_300);
-	Subordinate_Clks       <= (others => Clock_300);
-	MPSoC_Subordinate_clks <= (others => Clock_300);
+	Manager_Clks           <= (others => Clock_100);  -- todo: check frequency
+	Subordinate_Clks       <= (others => Clock_100);  -- todo: check frequency
+	MPSoC_Subordinate_clks <= (others => Clock_100);  -- todo: check frequency
 
 	PL_DDR4_In_m2s(0)    <= resize(MPSoC_Manager_m2s(0));
 	MPSoC_Manager_s2m(0) <= resize(PL_DDR4_In_s2m(0));
@@ -152,7 +178,7 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 
 				In_M2S       => Config_m2s,
 				In_S2M       => Config_s2m,
@@ -173,7 +199,7 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 				AXI4Lite_m2s => DeMux_Out_m2s(DEVICE_VERSION_IDX),
 				AXI4Lite_s2m => DeMux_Out_s2m(DEVICE_VERSION_IDX),
 				Version      => open
@@ -185,21 +211,21 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_SETTING_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_SETTING_IDX)
 			);
 
 		HRC: entity PoC.AXI4Lite_HighResolutionClock
 			generic map (
-				CLOCK_FREQUENCY => AXI_FREQUENCY,
+				CLOCK_FREQUENCY => PS_CLOCK_FREQUENCY,
 				USE_CDC         => FALSE
 			)
 			port map (
 				Clock           => Clock_100,
-				Reset           => PL_Reset,
+				Reset           => Reset_100,
 				AXI4Lite_Clock  => Clock_100,
-				AXI4Lite_Reset  => PL_Reset,
+				AXI4Lite_Reset  => Reset_100,
 
 				AXI4Lite_m2s    => DeMux_Out_m2s(DEVICE_HRC_IDX),
 				AXI4Lite_s2m    => DeMux_Out_s2m(DEVICE_HRC_IDX),
@@ -211,7 +237,7 @@ begin
 		GPIO : entity work.design_GPIORegister
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 				AXI4Lite_M2S => DeMux_Out_m2s(DEVICE_GPIO_IDX),
 				AXI4Lite_S2M => DeMux_Out_s2m(DEVICE_GPIO_IDX),
 
@@ -223,12 +249,12 @@ begin
 		BD_UART_TX_d <= transport BD_UART_TX after UART_WIRE_DELAY;
 		UART: entity PoC.AXI4Lite_UART
 			generic map (
-				CLOCK_FREQ    => AXI_FREQUENCY,
+				CLOCK_FREQ    => PS_CLOCK_FREQUENCY,
 				BAUDRATE      => UART_BAUDRATE
 			)
 			port map (
 				Clock         => Clock_100,
-				Reset         => PL_Reset,
+				Reset         => Reset_100,
 
 				AXI4Lite_m2s  => DeMux_Out_m2s(DEVICE_UART_IDX),
 				AXI4Lite_s2m  => DeMux_Out_s2m(DEVICE_UART_IDX),
@@ -258,7 +284,7 @@ begin
 		DMA_wrapper: entity work.DMA_wrapper
 			port map (
 				Clock             => Clock_100,
-				Reset             => PL_Reset,
+				Reset             => Reset_100,
 
 				-- Config
 				AXI4Lite_m2s      => DMA_Config_m2s,
@@ -291,7 +317,7 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 
 				In_M2S       => Mux_In_m2s,
 				In_S2M       => Mux_In_s2m,
@@ -311,7 +337,7 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 
 				In_M2S       => Mux_Out_m2s,
 				In_S2M       => Mux_Out_s2m,
@@ -341,7 +367,7 @@ begin
 			)
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 
 				In_M2S       => PL_DDR4_In_m2s,
 				In_S2M       => PL_DDR4_In_s2m,
@@ -356,7 +382,7 @@ begin
 		PL_DDR4: entity work.PL_DDR4_wrapper
 			port map (
 				Clock        => Clock_100,
-				Reset        => PL_Reset,
+				Reset        => Reset_100,
 
 				Data_m2s     => Data_m2s,
 				Data_s2m     => Data_s2m

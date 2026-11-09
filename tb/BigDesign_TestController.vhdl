@@ -66,7 +66,13 @@ entity BigDesign_TestController is
 		DataToModel   (CONFIG_DATA_BITS - 1 downto 0),
 		DataFromModel (CONFIG_DATA_BITS - 1 downto 0)
 	);
-	
+
+	alias Reset_100 is <<signal ^.DUT.Reset_100 : std_logic>>;
+	alias Reset_125 is <<signal ^.DUT.Reset_125 : std_logic>>;
+	alias Reset_200 is <<signal ^.DUT.Reset_200 : std_logic>>;
+	alias Reset_250 is <<signal ^.DUT.Reset_250 : std_logic>>;
+	alias Reset_500 is <<signal ^.DUT.Reset_500 : std_logic>>;
+
 	alias HPM0_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_FPD.Manager.TransRec : AddressBusRecTypeFPD>>;             -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
 	alias HPM1_FPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM1_FPD.Manager.TransRec : AddressBusRecTypeFPD>>;             -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
 	alias HPM0_LPD_Rec is <<signal ^.DUT.BD.BD.BlockDesign_i.PS.blk_HPM0_LPD.Manager.TransRec : AddressBusRecTypeConstrainedLPD>>;  -- WORKAROUND: Riviera 2026-04 requires constrained type indication in ext. name
