@@ -42,11 +42,11 @@ entity Design is
 
 		signal Config_Clk : out std_logic;
 
-		signal Manager_Clks  : out std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
+		signal Manager_Clocks  : out std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
 		signal Subordinate_m2s  : in  T_AXI4_Bus_M2S_Vector;
 		signal Subordinate_s2m  : out T_AXI4_Bus_S2M_Vector;
-		signal Subordinate_Clks : out std_logic_vector(0 to NUM_SUBORDINATES - 1);
+		signal Subordinate_Clocks : out std_logic_vector(0 to NUM_SUBORDINATES - 1);
 
 		signal DMA_StreamIn_m2s  : in  AXI4S_D32.Sized_M2S;
 		signal DMA_StreamIn_s2m  : out AXI4S_D32.Sized_S2M;
@@ -85,9 +85,9 @@ architecture rtl of Design is
 	signal MPSoC_Manager_m2s : AXI4_A40_D128.Sized_M2S_Vector(0 to NUM_MPSOC_MANAGERS - 1);
 	signal MPSoC_Manager_s2m : AXI4_A40_D128.Sized_S2M_Vector(0 to NUM_MPSOC_MANAGERS - 1);
 
-	signal MPSoC_subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
-	signal MPSoC_subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
-	signal MPSoC_Subordinate_clks : std_logic_vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+	signal MPSoC_subordinate_m2s    : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+	signal MPSoC_subordinate_s2m    : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_MPSOC_SUBORDINATES - 1);
+	signal MPSoC_Subordinate_Clocks : std_logic_vector(0 to NUM_MPSOC_SUBORDINATES - 1);
 
 	signal BD_UART_TX   : std_logic;
 	signal BD_UART_TX_d : std_logic := '1';
@@ -131,9 +131,9 @@ begin
 	);
 
 	Config_Clk             <= Clock_100;
-	Manager_Clks           <= (others => Clock_100);  -- todo: check frequency
-	Subordinate_Clks       <= (others => Clock_100);  -- todo: check frequency
-	MPSoC_Subordinate_clks <= (others => Clock_100);  -- todo: check frequency
+	Manager_Clocks         <= (others => Clock_250);
+	Subordinate_Clocks       <= (others => Clock_250);
+	MPSoC_Subordinate_Clocks <= (others => Clock_250);
 
 	PL_DDR4_In_m2s(0)    <= resize(MPSoC_Manager_m2s(0));
 	MPSoC_Manager_s2m(0) <= resize(PL_DDR4_In_s2m(0));
@@ -147,22 +147,22 @@ begin
 	UART_TX_d <= transport UART_TX after UART_WIRE_DELAY;
 	BD: entity work.BlockDesign_top
 		port map (
-			Clock            => PS_Clock,
+			Clock              => PS_Clock,
 
-			Config_m2s       => Config_m2s,
-			Config_s2m       => Config_s2m,
-			Config_Clk       => Config_Clk,
+			Config_m2s         => Config_m2s,
+			Config_s2m         => Config_s2m,
+			Config_Clk         => Config_Clk,
 
-			Manager_m2s      => MPSoC_Manager_m2s,
-			Manager_s2m      => MPSoC_Manager_s2m,
-			Manager_Clks     => Manager_Clks,
+			Manager_m2s        => MPSoC_Manager_m2s,
+			Manager_s2m        => MPSoC_Manager_s2m,
+			Manager_Clocks     => Manager_Clocks,
 
-			Subordinate_m2s  => MPSoC_Subordinate_m2s,
-			Subordinate_s2m  => MPSoC_Subordinate_s2m,
-			Subordinate_clks => MPSoC_Subordinate_clks,
+			Subordinate_m2s    => MPSoC_Subordinate_m2s,
+			Subordinate_s2m    => MPSoC_Subordinate_s2m,
+			Subordinate_Clocks => MPSoC_Subordinate_Clocks,
 
-			UART_TX          => BD_UART_TX,
-			UART_RX          => UART_TX
+			UART_TX            => BD_UART_TX,
+			UART_RX            => UART_TX
 		);
 
 	Demux_blk : block
