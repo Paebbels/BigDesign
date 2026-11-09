@@ -85,8 +85,8 @@ begin
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(HPM0_LPD_Rec, 2);
-		wait until Reset_100 = '0';
 
 		-- All register are read-only and dynamic / change over time.
 		-- But it can be checked for the project name

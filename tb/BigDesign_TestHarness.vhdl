@@ -69,6 +69,9 @@ architecture TestHarness of BigDesign_TestHarness is
 		DataFromModel(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
 	);
 
+	signal DUT_initialized : std_logic := '0';
+	alias  MMCM_Locked is <<signal DUT.Clock_network.MMCM_Locked : std_logic>>;
+
 	-- DMA
 	signal DMA_StreamIn_m2s  : AXI4S_D32.Sized_M2S;
 	signal DMA_StreamIn_s2m  : AXI4S_D32.Sized_S2M;
@@ -106,7 +109,8 @@ architecture TestHarness of BigDesign_TestHarness is
 		);
 	end component;
 begin
-	Clock_100MHz <= not Clock_100MHz after CLOCK_PERIOD / 2;
+	Clock_100MHz    <= not Clock_100MHz after CLOCK_PERIOD / 2;
+	DUT_initialized <= MMCM_Locked after CLOCK_PERIOD * 4;
 
 	DUT : entity lib_BigDesign.Design
 		port map (

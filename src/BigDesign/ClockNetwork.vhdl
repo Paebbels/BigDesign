@@ -80,6 +80,8 @@ architecture rtl of ClockNetwork is
 	signal MMCM_CLKFBOUT           : std_logic;
 	signal MMCM_CLKFBOUT_BUFG      : std_logic;
 
+	signal Reset                   : std_logic;  -- used for reset sync
+
 begin
 
 	-- ==================================================================
@@ -279,38 +281,40 @@ begin
 	--	Output_Resets(4) => Reset_500
 	--);
 
+	Reset <= ClockNetwork_Reset or not MMCM_Locked;
+
 	sync_Reset_100 : entity PoC.sync_Reset
 	port map (
 		Clock  => MMCM_Clock_100,
-		Input  => ClockNetwork_Reset or not MMCM_Locked,
+		Input  => Reset,
 		Output => Reset_100
 	);
 
 	sync_Reset_125 : entity PoC.sync_Reset
 	port map (
 		Clock  => MMCM_Clock_125,
-		Input  => ClockNetwork_Reset or not MMCM_Locked,
+		Input  => Reset,
 		Output => Reset_125
 	);
 
 	sync_Reset_200 : entity PoC.sync_Reset
 	port map (
 		Clock  => MMCM_Clock_200,
-		Input  => ClockNetwork_Reset or not MMCM_Locked,
+		Input  => Reset,
 		Output => Reset_200
 	);
 
 	sync_Reset_250 : entity PoC.sync_Reset
 	port map (
 		Clock  => MMCM_Clock_250,
-		Input  => ClockNetwork_Reset or not MMCM_Locked,
+		Input  => Reset,
 		Output => Reset_250
 	);
 
 	sync_Reset_500 : entity PoC.sync_Reset
 	port map (
 		Clock  => MMCM_Clock_500,
-		Input  => ClockNetwork_Reset or not MMCM_Locked,
+		Input  => Reset,
 		Output => Reset_500
 	);
 end architecture;

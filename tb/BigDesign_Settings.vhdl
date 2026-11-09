@@ -85,8 +85,8 @@ begin
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(HPM0_LPD_Rec, 6);
-		wait until Reset_100 = '0';
 
 		ReadCheck(HPM0_LPD_Rec, REG_SETTINGS_BAUDRATE, 32x"E1000");  -- 921.600 kBd
 		WaitForClock(HPM0_LPD_Rec, 2);
@@ -101,8 +101,8 @@ begin
 	ManagerProc_0 : process
 		constant ProcID : AlertLogIDType := NewID("ManagerProc_0", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(DataGen_Managers(0), 2);
-		wait until Reset_100 = '0';
 
 
 		-- Currently not doing anything

@@ -89,8 +89,8 @@ begin
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(HPM0_LPD_Rec, 2);
-		wait until Reset_100 = '0';
 
 		WaitForToggle(ReadByteTrigger);
 		log("Reading received data byte from UART register ...");
