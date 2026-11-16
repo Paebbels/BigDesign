@@ -283,10 +283,11 @@ begin
 		-- DMA
 		DMA_wrapper: entity work.DMA_wrapper
 			port map (
-				Clock             => Clock_100,
-				Reset             => Reset_100,
+				Clock             => Clock_250,
+				Reset             => Reset_250,
 
 				-- Config
+				AXI4Lite_Clock    => Clock_100,
 				AXI4Lite_m2s      => DMA_Config_m2s,
 				AXI4Lite_s2m      => DMA_Config_s2m,
 				AXI4Lite_tx_irq   => open,
@@ -316,8 +317,8 @@ begin
 				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
-				Clock        => Clock_100,
-				Reset        => Reset_100,
+				Clock        => Clock_250,
+				Reset        => Reset_250,
 
 				In_M2S       => Mux_In_m2s,
 				In_S2M       => Mux_In_s2m,
@@ -336,8 +337,8 @@ begin
 				NUM_OUTSTANDING_WRITES => 16  -- if zero, use full ID width (2**ID)
 			)
 			port map (
-				Clock        => Clock_100,
-				Reset        => Reset_100,
+				Clock        => Clock_250,
+				Reset        => Reset_250,
 
 				In_M2S       => Mux_Out_m2s,
 				In_S2M       => Mux_Out_s2m,
@@ -366,8 +367,8 @@ begin
 				PIPELINE_OUT => 0
 			)
 			port map (
-				Clock        => Clock_100,
-				Reset        => Reset_100,
+				Clock        => Clock_250,
+				Reset        => Reset_250,
 
 				In_M2S       => PL_DDR4_In_m2s,
 				In_S2M       => PL_DDR4_In_s2m,
@@ -381,8 +382,8 @@ begin
 
 		PL_DDR4: entity work.PL_DDR4_wrapper
 			port map (
-				Clock        => Clock_100,
-				Reset        => Reset_100,
+				Clock        => Clock_250,
+				Reset        => Reset_250,
 
 				Data_m2s     => Data_m2s,
 				Data_s2m     => Data_s2m

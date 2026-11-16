@@ -37,10 +37,11 @@ use     lib_IP.IPComponents.all;
 
 entity DMA_wrapper is
 	port (
-		signal Clock             : in std_logic;
-		signal Reset             : in std_logic;
-
+		signal Clock             : in  std_logic;
+		signal Reset             : in  std_logic;
+		
 		-- Config
+		signal AXI4Lite_Clock    : in  std_logic;
 		signal AXI4Lite_m2s      : in  AXI4Lite_A32_D32.Sized_M2S;
 		signal AXI4Lite_s2m      : out AXI4Lite_A32_D32.Sized_S2M;
 		signal AXI4Lite_tx_irq   : out std_logic;
@@ -64,7 +65,7 @@ architecture wrapper of DMA_wrapper is
 begin
 	DMA_inst : component DMA
 		port map (
-			s_axi_lite_aclk        => Clock,
+			s_axi_lite_aclk        => AXI4Lite_Clock,
 			m_axi_sg_aclk          => Clock,
 			m_axi_mm2s_aclk        => Clock,
 			m_axi_s2mm_aclk        => Clock,
