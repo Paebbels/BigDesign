@@ -86,7 +86,9 @@ begin
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 		variable Data   : std_logic_vector(HPM0_LPD_AXI_DATA_WIDTH - 1 downto 0);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(HPM0_LPD_Rec, 6);
+
 		ReadCheck(HPM0_LPD_Rec, REG_GPIO_BUTTONS, 32x"0");  -- initial GPIO value
 		WaitForClock(HPM0_LPD_Rec);
 		GPIO_Button <= "10";

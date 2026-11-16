@@ -159,7 +159,9 @@ begin
 
 		end procedure;
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(HPM0_LPD_Rec, 8);
+
 		log("Writing load values to register");
 		LoadNanoseconds(HPM0_LPD_Rec, 1000, 400 ns);
 		LoadDatetime(HPM0_LPD_Rec, 42, 7, 16, 13, 1, 2025, 500 ns);

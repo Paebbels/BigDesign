@@ -22,6 +22,9 @@
 library lib_BigDesign
 analyze BigDesign/PS_settings_pkg.vhdl
 
+library PoC
+analyze BigDesign/ClockNetwork.vhdl
+
 library lib_test
 analyze ../tb/PS_Stub.vhdl
 

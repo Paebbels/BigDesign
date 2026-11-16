@@ -58,18 +58,73 @@ namespace import ::poc::*
 namespace import ::poc::OSVVM::*
 namespace import ::regression::*
 
+#---------#
+# Helpers #
+#---------#
+proc CheckLibPath {path} {
+    if {![file isdirectory $path]} {
+        error "Library path not found: $path."
+    } else {
+        puts "INFO: Library path found: $path"
+    }
+}
+
 #---------------------#
 # Configuration space #
 #---------------------#
-set RivieraVersion "2026.06"
-set NVCVersion     "1.23.1"
-set GHDLVersion    "7.0.0-dev"
-set VivadoVersion  "2026.1"
+set VivadoVersion  "2026.1"     ; # FIXME: Update when changing Vivado version
 
+set RivieraVersion "2026.06"    ; # FIXME: Update when changing simulator version
+set NVCVersion     "1.23.1"     ; # FIXME: Update when changing simulator version
+set GHDLVersion    "7.0.0-dev"  ; # FIXME: Update when changing simulator version
+
+### Precompiled libraries ###
+# set manual
 # FIXME: this is a hardcoded path
 set precompiledLibRivieraPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
 set precompiledLibNVCPath     "C:/Tools/precompiled/NVC/${NVCVersion}/Vivado/${VivadoVersion}"
 set precompiledLibGHDLPath    "C:/Tools/precompiled/GHDL/${GHDLVersion}/Vivado/${VivadoVersion}"
+
+# set with environment variable
+if {[info exists ::env(PRECOMPILED_LIB_RIVIERA)]} {
+    set precompiledLibRivieraPath $::env(PRECOMPILED_LIB_RIVIERA)
+}
+
+if {[info exists ::env(PRECOMPILED_LIB_NVC)]} {
+    set precompiledLibNVCPath $::env(PRECOMPILED_LIB_NVC)
+}
+
+if {[info exists ::env(PRECOMPILED_LIB_GHDL)]} {
+    set precompiledLibGHDLPath $::env(PRECOMPILED_LIB_GHDL)
+}
+
+if {$::osvvm::ToolName eq "RivieraPRO"} {
+	CheckLibPath $precompiledLibRivieraPath
+} elseif {$::osvvm::ToolName eq "NVC"} {
+	CheckLibPath $precompiledLibNVCPath
+} elseif {$::osvvm::ToolName eq "GHDL"} {
+	CheckLibPath $precompiledLibGHDLPath
+}
+###########################
+
+### XILINX IP directory ###
+# set manual
+# FIXME: this is a hardcoded path
+if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
+	# Vivado <= 2025.2
+	set xilinx_ip_dir "C:/Xilinx/Vivado/${VivadoVersion}/data/ip/xilinx"
+} else {
+	# Vivado >= 2026.1
+	set xilinx_ip_dir "C:/Xilinx/${VivadoVersion}/Vivado/data/ip/xilinx"
+}
+
+# set with environment variable
+if {[info exists ::env(XILINX_IP_DIR)]} {
+    set xilinx_ip_dir $::env(XILINX_IP_DIR)
+}
+
+CheckLibPath $xilinx_ip_dir
+###########################
 
 set defaultStep "all"
 set regressionLevels [createRegressionLevels osvvm poc dut test] ; # clean, all
@@ -154,7 +209,6 @@ if {$::osvvm::ToolName eq "GHDL"} {
 	if {![info exists ::env(GITHUB_ACTIONS)] || $::env(GITHUB_ACTIONS) ne "true"} {
 		if {[package vcompare $VivadoVersion "2025.2"] <= 0} {
 			# Vivado <= 2025.2
-			set xilinx_ip_dir "C:/Xilinx/Vivado/${VivadoVersion}/data/ip/xilinx"
 			library axi_sg_v4_1_21
 			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
 			library axi_datamover_v5_1_37
@@ -164,7 +218,6 @@ if {$::osvvm::ToolName eq "GHDL"} {
 
 		} else {
 			# Vivado >= 2026.1
-			set xilinx_ip_dir "C:/Xilinx/${VivadoVersion}/Vivado/data/ip/xilinx"
 			library axi_sg_v4_1_21
 			analyze "${xilinx_ip_dir}/axi_sg_v4_1/hdl/axi_sg_v4_1_rfs.vhd"
 			library axi_datamover_v5_1_38

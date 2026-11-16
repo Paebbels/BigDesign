@@ -56,18 +56,20 @@ architecture TestHarness of BigDesign_TestHarness is
 	signal GPIO_Button  : std_logic_vector(1 downto 0);
 	signal GPIO_LED     : std_logic_vector(1 downto 0);
 
-	signal Config_Clk   : std_logic;
-	signal Manager_Clks : std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
+	signal Config_Clk     : std_logic;
+	signal Manager_Clocks : std_logic_vector(0 to NUM_MPSOC_MANAGERS - 1);
 
-	signal Subordinate_m2s  : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
-	signal Subordinate_s2m  : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
-	signal Subordinate_Clks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_m2s    : AXI4_A49_D128_I6.Sized_M2S_Vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_s2m    : AXI4_A49_D128_I6.Sized_S2M_Vector(0 to NUM_SUBORDINATES - 1);
+	signal Subordinate_Clocks : std_logic_vector(0 to NUM_SUBORDINATES - 1);
 
 	signal DataGen_Managers : AddressBusRecArrayType(0 to NUM_SUBORDINATES - 1)(
 		Address(MPSOC_SUBORDINATE_ADDRESS_BITS - 1 downto 0),
 		DataToModel(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0),
 		DataFromModel(MPSOC_SUBORDINATE_DATA_BITS - 1 downto 0)
 	);
+
+	signal DUT_initialized : std_logic := '0';
 
 	-- DMA
 	signal DMA_StreamIn_m2s  : AXI4S_D32.Sized_M2S;
@@ -106,28 +108,34 @@ architecture TestHarness of BigDesign_TestHarness is
 		);
 	end component;
 begin
-	Clock_100MHz <= not Clock_100MHz after CLOCK_PERIOD / 2;
+	Clock_100MHz    <= not Clock_100MHz after CLOCK_PERIOD / 2;
 
 	DUT : entity lib_BigDesign.Design
 		port map (
-			Clock            => Clock_100MHz,
+			Clock              => Clock_100MHz,
 
-			Button           => GPIO_Button,
-			LED              => GPIO_LED,
+			Button             => GPIO_Button,
+			LED                => GPIO_LED,
 
-			Config_Clk       => Config_Clk,
+			Config_Clk         => Config_Clk,
 
-			Manager_Clks     => Manager_Clks,
+			Manager_Clocks     => Manager_Clocks,
 
-			Subordinate_m2s  => Subordinate_m2s,
-			Subordinate_s2m  => Subordinate_s2m,
-			Subordinate_Clks => Subordinate_Clks,
+			Subordinate_m2s    => Subordinate_m2s,
+			Subordinate_s2m    => Subordinate_s2m,
+			Subordinate_Clocks => Subordinate_Clocks,
 
-			DMA_StreamIn_m2s  => DMA_StreamIn_m2s,
-			DMA_StreamIn_s2m  => DMA_StreamIn_s2m,
-			DMA_StreamOut_m2s => DMA_StreamOut_m2s,
-			DMA_StreamOut_s2m => DMA_StreamOut_s2m
+			DMA_StreamIn_m2s    => DMA_StreamIn_m2s,
+			DMA_StreamIn_s2m    => DMA_StreamIn_s2m,
+			DMA_StreamOut_m2s   => DMA_StreamOut_m2s,
+			DMA_StreamOut_s2m   => DMA_StreamOut_s2m
 		);
+
+	MMCM_Monitor : block
+		alias MMCM_Locked is <<signal .BigDesign_TestHarness.DUT.Clock_network.MMCM_Locked : std_logic>>;
+	begin
+		DUT_initialized <= MMCM_Locked after CLOCK_PERIOD * 4;
+	end block;
 
 	gen_M: for i in Subordinate_m2s'range generate
 		subtype T_Axi4Rec is Axi4RecType(
@@ -169,7 +177,7 @@ begin
 			)
 			port map (
 				-- Globals
-				Clk      => Subordinate_clks(i),
+				Clk      => Subordinate_Clocks(i),
 				nReset   => '1',
 				TransRec => DataGen_Managers(i),
 				AxiBus   => Axi4Rec

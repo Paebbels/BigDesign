@@ -88,6 +88,8 @@ begin
 	HPM0_LPD_Proc : process
 		constant ProcID : AlertLogIDType := NewID("HPM0_LPD_Proc", TCID);
 	begin
+		wait until DUT_initialized = '1';
+		
 		WaitForClock(HPM0_LPD_Rec, 2);
 		Write(HPM0_LPD_Rec, REG_GPIO_LED, 32x"01");  -- turn on LED
 		WaitForClock(HPM0_LPD_Rec);
@@ -105,6 +107,7 @@ begin
 	ManagerProc_0 : process
 		constant ProcID : AlertLogIDType := NewID("ManagerProc_0", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(DataGen_Managers(0), 2);
 
 		Write(DataGen_Managers(0), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
@@ -119,7 +122,9 @@ begin
 	ManagerProc_1 : process
 		constant ProcID : AlertLogIDType := NewID("ManagerProc_1", TCID);
 	begin
+		wait until DUT_initialized = '1';
 		WaitForClock(DataGen_Managers(1), 2);
+
 		WaitForToggle(WriteDone);
 
 		ReadCheck(DataGen_Managers(1), MEMORY_TEST_WORD_1, MEMORY_TEST_DATA_1);
@@ -162,6 +167,8 @@ begin
 			return std_logic_vector(to_unsigned(wordAddress, BackdoorAddressType'length));
 		end function;
 	begin
+		wait until DUT_initialized = '1';
+
 		WaitForToggle(WriteDone);
 		Read(PSDDR4_MemoryID, toWordAddress(byteAddress => MEMORY_TEST_WORD_1), ReadData);  -- alias for MemRead
 		AffirmIfEqual(ProcID, ReadData, MEMORY_TEST_DATA_1, "Reading memory through backdoor (1).");

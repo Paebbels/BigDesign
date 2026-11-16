@@ -53,23 +53,23 @@ architecture top of Toplevel is
 begin
 	InnerTop : entity work.Design
 		port map (
-			Clock             => Clock_100MHz,
+			Clock              => Clock_100MHz,
 
-			Button            => GPIO_Button,
-			LED               => GPIO_LED,
+			Button             => GPIO_Button,
+			LED                => GPIO_LED,
 
-			Config_Clk        => open,
+			Config_Clk         => open,
 
-			Manager_Clks      => open,
+			Manager_Clocks     => open,
 
-			Subordinate_m2s   => Subordinate_m2s,
-			Subordinate_s2m   => Subordinate_s2m,
-			Subordinate_Clks  => open,
+			Subordinate_m2s    => Subordinate_m2s,
+			Subordinate_s2m    => Subordinate_s2m,
+			Subordinate_Clocks => open,
 
-			DMA_StreamIn_m2s  => DMA_StreamIn_m2s,
-			DMA_StreamIn_s2m  => DMA_StreamIn_s2m,
-			DMA_StreamOut_m2s => DMA_StreamOut_m2s,
-			DMA_StreamOut_s2m => DMA_StreamOut_s2m
+			DMA_StreamIn_m2s   => DMA_StreamIn_m2s,
+			DMA_StreamIn_s2m   => DMA_StreamIn_s2m,
+			DMA_StreamOut_m2s  => DMA_StreamOut_m2s,
+			DMA_StreamOut_s2m  => DMA_StreamOut_s2m
 		);
 
 	Termination_Transmitter : entity PoC.axi4stream_Termination_Transmitter

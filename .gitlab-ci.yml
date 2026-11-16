@@ -1,0 +1,57 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+  FF_SCRIPT_SECTIONS: "true"
+
+  PROJECT_PATH: project
+  PROJECT_NAME: BigDesign.2008
+  TOP_NAME: Toplevel
+  PART_NAME: 1
+  VIVADO_VERSION: "2026.1"
+
+
+Vivado:
+  image: ${CI_REGISTRY}/docker-images/vivado:latest
+  tags:
+    - Vivado
+    - CIServer-02
+    - Large
+
+  script:
+    - |
+      exec-Vivado.sh -d \
+      --select-version=${VIVADO_VERSION} \
+      --project-file=${PROJECT_PATH}/${PROJECT_NAME}.xpr \
+      --simple-flow \
+      --synth-name=synth_${PART_NAME} \
+      --impl-name=impl_${PART_NAME} \
+      --src-name=sources_${PART_NAME} \
+      --constr-name=constr_${PART_NAME} \
+      --PoC-version=3 \
+      --with-PoC=src/PoC/local_configuration.vhdl
+    - CheckSynthesisLogfile ${PROJECT_PATH}/${PROJECT_NAME}.runs/synth_${PART_NAME}/${TOP_NAME}.vds
+    - CheckTimingEvolution  ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}.vdi
+
+  after_script:
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/synth_${PART_NAME}/${TOP_NAME}.vds .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/synth_${PART_NAME}/${TOP_NAME}_utilization_synth.rpt .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}_utilization_placed.rpt .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}.vdi .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}_opt.dcp .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}_routed.dcp .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}.bit .
+    - CopyFile ${PROJECT_PATH}/${PROJECT_NAME}.runs/impl_${PART_NAME}/${TOP_NAME}.ltx .
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}"
+    when: always
+    paths:
+      - "*.vds"
+      - "*.rpt"
+      - "*.vdi"
+      - "*.bit"
+      - "*.ltx"
+      - "*_routed.dcp"
+      - "./gen/*"
+      - "temp/GitVersion.mem"
+    expire_in: 1 week

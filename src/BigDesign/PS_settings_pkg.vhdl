@@ -34,6 +34,8 @@ package PS_settings_pkg is
 	----------------------
 	------- General ------
 	----------------------
+	constant PS_CLOCK_FREQUENCY : FREQ := 100 MHz;
+
 	constant NUM_MPSOC_MANAGERS     : positive := 2;
 	constant NUM_MPSOC_SUBORDINATES : positive := 4;  -- 1 out of 4 available Subordinates is used for DMA input
 	constant NUM_SUBORDINATES       : positive := 3;

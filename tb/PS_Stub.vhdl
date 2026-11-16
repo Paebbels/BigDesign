@@ -339,10 +339,12 @@ end entity;
 
 architecture Stub of BlockDesign_PS_0 is
 
+	constant PS_CLOCK_PERIOD : time := to_time(PS_CLOCK_FREQUENCY);
+
 	signal pl_clock0 : std_logic := '1';
 
 begin
-	pl_clock0 <= not pl_clock0 after 10 ns;
+	pl_clock0 <= not pl_clock0 after PS_CLOCK_PERIOD / 2;
 	pl_clk0   <= pl_clock0;
 
 	blk_UART : block
