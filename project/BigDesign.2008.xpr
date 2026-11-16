@@ -185,14 +185,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Common.pkg.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Common.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Full.pkg.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Full.pkg.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -231,7 +231,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_shift.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_Shift.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -306,7 +306,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_stage.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/fifo/fifo_Stage.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -548,7 +548,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Termination_Manager.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Termination_Manager.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UserDisabled" Val="1"/>
@@ -556,7 +556,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/AXI4_Termination_Subordinate.vhdl">
+      <File Path="$PPRDIR/../lib/PoC/src/bus/axi4/axi4_Termination_Subordinate.vhdl">
         <FileInfo SFType="VHDL2019">
           <Attr Name="Library" Val="PoC"/>
           <Attr Name="UserDisabled" Val="1"/>
