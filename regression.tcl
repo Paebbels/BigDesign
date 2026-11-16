@@ -82,7 +82,7 @@ set GHDLVersion    "7.0.0-dev"  ; # FIXME: Update when changing simulator versio
 # set manual
 # FIXME: this is a hardcoded path
 set precompiledLibRivieraPath "C:/Tools/precompiled/Riviera-PRO/${RivieraVersion}/Vivado/${VivadoVersion}"
-set precompiledLibNVCPath     "C:/Tools/precompiled/NC/${NVCVersion}/Vivado/${VivadoVersion}"
+set precompiledLibNVCPath     "C:/Tools/precompiled/NVC/${NVCVersion}/Vivado/${VivadoVersion}"
 set precompiledLibGHDLPath    "C:/Tools/precompiled/GHDL/${GHDLVersion}/Vivado/${VivadoVersion}"
 
 # set with environment variable
