@@ -35,7 +35,7 @@ use     lib_BigDesign.PS_settings_pkg.all;
 
 entity Design is
 	port (
-		signal Clock  : in  std_logic;
+		signal Clock  : in  std_logic;  -- nc
 
 		signal Button  : in  std_logic_vector(1 downto 0);
 		signal LED     : out std_logic_vector(1 downto 0);
@@ -130,8 +130,8 @@ begin
 		Reset_500            => Reset_500
 	);
 
-	Config_Clk             <= Clock_100;
-	Manager_Clocks         <= (others => Clock_250);
+	Config_Clk               <= Clock_100;
+	Manager_Clocks           <= (others => Clock_250);
 	Subordinate_Clocks       <= (others => Clock_250);
 	MPSoC_Subordinate_Clocks <= (others => Clock_250);
 
